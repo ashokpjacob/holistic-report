@@ -17,10 +17,10 @@ This project helps educators capture the **full spectrum of student growth** —
 
 ## 📂 Project Structure
 
-index.html        # Main application
-holistic.csv      # Sample CSV data
-style.css         # Inline styles (inside HTML)
-README.md         # Documentation
+•	index.html        # Main application
+•	holistic.csv      # Sample CSV data
+•	style.css         # Inline styles (inside HTML)
+•	README.md         # Documentation
 
 
 ---
