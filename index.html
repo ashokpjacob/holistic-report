@@ -92,7 +92,7 @@ function parseCSV(text) {
 }
 
 // Load CSV file
-fetch("holistic.csv")
+fetch("https://raw.githubusercontent.com/ashokpjacob/holisticreport/refs/heads/main/holistic.csv")
   .then(response => response.text())
   .then(text => {
     const data = parseCSV(text);
