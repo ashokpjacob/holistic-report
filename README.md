@@ -29,7 +29,7 @@ A web-based tool to design and print holistic student report cards in line with 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ashokpjacob/holisticreport.git
+   git clone https://github.com/ashokpjacob/holistic-report.git
    Open index.html in your browser.
    
 The app will automatically load holistic.csv and render the report card.
