@@ -16,10 +16,10 @@ This project helps educators capture the **full spectrum of student growth** —
 ---
 
 ## 📂 Project Structure
-├── index.html        # Main application
-├── holistic.csv      # Sample CSV data
-├── style.css         # Inline styles (inside HTML)
-├── README.md         # Documentation
+index.html        # Main application
+holistic.csv      # Sample CSV data
+style.css         # Inline styles (inside HTML)
+README.md         # Documentation
 
 
 
@@ -29,7 +29,7 @@ This project helps educators capture the **full spectrum of student growth** —
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/holisticreport.git
+   git clone https://github.com/ashokpjacob/holisticreport.git
    Open index.html in your browser.
    
 The app will automatically load holistic.csv and render the report card.
