@@ -3,6 +3,13 @@
 Holistic Report Card Generator (CBSE NEP 2020 Aligned)  
 A web-based tool to design and print holistic student report cards in line with the CBSE National Education Policy 2020. It dynamically loads competencies from a CSV file, organizes them by domain and subject, and allows teachers to drag, resize, and customize layouts. Layouts are saved locally and can be printed in clean A4 format.
 
+
+
+---
+
+## 🌐 Live Demo
+👉 Try it here: [Holistic Report Card Generator](https://ashokpjacob.github.io/holisticreport)
+
 ---
 
 ## ✨ Features
