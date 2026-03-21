@@ -8,7 +8,7 @@ A web-based tool to design and print holistic student report cards in line with 
 ---
 
 ## 🌐 Live Demo
-👉 Try it here: [Holistic Report Card Generator](https://ashokpjacob.github.io/holisticreport)
+👉 Try it here: [Holistic Report Card Generator](https://ashokpjacob.github.io/holistic-report)
 
 ---
 
