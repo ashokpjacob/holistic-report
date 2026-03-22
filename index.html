@@ -2,26 +2,82 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Holistic Report Card</title>
-<link rel="stylesheet" href="styles.css">
+  <title>Holistic Report Card — Editor</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="assets/css/editor.css">
 </head>
 <body>
 
-<h1>Holistic Report Card</h1>
-<button id="resetBtn">Reset Layout</button>
-<button id="printBtn">Print Report</button>
+<header>
+  <h1>Holistic Report Card</h1>
+</header>
 
-<!-- place anywhere in your page (e.g., near your toolbar) -->
 <div id="localstorage-tools" style="margin:8px 0;">
   <button id="exportBtn">Save localStorage (position.json)</button>
   <button id="importBtn">Load localStorage from file</button>
   <input id="importFile" type="file" accept=".json,application/json" style="display:none" />
 </div>
 
+<div id="app" class="app-shell">
+  <aside id="sidebar" aria-label="Style sidebar">
+    <h3>Style</h3>
 
-<div id="pages"></div>
+    <div class="control">
+      <label for="fontFamily">Font</label>
+      <select id="fontFamily">
+        <option value="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial">System UI</option>
+        <option value="Arial, Helvetica, sans-serif">Arial</option>
+        <option value="Georgia, serif">Georgia</option>
+        <option value="'Times New Roman', Times, serif">Times New Roman</option>
+        <option value="'Courier New', monospace">Courier New</option>
+      </select>
+    </div>
 
+    <div class="control">
+      <label for="fontSize">Size (px)</label>
+      <input id="fontSize" type="number" min="6" max="200" />
+    </div>
 
-<script src="script.js"></script>
+    <div class="control">
+      <label for="fontColor">Color</label>
+      <input id="fontColor" type="color" />
+    </div>
+
+    <div class="control">
+      <label><input id="boldToggle" type="checkbox" /> Bold</label>
+      <label><input id="italicToggle" type="checkbox" /> Italic</label>
+    </div>
+
+    <div class="control">
+      <button id="applyBtn">Apply</button>
+      <button id="resetStyleBtn">Reset</button>
+    </div>
+
+    <hr />
+
+    <div class="control">
+      <button id="exportStylesBtn">Export styles.json</button>
+      <input id="importStylesFile" type="file" accept="application/json" />
+    </div>
+
+    <div id="selectedInfo" aria-live="polite"></div>
+  </aside>
+
+  <main id="main">
+    <div id="toolbar">
+      <button id="toggleEdit">Toggle Edit Mode</button>
+      <button id="printBtn">Print Report</button>
+      <button id="resetBtn">Reset Layout</button>
+    </div>
+
+    <section id="pages-wrapper">
+      <!-- script.js will populate #pages with .a4-page elements -->
+      <div id="pages"></div>
+    </section>
+  </main>
+</div>
+
+<script src="script.js" defer></script>
+<script src="assets/js/editor.js" defer></script>
 </body>
 </html>

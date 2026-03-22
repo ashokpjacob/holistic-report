@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Holistic Report — Editor</title>
+  <link rel="stylesheet" href="assets/css/editor.css">
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar" aria-label="Style sidebar">
+      <h3>Style</h3>
+
+      <div class="control">
+        <label for="fontFamily">Font</label>
+        <select id="fontFamily">
+          <option value="Arial, Helvetica, sans-serif">Arial</option>
+          <option value="Georgia, serif">Georgia</option>
+          <option value="'Times New Roman', Times, serif">Times New Roman</option>
+          <option value="'Courier New', monospace">Courier New</option>
+          <option value="system-ui, -apple-system, 'Segoe UI', Roboto">System UI</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label for="fontSize">Size (px)</label>
+        <input id="fontSize" type="number" min="6" max="200" />
+      </div>
+
+      <div class="control">
+        <label for="fontColor">Color</label>
+        <input id="fontColor" type="color" />
+      </div>
+
+      <div class="control">
+        <label for="boldToggle"><input id="boldToggle" type="checkbox" /> Bold</label>
+        <label for="italicToggle"><input id="italicToggle" type="checkbox" /> Italic</label>
+      </div>
+
+      <div class="control">
+        <button id="applyBtn">Apply</button>
+        <button id="resetBtn">Reset</button>
+      </div>
+
+      <hr />
+
+      <div class="control">
+        <button id="exportBtn">Export styles.json</button>
+        <input id="importFile" type="file" accept="application/json" />
+      </div>
+
+      <div id="selectedInfo" aria-live="polite"></div>
+    </aside>
+
+    <main id="main">
+      <div id="toolbar">
+        <button id="toggleEdit">Toggle Edit Mode</button>
+      </div>
+
+      <section id="a4-wrapper">
+        <!-- A4 area acts like an editor. Keep your report content here. -->
+        <div id="a4-editor" class="a4">
+          <!-- Example content; actual app likely dynamically loads competencies -->
+          <h1 data-default="title">Student Report</h1>
+          <p data-default="student">Student: John Doe</p>
+          <div class="subject">
+            <h2>Mathematics</h2>
+            <p>Competency: Number sense</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/editor.js" defer></script>
+</body>
+</html>
