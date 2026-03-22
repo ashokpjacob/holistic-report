@@ -208,3 +208,167 @@ document.getElementById("resetBtn").addEventListener("click", ()=>{
 document.getElementById("printBtn").addEventListener("click", ()=>{
   window.print();
 });
+
+//position.json
+/**
+ * Export entire localStorage as a JSON file.
+ * filename defaults to "position.json".
+ */
+
+const REMOTE_POSITION_URL = 'https://raw.githubusercontent.com/ashokpjacob/holistic-report/refs/heads/main/position.json';
+
+function exportLocalStorage(filename = 'position.json') {
+  const exportObj = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    exportObj[key] = localStorage.getItem(key);
+  }
+
+  const content = JSON.stringify(exportObj, null, 2);
+  const blob = new Blob([content], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+    a.remove();
+  }, 100);
+}
+
+/**
+ * Import helper that accepts a plain object (key -> value) and writes to localStorage.
+ * If options.overwrite is false, will prompt on conflicts.
+ */
+function importObjectIntoLocalStorage(obj, options = { overwrite: true }) {
+  if (typeof obj !== 'object' || obj === null) {
+    throw new Error('JSON root must be an object of key→value pairs');
+  }
+  const keys = Object.keys(obj);
+  if (!options.overwrite) {
+    const conflicts = keys.filter(k => localStorage.getItem(k) !== null);
+    if (conflicts.length > 0) {
+      const ok = confirm(`The file contains ${conflicts.length} keys that already exist in localStorage. Overwrite them?`);
+      if (!ok) return 0;
+    }
+  }
+  keys.forEach(k => {
+    const v = obj[k];
+    localStorage.setItem(k, v === null ? '' : String(v));
+  });
+  // Notify app:
+  window.dispatchEvent(new Event('localStorageImported'));
+  return keys.length;
+}
+
+/**
+ * Import a JSON file from an <input type="file"> File object.
+ * After successful import it reloads the page (small timeout to allow listeners to run).
+ */
+function importLocalStorageFile(file, options = { overwrite: true }) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      const count = importObjectIntoLocalStorage(parsed, options);
+      if (count && count > 0) {
+        alert(`Imported ${count} keys into localStorage.`);
+      } else if (count === 0) {
+        // user cancelled overwrite
+        return;
+      }
+      // Give a moment for any listeners then reload
+      setTimeout(() => { location.reload(); }, 50);
+    } catch (err) {
+      alert('Failed to import file: ' + err.message);
+      console.error(err);
+    }
+  };
+  reader.onerror = () => alert('Failed to read file');
+  reader.readAsText(file);
+}
+
+/**
+ * Fetch a remote JSON file and import its contents into localStorage.
+ * Returns a Promise that resolves to number of keys imported.
+ */
+async function fetchAndImportRemote(url, options = { overwrite: true }) {
+  const resp = await fetch(url, { cache: 'no-store' });
+  if (!resp.ok) {
+    throw new Error(`Failed to fetch ${url}: ${resp.status} ${resp.statusText}`);
+  }
+  const text = await resp.text();
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch (err) {
+    throw new Error('Remote file is not valid JSON: ' + err.message);
+  }
+  const count = importObjectIntoLocalStorage(parsed, options);
+  return count;
+}
+
+/* Wire up UI, but guard missing elements so script is resilient */
+document.addEventListener('DOMContentLoaded', () => {
+  // Auto-load remote if localStorage is empty
+  try {
+    if (localStorage.length === 0) {
+      // Attempt to fetch remote default positions
+      fetchAndImportRemote(REMOTE_POSITION_URL, { overwrite: true })
+        .then(count => {
+          if (count && count > 0) {
+            // Inform user and reload so app picks up the new data
+            // Small timeout so any listeners can run before reload
+            setTimeout(() => {
+              alert(`Loaded ${count} default positions from remote and will reload now.`);
+              location.reload();
+            }, 50);
+          }
+        })
+        .catch(err => {
+          // Fail silently in background but log for debugging
+          console.warn('Could not load remote positions:', err);
+        });
+    }
+  } catch (err) {
+    console.error('Error during auto-load check:', err);
+  }
+
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => exportLocalStorage('position.json'));
+  }
+
+  const importBtn = document.getElementById('importBtn');
+  const importFileInput = document.getElementById('importFile');
+
+  if (importBtn && importFileInput) {
+    importBtn.addEventListener('click', () => importFileInput.click());
+
+    importFileInput.addEventListener('change', (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (f) importLocalStorageFile(f, { overwrite: true });
+      e.target.value = '';
+    });
+  } else {
+    // If UI elements are missing, you can create them programmatically or ensure they exist in your HTML.
+    // Example (uncomment to auto-create UI in the page):
+    /*
+    const container = document.createElement('div');
+    container.style.margin = '8px 0';
+    container.innerHTML = `
+      <button id="exportBtn">Save localStorage (position.json)</button>
+      <button id="importBtn">Load localStorage from file</button>
+      <input id="importFile" type="file" accept=".json,application/json" style="display:none" />
+    `;
+    document.body.prepend(container);
+    // then re-run wiring or refresh the page
+    location.reload();
+    */
+  }
+});
