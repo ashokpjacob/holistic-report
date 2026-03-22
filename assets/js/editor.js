@@ -1,5 +1,6 @@
 // assets/js/editor.js
-// Robust editor with live-apply on control changes and support for script.js-generated DOM.
+// Editor with multi-select and Ctrl/Command+click "select all same tag" behavior.
+// Drop this in (replace existing editor.js). Requires script.js to run earlier (defer ordering).
 
 (() => {
   const STORAGE_KEY = 'hr_styles';
@@ -32,7 +33,7 @@
     if (safeGet('sidebar')) return;
     const aside = document.createElement('aside');
     aside.id = 'sidebar';
-    aside.style.cssText = 'position:fixed;right:0;top:0;width:260px;height:100vh;background:#fff;border-left:1px solid #e6e9ef;padding:12px;overflow:auto;z-index:9999;';
+    aside.style.cssText = 'position:fixed;right:0;top:0;width:300px;height:100vh;background:#fff;border-left:1px solid #e6e9ef;padding:12px;overflow:auto;z-index:9999;';
     aside.innerHTML = `
       <h3 style="margin-top:0">Style</h3>
       <div class="control"><label>Font</label>
@@ -55,9 +56,10 @@
     document.body.appendChild(aside);
   }
 
-  let selectedEl = null;
+  // --- state ---
   let a4 = null;
   let editMode = false;
+  let selectedEls = []; // array of selected elements
   window.hrEditor = window.hrEditor || {};
   window.hrEditor.isDragging = false;
 
@@ -105,42 +107,81 @@
     return style;
   }
 
-  function selectElement(el){
-    if(window.hrEditor.isDragging) return;
-    if(selectedEl) selectedEl.classList && selectedEl.classList.remove('selected-outline');
-    selectedEl = el;
-    if(!selectedEl) return safeGet('selectedInfo') && (safeGet('selectedInfo').textContent = 'No selection');
-    selectedEl.classList && selectedEl.classList.add('selected-outline');
-    if(!selectedEl.dataset.styleId) selectedEl.dataset.styleId = genId();
-    const sid = selectedEl.dataset.styleId;
-    safeGet('selectedInfo') && (safeGet('selectedInfo').innerHTML = `Selected: &lt;${selectedEl.tagName.toLowerCase()}&gt; id=${sid}`);
-    populateControlsFromElement(selectedEl);
+  function updateSelectedInfo(){
+    const info = safeGet('selectedInfo');
+    if(!info) return;
+    if(selectedEls.length === 0) info.textContent = 'No selection';
+    else if(selectedEls.length === 1) {
+      const el = selectedEls[0];
+      info.innerHTML = `Selected: &lt;${el.tagName.toLowerCase()}&gt; id=${el.dataset.styleId || ''}`;
+    } else {
+      info.textContent = `Selected ${selectedEls.length} elements (multi-select)`;
+    }
   }
 
-  function deselect(){
-    if(selectedEl) selectedEl.classList && selectedEl.classList.remove('selected-outline');
-    selectedEl = null;
-    safeGet('selectedInfo') && (safeGet('selectedInfo').textContent = 'No selection');
+  function clearSelectionVisuals(){
+    selectedEls.forEach(el => el.classList && el.classList.remove('selected-outline'));
+  }
+
+  function selectSingleElement(el){
+    clearSelectionVisuals();
+    selectedEls = [];
+    if(!el) { updateSelectedInfo(); return; }
+    if(!el.dataset.styleId) el.dataset.styleId = genId();
+    selectedEls = [el];
+    el.classList && el.classList.add('selected-outline');
+    populateControlsFromElement(el);
+    updateSelectedInfo();
+  }
+
+  function selectAllSameTag(el){
+    if(!a4 || !el) return;
+    const tag = el.tagName;
+    const matches = Array.from(a4.querySelectorAll(tag));
+    if(matches.length === 0) return;
+    clearSelectionVisuals();
+    selectedEls = [];
+    matches.forEach(m => {
+      if(!m.dataset.styleId) m.dataset.styleId = genId();
+      m.classList && m.classList.add('selected-outline');
+      selectedEls.push(m);
+    });
+    // Populate controls from first element
+    populateControlsFromElement(selectedEls[0]);
+    updateSelectedInfo();
+  }
+
+  function deselectAll(){
+    clearSelectionVisuals();
+    selectedEls = [];
+    updateSelectedInfo();
   }
 
   function applyToSelected(){
-    if(!selectedEl) return;
+    if(!selectedEls || selectedEls.length === 0) return;
     const style = styleFromControls();
-    applyStyleToElement(selectedEl, style);
-    stylesMap[selectedEl.dataset.styleId] = style;
+    selectedEls.forEach(el => {
+      applyStyleToElement(el, style);
+      if(!el.dataset.styleId) el.dataset.styleId = genId();
+      stylesMap[el.dataset.styleId] = style;
+    });
     saveStyles();
   }
 
   function resetSelected(){
-    if(!selectedEl) return;
-    selectedEl.style.fontFamily = '';
-    selectedEl.style.fontSize = '';
-    selectedEl.style.color = '';
-    selectedEl.style.fontWeight = '';
-    selectedEl.style.fontStyle = '';
-    const sid = selectedEl.dataset.styleId;
-    if(sid && stylesMap[sid]) { delete stylesMap[sid]; saveStyles(); }
-    populateControlsFromElement(selectedEl);
+    if(!selectedEls || selectedEls.length === 0) return;
+    selectedEls.forEach(el => {
+      el.style.fontFamily = '';
+      el.style.fontSize = '';
+      el.style.color = '';
+      el.style.fontWeight = '';
+      el.style.fontStyle = '';
+      const sid = el.dataset.styleId;
+      if(sid && stylesMap[sid]) { delete stylesMap[sid]; }
+    });
+    saveStyles();
+    if(selectedEls.length) populateControlsFromElement(selectedEls[0]);
+    updateSelectedInfo();
   }
 
   function setEditMode(on){
@@ -183,23 +224,35 @@
       return;
     }
 
+    // selected-outline style
     const styleTag = document.createElement('style');
     styleTag.textContent = `.selected-outline{outline:3px dashed rgba(0,120,255,0.6);outline-offset:-4px}`;
     document.head.appendChild(styleTag);
 
+    // ensure ids and apply saved styles
     a4.querySelectorAll('*').forEach(node => { if(node.nodeType===1 && !node.dataset.styleId) node.dataset.styleId = genId(); });
     Object.keys(stylesMap).forEach(id => {
       const el = a4.querySelector(`[data-style-id="${id}"]`);
       if(el) applyStyleToElement(el, stylesMap[id]);
     });
 
+    // click handler: support ctrl/meta to select all same-tag
     a4.addEventListener('click', e => {
       if(!a4.contains(e.target)) return;
-      if(e.target === a4) { deselect(); return; }
-      selectElement(e.target);
+      if(window.hrEditor.isDragging) return; // ignore during drag
+      // ctrlKey for Windows/Linux, metaKey for Mac
+      const ctrl = e.ctrlKey || e.metaKey;
+      const target = e.target;
+      if(target === a4){ deselectAll(); return; }
+      if(ctrl){
+        selectAllSameTag(target);
+      } else {
+        selectSingleElement(target);
+      }
       e.stopPropagation();
     });
 
+    // detect drag starts to avoid click selection during drags
     document.addEventListener('mousedown', e => {
       if(e.target.closest && e.target.closest('.drag-handle')){
         window.hrEditor.isDragging = true;
@@ -207,6 +260,7 @@
     });
     document.addEventListener('mouseup', () => { window.hrEditor.isDragging = false; });
 
+    // UI wiring
     const applyBtn = safeGet('applyBtn');
     const resetBtnStyle = safeGet('resetBtnStyle');
     const toggleEditBtn = safeGet('toggleEdit');
@@ -215,12 +269,31 @@
     resetBtnStyle && resetBtnStyle.addEventListener('click', resetSelected);
     toggleEditBtn && toggleEditBtn.addEventListener('click', () => setEditMode(!editMode));
 
-    document.addEventListener('keydown', e => { if(e.key === 'Escape') deselect(); });
+    // keyboard shortcuts
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape') deselectAll();
+      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a'){ // Ctrl/Cmd+A -> select all elements in a4
+        e.preventDefault();
+        // select all top-level elements inside a4 (or all elements)
+        const all = Array.from(a4.querySelectorAll('*')).filter(n => n.nodeType === 1);
+        if(all.length){
+          clearSelectionVisuals();
+          selectedEls = [];
+          all.forEach(el => {
+            if(!el.dataset.styleId) el.dataset.styleId = genId();
+            el.classList && el.classList.add('selected-outline');
+            selectedEls.push(el);
+          });
+          populateControlsFromElement(selectedEls[0]);
+          updateSelectedInfo();
+        }
+      }
+    });
 
     startObserver();
 
-    // Live-apply listeners (debounced)
-    const liveApply = debounce(() => { if(selectedEl) applyToSelected(); }, 140);
+    // live-apply controls (debounced)
+    const liveApply = debounce(() => { if(selectedEls.length) applyToSelected(); }, 120);
     const ff = safeGet('fontFamily'), fs = safeGet('fontSize'), fc = safeGet('fontColor'), bt = safeGet('boldToggle'), it = safeGet('italicToggle');
     if(ff) ff.addEventListener('change', liveApply);
     if(fs) fs.addEventListener('input', liveApply);
@@ -228,9 +301,10 @@
     if(bt) bt.addEventListener('change', liveApply);
     if(it) it.addEventListener('change', liveApply);
 
-    safeGet('selectedInfo') && (safeGet('selectedInfo').textContent = 'No selection');
+    updateSelectedInfo();
   }
 
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initEditor);
   else initEditor();
+
 })();
