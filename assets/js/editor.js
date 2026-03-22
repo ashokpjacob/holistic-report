@@ -1,10 +1,5 @@
 // assets/js/editor.js
-// Robust editor that works with script.js-generated content.
-// Drop this in (replace existing editor.js). It will:
-// - use #pages as the A4 container if #a4-editor is missing
-// - create a minimal sidebar if none exists
-// - attach selection/edit behavior with drag-detection to avoid conflicts
-// - persist styles to localStorage under key "hr_styles"
+// Robust editor with live-apply on control changes and support for script.js-generated DOM.
 
 (() => {
   const STORAGE_KEY = 'hr_styles';
@@ -12,9 +7,8 @@
   let nextId = Date.now();
 
   function genId(){ return 's' + (nextId++); }
-
-  // --- Utility helpers ---
   function safeGet(id){ return document.getElementById(id) || null; }
+
   function rgbToHex(rgb){
     if(!rgb) return '#000000';
     if(rgb[0] === '#') return rgb;
@@ -23,7 +17,6 @@
     return '#' + [1,2,3].map(i => parseInt(m[i],10).toString(16).padStart(2,'0')).join('');
   }
 
-  // --- Load / Save styles ---
   function loadStyles(){
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -35,9 +28,8 @@
   }
   function saveStyles(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(stylesMap, null, 2)); }
 
-  // --- Create minimal sidebar if missing ---
   function createSidebarIfMissing(){
-    if (safeGet('sidebar')) return; // exists
+    if (safeGet('sidebar')) return;
     const aside = document.createElement('aside');
     aside.id = 'sidebar';
     aside.style.cssText = 'position:fixed;right:0;top:0;width:260px;height:100vh;background:#fff;border-left:1px solid #e6e9ef;padding:12px;overflow:auto;z-index:9999;';
@@ -63,27 +55,21 @@
     document.body.appendChild(aside);
   }
 
-  // --- Script-wide state ---
   let selectedEl = null;
-  let a4 = null; // container for pages
+  let a4 = null;
   let editMode = false;
   window.hrEditor = window.hrEditor || {};
   window.hrEditor.isDragging = false;
 
-  // --- Apply style object to an element ---
   function applyStyleToElement(el, styleObj){
     if(!el || !styleObj) return;
-    if(styleObj.fontFamily) el.style.fontFamily = styleObj.fontFamily;
-    else el.style.fontFamily = '';
-    if(styleObj.fontSize) el.style.fontSize = styleObj.fontSize;
-    else el.style.fontSize = '';
-    if(styleObj.color) el.style.color = styleObj.color;
-    else el.style.color = '';
+    if(styleObj.fontFamily) el.style.fontFamily = styleObj.fontFamily; else el.style.fontFamily = '';
+    if(styleObj.fontSize) el.style.fontSize = styleObj.fontSize; else el.style.fontSize = '';
+    if(styleObj.color) el.style.color = styleObj.color; else el.style.color = '';
     el.style.fontWeight = styleObj.fontWeight || '';
     el.style.fontStyle = styleObj.fontStyle || '';
   }
 
-  // --- Ensure nodes have data-style-id and apply saved styles ---
   function ensureIdsAndApply(node){
     if(!node || node.nodeType !== 1) return;
     if(!node.dataset.styleId) node.dataset.styleId = genId();
@@ -98,7 +84,6 @@
     });
   }
 
-  // --- Selection UI ---
   function populateControlsFromElement(el){
     if(!el) return;
     const cs = window.getComputedStyle(el);
@@ -121,7 +106,7 @@
   }
 
   function selectElement(el){
-    if(window.hrEditor.isDragging) return; // don't select while dragging
+    if(window.hrEditor.isDragging) return;
     if(selectedEl) selectedEl.classList && selectedEl.classList.remove('selected-outline');
     selectedEl = el;
     if(!selectedEl) return safeGet('selectedInfo') && (safeGet('selectedInfo').textContent = 'No selection');
@@ -138,14 +123,14 @@
     safeGet('selectedInfo') && (safeGet('selectedInfo').textContent = 'No selection');
   }
 
-  // --- Apply / Reset handlers ---
   function applyToSelected(){
-    if(!selectedEl) return alert('Select an element first');
+    if(!selectedEl) return;
     const style = styleFromControls();
     applyStyleToElement(selectedEl, style);
     stylesMap[selectedEl.dataset.styleId] = style;
     saveStyles();
   }
+
   function resetSelected(){
     if(!selectedEl) return;
     selectedEl.style.fontFamily = '';
@@ -158,7 +143,6 @@
     populateControlsFromElement(selectedEl);
   }
 
-  // --- Toggle edit mode ---
   function setEditMode(on){
     editMode = !!on;
     if(a4) a4.querySelectorAll('*').forEach(el => { if(el.nodeType===1) el.contentEditable = editMode ? 'true' : 'false'; });
@@ -166,7 +150,6 @@
     if(btn) btn.textContent = editMode ? 'Exit Edit Mode' : 'Toggle Edit Mode';
   }
 
-  // --- Mutation observer for dynamically created content ---
   let mo = null;
   function startObserver(){
     if(!a4) return;
@@ -188,43 +171,35 @@
     mo.observe(a4, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-style-id'] });
   }
 
-  // --- Safe initialization after DOM ready ---
+  function debounce(fn, wait){ let t; return function(...args){ clearTimeout(t); t = setTimeout(() => fn.apply(this, args), wait); }; }
+
   function initEditor(){
     loadStyles();
     createSidebarIfMissing();
 
-    // find container: prefer #a4-editor, fallback to #pages
     a4 = safeGet('a4-editor') || safeGet('pages');
     if(!a4){
       console.error('hr editor: no A4 container found (#a4-editor or #pages). Editor will not attach.');
       return;
     }
 
-    // Add selected-outline style if missing
     const styleTag = document.createElement('style');
     styleTag.textContent = `.selected-outline{outline:3px dashed rgba(0,120,255,0.6);outline-offset:-4px}`;
     document.head.appendChild(styleTag);
 
-    // ensure pre-existing nodes have ids and styles applied
     a4.querySelectorAll('*').forEach(node => { if(node.nodeType===1 && !node.dataset.styleId) node.dataset.styleId = genId(); });
     Object.keys(stylesMap).forEach(id => {
       const el = a4.querySelector(`[data-style-id="${id}"]`);
       if(el) applyStyleToElement(el, stylesMap[id]);
     });
 
-    // click selection: delegation on container (click, not mousedown)
     a4.addEventListener('click', e => {
-      // if click on sidebar etc, ignore
       if(!a4.contains(e.target)) return;
-      // allow selection only on element nodes
-      let target = e.target;
-      // don't select the page container itself
-      if(target === a4) return deselect();
-      selectElement(target);
+      if(e.target === a4) { deselect(); return; }
+      selectElement(e.target);
       e.stopPropagation();
     });
 
-    // small heuristic: detect dragging started on .drag-handle to avoid selection during drag
     document.addEventListener('mousedown', e => {
       if(e.target.closest && e.target.closest('.drag-handle')){
         window.hrEditor.isDragging = true;
@@ -232,38 +207,30 @@
     });
     document.addEventListener('mouseup', () => { window.hrEditor.isDragging = false; });
 
-    // wire UI controls (safely)
     const applyBtn = safeGet('applyBtn');
     const resetBtnStyle = safeGet('resetBtnStyle');
-    const exportBtnStyle = safeGet('exportBtnStyle'); // optional
-    const importFileStyle = safeGet('importFileStyle'); // optional
     const toggleEditBtn = safeGet('toggleEdit');
 
     applyBtn && applyBtn.addEventListener('click', applyToSelected);
     resetBtnStyle && resetBtnStyle.addEventListener('click', resetSelected);
     toggleEditBtn && toggleEditBtn.addEventListener('click', () => setEditMode(!editMode));
 
-    // keyboard: delete selection with Escape
     document.addEventListener('keydown', e => { if(e.key === 'Escape') deselect(); });
 
-    // make sure nodes added by script.js get ids/styles and are editable if editMode
     startObserver();
 
-    // expose API
-    window.hrEditor.applyAllStyles = () => {
-      Object.keys(stylesMap).forEach(id => {
-        const el = a4.querySelector(`[data-style-id="${id}"]`);
-        if(el) applyStyleToElement(el, stylesMap[id]);
-      });
-    };
-    window.hrEditor.getStyles = () => stylesMap;
-    window.hrEditor.saveStyles = saveStyles;
+    // Live-apply listeners (debounced)
+    const liveApply = debounce(() => { if(selectedEl) applyToSelected(); }, 140);
+    const ff = safeGet('fontFamily'), fs = safeGet('fontSize'), fc = safeGet('fontColor'), bt = safeGet('boldToggle'), it = safeGet('italicToggle');
+    if(ff) ff.addEventListener('change', liveApply);
+    if(fs) fs.addEventListener('input', liveApply);
+    if(fc) fc.addEventListener('input', liveApply);
+    if(bt) bt.addEventListener('change', liveApply);
+    if(it) it.addEventListener('change', liveApply);
 
-    // initial info
     safeGet('selectedInfo') && (safeGet('selectedInfo').textContent = 'No selection');
   }
 
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initEditor);
   else initEditor();
-
 })();
