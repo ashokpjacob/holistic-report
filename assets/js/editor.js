@@ -8,8 +8,18 @@
 
 (() => {
   const STORAGE_KEY = 'hr_styles';
+  const BG_ADJUSTER_URL = 'assets/image-adjuster.html';
   let stylesMap = {};
   let nextId = Date.now();
+  let bgAdjustWindow = null;
+  let bgImageAdjustState = {
+    sizeMode: 'cover',
+    sizeX: 100,
+    sizeY: 100,
+    posX: 50,
+    posY: 50,
+    repeat: 'no-repeat'
+  };
   function genId(){ return 's' + (nextId++); }
   function safeGet(id){ return document.getElementById(id) || null; }
   function stableFallbackId(el){
@@ -103,6 +113,111 @@
     label.textContent = v.toFixed(2);
   }
 
+  function clamp(num, min, max){
+    return Math.max(min, Math.min(max, Number(num)));
+  }
+
+  function parseSizeState(sizeValue){
+    const v = String(sizeValue || '').trim().toLowerCase();
+    if(!v || v === 'cover') return { sizeMode: 'cover', sizeX: 100, sizeY: 100 };
+    if(v === 'contain') return { sizeMode: 'contain', sizeX: 100, sizeY: 100 };
+    const m2 = v.match(/^([\d.]+)%\s+([\d.]+)%$/);
+    if(m2) return { sizeMode: 'custom', sizeX: clamp(m2[1], 10, 300), sizeY: clamp(m2[2], 10, 300) };
+    const m1 = v.match(/^([\d.]+)%$/);
+    if(m1) {
+      const n = clamp(m1[1], 10, 300);
+      return { sizeMode: 'custom', sizeX: n, sizeY: n };
+    }
+    return { sizeMode: 'cover', sizeX: 100, sizeY: 100 };
+  }
+
+  function parsePositionState(positionValue){
+    const v = String(positionValue || '').trim().toLowerCase();
+    const parts = v.split(/\s+/).filter(Boolean);
+    const keywordToPercent = { left: 0, center: 50, right: 100, top: 0, bottom: 100 };
+    function partToPercent(p, fallback){
+      if(!p) return fallback;
+      if(Object.prototype.hasOwnProperty.call(keywordToPercent, p)) return keywordToPercent[p];
+      const m = p.match(/^([\d.]+)%$/);
+      if(m) return clamp(m[1], 0, 100);
+      return fallback;
+    }
+    const x = partToPercent(parts[0], 50);
+    const y = partToPercent(parts[1], 50);
+    return { posX: x, posY: y };
+  }
+
+  function normalizeBgAdjustState(input){
+    const src = input && typeof input === 'object' ? input : {};
+    const sizeMode = ['cover', 'contain', 'custom'].includes(src.sizeMode) ? src.sizeMode : 'cover';
+    return {
+      sizeMode,
+      sizeX: clamp(src.sizeX !== undefined ? src.sizeX : 100, 10, 300),
+      sizeY: clamp(src.sizeY !== undefined ? src.sizeY : 100, 10, 300),
+      posX: clamp(src.posX !== undefined ? src.posX : 50, 0, 100),
+      posY: clamp(src.posY !== undefined ? src.posY : 50, 0, 100),
+      repeat: ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'].includes(src.repeat) ? src.repeat : 'no-repeat'
+    };
+  }
+
+  function bgCssFromState(state){
+    const s = normalizeBgAdjustState(state);
+    const backgroundSize = s.sizeMode === 'custom' ? `${s.sizeX}% ${s.sizeY}%` : s.sizeMode;
+    const backgroundPosition = `${s.posX}% ${s.posY}%`;
+    return {
+      backgroundSize,
+      backgroundPosition,
+      backgroundRepeat: s.repeat
+    };
+  }
+
+  function currentBgAdjustStateFromElement(el){
+    const cs = window.getComputedStyle(el);
+    const sid = el.dataset && el.dataset.styleId ? el.dataset.styleId : '';
+    const mapStyle = sid && stylesMap[sid] ? stylesMap[sid] : {};
+    const fromSize = parseSizeState(mapStyle.backgroundSize || el.style.backgroundSize || cs.backgroundSize || 'cover');
+    const fromPos = parsePositionState(mapStyle.backgroundPosition || el.style.backgroundPosition || cs.backgroundPosition || '50% 50%');
+    const repeat = mapStyle.backgroundRepeat || el.style.backgroundRepeat || cs.backgroundRepeat || 'no-repeat';
+    return normalizeBgAdjustState({
+      sizeMode: fromSize.sizeMode,
+      sizeX: fromSize.sizeX,
+      sizeY: fromSize.sizeY,
+      posX: fromPos.posX,
+      posY: fromPos.posY,
+      repeat
+    });
+  }
+
+  function pushStateToAdjuster(){
+    if(!bgAdjustWindow || bgAdjustWindow.closed) return;
+    try {
+      bgAdjustWindow.postMessage({ type: 'hr-bg-adjuster-state', payload: bgImageAdjustState }, '*');
+    } catch(e){
+      console.warn('Unable to push state to image adjuster', e);
+    }
+  }
+
+  function openBgAdjuster(){
+    if(!selectedEls || selectedEls.length === 0){
+      alert('Select an element before opening image adjuster.');
+      return;
+    }
+    const anchor = selectedEls[0];
+    const cs = window.getComputedStyle(anchor);
+    const hasImage = (anchor.style.backgroundImage && anchor.style.backgroundImage !== 'none') || (cs.backgroundImage && cs.backgroundImage !== 'none') || ((anchor.dataset && anchor.dataset.styleId) && stylesMap[anchor.dataset.styleId] && stylesMap[anchor.dataset.styleId].backgroundImageUrl);
+    if(!hasImage){
+      alert('Set a background image URL first, then open the adjuster.');
+      return;
+    }
+    bgImageAdjustState = currentBgAdjustStateFromElement(anchor);
+    if(!bgAdjustWindow || bgAdjustWindow.closed){
+      bgAdjustWindow = window.open(BG_ADJUSTER_URL, 'hrBgAdjuster', 'width=560,height=640,resizable=yes,scrollbars=yes');
+    } else {
+      bgAdjustWindow.focus();
+    }
+    setTimeout(pushStateToAdjuster, 120);
+  }
+
   // load/save
   function loadStyles(){
     try{
@@ -113,7 +228,10 @@
       stylesMap = {};
     }
   }
-  function saveStyles(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(stylesMap, null, 2)); }
+  function saveStyles(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stylesMap, null, 2));
+    window.dispatchEvent(new Event('hrStylesChanged'));
+  }
 
   // export to file
  function exportStylesToFile(filename = 'styles.json') {
@@ -341,6 +459,8 @@ function importStylesFile(file, options = { overwrite: false }) {
       if(bgImg) bgImg.value = mapStyle.backgroundImageUrl || imageUrlFromCss(cssBg);
       if(bgImgOpacity) bgImgOpacity.value = String(mapStyle.backgroundImageOpacity !== undefined ? Number(mapStyle.backgroundImageOpacity) : parseImageOpacityFromCss(cssBg));
       updateOpacityLabel('bgImageOpacity', 'bgImageOpacityValue');
+      bgImageAdjustState = currentBgAdjustStateFromElement(el);
+      pushStateToAdjuster();
     }
     if(bt) bt.checked = (el.style.fontWeight || cs.fontWeight) >= 700 || el.style.fontWeight === 'bold';
     if(it) it.checked = (el.style.fontStyle || cs.fontStyle) === 'italic';
@@ -370,12 +490,13 @@ function importStylesFile(file, options = { overwrite: false }) {
     const imageUrl = bgImg ? (bgImg.value || '').trim() : '';
     if(imageUrl){
       const opacity = bgImgOpacity ? Number(bgImgOpacity.value) : 1;
+      const bgCfg = bgCssFromState(bgImageAdjustState);
       style.backgroundImageUrl = imageUrl;
       style.backgroundImageOpacity = opacity;
       style.backgroundImage = `url("${imageUrl}")`;
-      style.backgroundSize = 'cover';
-      style.backgroundRepeat = 'no-repeat';
-      style.backgroundPosition = 'center center';
+      style.backgroundSize = bgCfg.backgroundSize;
+      style.backgroundRepeat = bgCfg.backgroundRepeat;
+      style.backgroundPosition = bgCfg.backgroundPosition;
     } else {
       style.backgroundImageUrl = '';
       style.backgroundImageOpacity = 1;
@@ -383,6 +504,8 @@ function importStylesFile(file, options = { overwrite: false }) {
       style.backgroundSize = '';
       style.backgroundRepeat = '';
       style.backgroundPosition = '';
+      bgImageAdjustState = normalizeBgAdjustState({});
+      pushStateToAdjuster();
     }
     style.fontWeight = bt && bt.checked ? '700' : '400';
     style.fontStyle = it && it.checked ? 'italic' : 'normal';
@@ -392,10 +515,12 @@ function importStylesFile(file, options = { overwrite: false }) {
   function updateSelectedInfo(){
     const info = safeGet('selectedInfo');
     if(!info) return;
-    if(selectedEls.length === 0) info.textContent = 'No selection';
+    if(selectedEls.length === 0) info.textContent = 'Selected: none';
     else if(selectedEls.length === 1) {
       const el = selectedEls[0];
-      info.innerHTML = `Selected: &lt;${el.tagName.toLowerCase()}&gt; id=${el.dataset.styleId || ''}`;
+      const tag = el.tagName.toLowerCase();
+      const cls = el.className && typeof el.className === 'string' ? el.className.trim().split(/\s+/).filter(Boolean)[0] : '';
+      info.textContent = cls ? `Selected: ${tag}.${cls}` : `Selected: ${tag}`;
     } else {
       info.textContent = `Selected ${selectedEls.length} elements (multi-select)`;
     }
@@ -414,6 +539,7 @@ function importStylesFile(file, options = { overwrite: false }) {
     el.classList && el.classList.add('selected-outline');
     populateControlsFromElement(el);
     updateSelectedInfo();
+    pushStateToAdjuster();
   }
 
   function selectAllSameTag(el){
@@ -430,12 +556,14 @@ function importStylesFile(file, options = { overwrite: false }) {
     });
     populateControlsFromElement(selectedEls[0]);
     updateSelectedInfo();
+    pushStateToAdjuster();
   }
 
   function deselectAll(){
     clearSelectionVisuals();
     selectedEls = [];
     updateSelectedInfo();
+    pushStateToAdjuster();
   }
 
   function applyToSelected(){
@@ -504,13 +632,17 @@ function importStylesFile(file, options = { overwrite: false }) {
     saveStyles();
     if(selectedEls.length) populateControlsFromElement(selectedEls[0]);
     updateSelectedInfo();
+    pushStateToAdjuster();
   }
 
   function setEditMode(on){
     editMode = !!on;
     if(pagesContainer) pagesContainer.querySelectorAll('*').forEach(el => { if(el.nodeType===1) el.contentEditable = editMode ? 'true' : 'false'; });
+    document.body.classList.toggle('edit-mode', editMode);
     const btn = safeGet('toggleEdit');
-    if(btn) btn.textContent = editMode ? 'Exit Edit Mode' : 'Toggle Edit Mode';
+    if(btn) btn.textContent = editMode ? 'Exit Edit Mode' : 'Enter Edit Mode';
+    const status = safeGet('editModeStatus');
+    if(status) status.textContent = editMode ? 'Edit Mode On' : 'Edit Mode Off';
   }
 
   // observe dynamic content
@@ -566,6 +698,7 @@ function importStylesFile(file, options = { overwrite: false }) {
     const exportBtn = safeGet('exportStylesBtn') || safeGet('exportBtn');
     const importFileInput = safeGet('importStylesFile') || safeGet('importStylesFile');
     const toggleEditBtn = safeGet('toggleEdit');
+    const openBgAdjusterBtn = safeGet('openBgAdjusterBtn');
     const bgOpacity = safeGet('bgOpacity');
     const bgImageOpacity = safeGet('bgImageOpacity');
     const tableFillOpacity = safeGet('tableFillOpacity');
@@ -603,6 +736,20 @@ function importStylesFile(file, options = { overwrite: false }) {
     applyTableFillBtn && applyTableFillBtn.addEventListener('click', applyTableFillToSelected);
     resetStyleBtn && resetStyleBtn.addEventListener('click', resetSelected);
     toggleEditBtn && toggleEditBtn.addEventListener('click', () => setEditMode(!editMode));
+    openBgAdjusterBtn && openBgAdjusterBtn.addEventListener('click', openBgAdjuster);
+
+    window.addEventListener('message', (event) => {
+      const msg = event && event.data ? event.data : null;
+      if(!msg || typeof msg !== 'object') return;
+      if(msg.type === 'hr-bg-adjuster-ready') {
+        pushStateToAdjuster();
+        return;
+      }
+      if(msg.type === 'hr-bg-adjuster-update') {
+        bgImageAdjustState = normalizeBgAdjustState(msg.payload || {});
+        if(selectedEls.length) applyToSelected();
+      }
+    });
 
     // export/import wiring
     exportBtn && exportBtn.addEventListener('click', () => exportStylesToFile('styles.json'));
@@ -676,6 +823,7 @@ function importStylesFile(file, options = { overwrite: false }) {
       liveApplyTableFill();
     });
 
+    setEditMode(false);
     updateSelectedInfo();
 
     // When imports write to localStorage, they dispatch localStorageImported. Reload styles from storage then apply.

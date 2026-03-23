@@ -21,6 +21,215 @@ function makeStyleId(...parts) {
   return ['sid'].concat(parts.map(slugifyStylePart)).join('__');
 }
 
+const HEADER_FOOTER_KEY = 'hr_header_footer';
+const HEADER_FOOTER_POPUP_URL = 'assets/header-footer-settings.html';
+let headerFooterWindow = null;
+
+function defaultHeaderFooterSettings() {
+  return {
+    showPageNumber: true,
+    header: {
+      enabled: false,
+      height: 48,
+      transparent: true,
+      bgColor: '#ffffff',
+      bgOpacity: 1,
+      imageUrl: '',
+      imageOpacity: 1,
+      imageSizeMode: 'cover',
+      imageSizeX: 100,
+      imageSizeY: 100,
+      imagePosX: 50,
+      imagePosY: 50,
+      imageRepeat: 'no-repeat'
+    },
+    footer: {
+      enabled: false,
+      height: 48,
+      transparent: true,
+      bgColor: '#ffffff',
+      bgOpacity: 1,
+      imageUrl: '',
+      imageOpacity: 1,
+      imageSizeMode: 'cover',
+      imageSizeX: 100,
+      imageSizeY: 100,
+      imagePosX: 50,
+      imagePosY: 50,
+      imageRepeat: 'no-repeat'
+    }
+  };
+}
+
+function clampNum(value, min, max, fallback = min) {
+  const n = Number(value);
+  const v = Number.isFinite(n) ? n : fallback;
+  return Math.max(min, Math.min(max, v));
+}
+
+function hexToRgb(hex) {
+  const clean = String(hex || '').replace('#', '').trim();
+  if (clean.length === 3) {
+    return {
+      r: parseInt(clean[0] + clean[0], 16),
+      g: parseInt(clean[1] + clean[1], 16),
+      b: parseInt(clean[2] + clean[2], 16)
+    };
+  }
+  if (clean.length === 6) {
+    return {
+      r: parseInt(clean.slice(0, 2), 16),
+      g: parseInt(clean.slice(2, 4), 16),
+      b: parseInt(clean.slice(4, 6), 16)
+    };
+  }
+  return { r: 255, g: 255, b: 255 };
+}
+
+function colorToRgba(hex, opacity) {
+  const { r, g, b } = hexToRgb(hex);
+  const a = clampNum(opacity, 0, 1, 1);
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
+function normalizeSection(section) {
+  const src = section && typeof section === 'object' ? section : {};
+  const mode = ['cover', 'contain', 'custom'].includes(src.imageSizeMode) ? src.imageSizeMode : 'cover';
+  return {
+    enabled: !!src.enabled,
+    height: clampNum(src.height, 20, 220, 48),
+    transparent: !!src.transparent,
+    bgColor: src.bgColor || '#ffffff',
+    bgOpacity: clampNum(src.bgOpacity, 0, 1, 1),
+    imageUrl: String(src.imageUrl || '').trim(),
+    imageOpacity: clampNum(src.imageOpacity, 0, 1, 1),
+    imageSizeMode: mode,
+    imageSizeX: clampNum(src.imageSizeX, 10, 300, 100),
+    imageSizeY: clampNum(src.imageSizeY, 10, 300, 100),
+    imagePosX: clampNum(src.imagePosX, 0, 100, 50),
+    imagePosY: clampNum(src.imagePosY, 0, 100, 50),
+    imageRepeat: ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'].includes(src.imageRepeat) ? src.imageRepeat : 'no-repeat'
+  };
+}
+
+function normalizeHeaderFooterSettings(input) {
+  const src = input && typeof input === 'object' ? input : {};
+  return {
+    showPageNumber: src.showPageNumber !== false,
+    header: normalizeSection(src.header),
+    footer: normalizeSection(src.footer)
+  };
+}
+
+function loadHeaderFooterSettings() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(HEADER_FOOTER_KEY) || 'null');
+    return normalizeHeaderFooterSettings(parsed || defaultHeaderFooterSettings());
+  } catch (_) {
+    return normalizeHeaderFooterSettings(defaultHeaderFooterSettings());
+  }
+}
+
+function saveHeaderFooterSettings(cfg) {
+  const normalized = normalizeHeaderFooterSettings(cfg);
+  localStorage.setItem(HEADER_FOOTER_KEY, JSON.stringify(normalized));
+  window.dispatchEvent(new Event('hrLayoutChanged'));
+  return normalized;
+}
+
+function buildImageFromSectionCfg(section) {
+  if (!section.imageUrl) return '';
+  const alpha = clampNum(section.imageOpacity, 0, 1, 1);
+  if (alpha >= 0.999) return `url("${section.imageUrl}")`;
+  const overlay = (1 - alpha).toFixed(3);
+  return `linear-gradient(rgba(255, 255, 255, ${overlay}), rgba(255, 255, 255, ${overlay})), url("${section.imageUrl}")`;
+}
+
+function sectionStyleCfg(section) {
+  const size = section.imageSizeMode === 'custom' ? `${section.imageSizeX}% ${section.imageSizeY}%` : section.imageSizeMode;
+  return {
+    backgroundColor: section.transparent ? 'transparent' : colorToRgba(section.bgColor, section.bgOpacity),
+    backgroundImage: buildImageFromSectionCfg(section),
+    backgroundSize: size,
+    backgroundPosition: `${section.imagePosX}% ${section.imagePosY}%`,
+    backgroundRepeat: section.imageRepeat
+  };
+}
+
+function ensurePageSection(page, className, styleId, heightPx, styleCfg) {
+  let el = page.querySelector(`.${className}`);
+  if (!el) {
+    el = document.createElement('div');
+    el.className = className;
+    page.appendChild(el);
+  }
+  el.dataset.styleId = styleId;
+  el.style.height = `${heightPx}px`;
+  el.style.backgroundColor = styleCfg.backgroundColor;
+  el.style.backgroundImage = styleCfg.backgroundImage || '';
+  el.style.backgroundSize = styleCfg.backgroundSize;
+  el.style.backgroundPosition = styleCfg.backgroundPosition;
+  el.style.backgroundRepeat = styleCfg.backgroundRepeat;
+  return el;
+}
+
+function applyHeaderFooterToPage(page, pageIndex, settings) {
+  if (!page) return;
+  const cfg = normalizeHeaderFooterSettings(settings || loadHeaderFooterSettings());
+  const headerId = makeStyleId('page', pageIndex, 'header');
+  const footerId = makeStyleId('page', pageIndex, 'footer');
+  const pageNumberId = makeStyleId('page', pageIndex, 'footer', 'page-number');
+
+  const existingHeader = page.querySelector('.page-header');
+  if (!cfg.header.enabled) {
+    if (existingHeader) existingHeader.remove();
+  } else {
+    const headerStyle = sectionStyleCfg(cfg.header);
+    ensurePageSection(page, 'page-header', headerId, cfg.header.height, headerStyle);
+  }
+
+  const existingFooter = page.querySelector('.page-footer');
+  if (!cfg.footer.enabled) {
+    if (existingFooter) existingFooter.remove();
+  } else {
+    const footerStyle = sectionStyleCfg(cfg.footer);
+    const footer = ensurePageSection(page, 'page-footer', footerId, cfg.footer.height, footerStyle);
+    let num = footer.querySelector('.page-number');
+    if (!num) {
+      num = document.createElement('span');
+      num.className = 'page-number';
+      footer.appendChild(num);
+    }
+    num.dataset.styleId = pageNumberId;
+    num.textContent = `Page ${pageIndex + 1}`;
+    num.style.display = cfg.showPageNumber ? 'inline' : 'none';
+  }
+}
+
+function applyHeaderFooterToAllPages(settings) {
+  const cfg = normalizeHeaderFooterSettings(settings || loadHeaderFooterSettings());
+  const pages = Array.from(document.querySelectorAll('.a4-page'));
+  pages.forEach((page, idx) => applyHeaderFooterToPage(page, idx, cfg));
+}
+
+function pushHeaderFooterStateToPopup() {
+  if (!headerFooterWindow || headerFooterWindow.closed) return;
+  try {
+    headerFooterWindow.postMessage({ type: 'hr-header-footer-state', payload: loadHeaderFooterSettings() }, '*');
+  } catch (e) {
+    console.warn('Unable to sync header/footer popup state', e);
+  }
+}
+
+function openHeaderFooterSettingsPopup() {
+  if (!headerFooterWindow || headerFooterWindow.closed) {
+    headerFooterWindow = window.open(HEADER_FOOTER_POPUP_URL, 'hrHeaderFooterSettings', 'width=820,height=760,resizable=yes,scrollbars=yes');
+  } else {
+    headerFooterWindow.focus();
+  }
+  setTimeout(pushHeaderFooterStateToPopup, 120);
+}
+
 // Load CSV file
 fetch("holistic.csv")
   .then(response => response.text())
@@ -42,6 +251,8 @@ function buildPages(grouped) {
   try { savedLayout = JSON.parse(localStorage.getItem("domainLayout")) || {}; } catch (_) { savedLayout = {}; }
   const domains = Object.keys(grouped);
   const perPage = 6;
+  const headerFooterCfg = loadHeaderFooterSettings();
+  const headerTopOffset = headerFooterCfg.header.enabled ? Math.max(20, Number(headerFooterCfg.header.height || 0) + 8) : 20;
 
   for (let i=0; i<domains.length; i+=perPage) {
     const pageIndex = Math.floor(i / perPage);
@@ -69,7 +280,7 @@ function buildPages(grouped) {
 
       const col = idx % 2;
       const row = Math.floor(idx/2);
-      const defaultTop = 20 + row*95;
+      const defaultTop = headerTopOffset + row*95;
       const defaultLeft = 20 + col*100;
 
       if (savedLayout[domain]) {
@@ -130,6 +341,8 @@ function buildPages(grouped) {
       attachDragResize(domainDiv, dragHandle, topHandle, bottomHandle, savedLayout, page, hGuide, vGuide);
     });
   }
+
+  applyHeaderFooterToAllPages(headerFooterCfg);
 }
 
 function attachDragResize(domainDiv, dragHandle, topHandle, bottomHandle, savedLayout, page, hGuide, vGuide) {
@@ -230,12 +443,14 @@ function saveLayout(el, savedLayout){
     height:el.offsetHeight
   };
   localStorage.setItem("domainLayout",JSON.stringify(savedLayout));
+  window.dispatchEvent(new Event('hrLayoutChanged'));
 }
 
 // Reset button
 document.getElementById("resetBtn").addEventListener("click", ()=>{
   localStorage.removeItem("domainLayout");
   localStorage.removeItem("hr_styles");
+  localStorage.removeItem("hr_header_footer");
   location.reload();
 });
 
@@ -247,6 +462,7 @@ document.getElementById("printBtn").addEventListener("click", ()=>{
 // Combined export/import utilities with hint matching
 
 window.hrIO = window.hrIO || {};
+window.hrHistory = window.hrHistory || {};
 
 /* Helpers for hint system */
 
@@ -282,6 +498,127 @@ function parseImageOpacityFromCss(bgImage) {
   if (!m) return 1;
   const overlay = Math.max(0, Math.min(1, Number(m[1])));
   return Math.max(0, Math.min(1, 1 - overlay));
+}
+
+function jsonEqual(a, b) {
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+
+function snapshotCurrentState() {
+  const domainLayout = collectCurrentLayout();
+  const { stylesMap } = collectCurrentStylesAndHints();
+  const headerFooter = loadHeaderFooterSettings();
+  return { domainLayout, hr_styles: stylesMap, header_footer: headerFooter };
+}
+
+function applyHistorySnapshot(snapshot) {
+  if (!snapshot || typeof snapshot !== 'object') return;
+  const layout = snapshot.domainLayout && typeof snapshot.domainLayout === 'object' ? snapshot.domainLayout : {};
+  const styles = snapshot.hr_styles && typeof snapshot.hr_styles === 'object' ? snapshot.hr_styles : {};
+  const headerFooter = snapshot.header_footer && typeof snapshot.header_footer === 'object'
+    ? normalizeHeaderFooterSettings(snapshot.header_footer)
+    : loadHeaderFooterSettings();
+
+  localStorage.setItem('domainLayout', JSON.stringify(layout));
+  localStorage.setItem('hr_styles', JSON.stringify(styles));
+  localStorage.setItem(HEADER_FOOTER_KEY, JSON.stringify(headerFooter));
+  applyLayoutToDOM(layout);
+  applyHeaderFooterToAllPages(headerFooter);
+
+  try {
+    if (window.hrEditor && typeof window.hrEditor.importFromObject === 'function') {
+      window.hrEditor.importFromObject(styles, { overwrite: true });
+    } else {
+      window.dispatchEvent(new Event('localStorageImported'));
+    }
+  } catch (e) {
+    console.warn('applyHistorySnapshot: style apply failed', e);
+    window.dispatchEvent(new Event('localStorageImported'));
+  }
+}
+
+function initHistoryManager(maxSteps = 10) {
+  const state = {
+    undo: [],
+    redo: [],
+    max: maxSteps,
+    isApplying: false
+  };
+
+  function updateButtons() {
+    const undoBtn = document.getElementById('undoBtn');
+    const redoBtn = document.getElementById('redoBtn');
+    if (undoBtn) undoBtn.disabled = state.undo.length <= 1;
+    if (redoBtn) redoBtn.disabled = state.redo.length === 0;
+  }
+
+  function capture() {
+    if (state.isApplying) return;
+    const snap = snapshotCurrentState();
+    if (!state.undo.length || !jsonEqual(state.undo[state.undo.length - 1], snap)) {
+      state.undo.push(snap);
+      if (state.undo.length > state.max) state.undo.shift();
+      state.redo = [];
+    }
+    updateButtons();
+  }
+
+  function undo() {
+    if (state.undo.length <= 1) return;
+    const current = state.undo.pop();
+    state.redo.push(current);
+    const previous = state.undo[state.undo.length - 1];
+    state.isApplying = true;
+    applyHistorySnapshot(previous);
+    state.isApplying = false;
+    updateButtons();
+  }
+
+  function redo() {
+    if (!state.redo.length) return;
+    const next = state.redo.pop();
+    state.undo.push(next);
+    if (state.undo.length > state.max) state.undo.shift();
+    state.isApplying = true;
+    applyHistorySnapshot(next);
+    state.isApplying = false;
+    updateButtons();
+  }
+
+  window.hrHistory.capture = capture;
+  window.hrHistory.undo = undo;
+  window.hrHistory.redo = redo;
+  window.hrHistory.isApplying = () => state.isApplying;
+
+  const undoBtn = document.getElementById('undoBtn');
+  const redoBtn = document.getElementById('redoBtn');
+  if (undoBtn) undoBtn.addEventListener('click', undo);
+  if (redoBtn) redoBtn.addEventListener('click', redo);
+
+  document.addEventListener('keydown', (e) => {
+    if (!(e.ctrlKey || e.metaKey)) return;
+    const k = (e.key || '').toLowerCase();
+    if (k === 'z' && !e.shiftKey) {
+      e.preventDefault();
+      undo();
+    }
+    if (k === 'y' || (k === 'z' && e.shiftKey)) {
+      e.preventDefault();
+      redo();
+    }
+  });
+
+  // Capture once pages/styles are built; retry briefly if content is not ready.
+  let tries = 0;
+  const t = setInterval(() => {
+    tries++;
+    if (document.querySelector('.domain') || tries > 20) {
+      capture();
+      clearInterval(t);
+    }
+  }, 120);
+
+  updateButtons();
 }
 
 /**
@@ -554,21 +891,26 @@ function saveLayoutToLocalStorage() {
   const { stylesMap } = collectCurrentStylesAndHints();
   localStorage.setItem('hr_styles', JSON.stringify(stylesMap, null, 2));
 
+  const headerFooter = loadHeaderFooterSettings();
+  localStorage.setItem(HEADER_FOOTER_KEY, JSON.stringify(headerFooter, null, 2));
+
   window.dispatchEvent(new Event('localStorageImported'));
-  alert('Saved current layout and styles to localStorage.');
+  alert('Saved current layout, styles, header and footer settings to localStorage.');
 }
 
 /**
  * File -> Export layout
- * Download final JSON snapshot containing current domainLayout and hr_styles only.
+ * Download final JSON snapshot containing current domainLayout, hr_styles and header_footer.
  */
 function exportCombined(filename = 'layout-styles.json') {
   try {
     const domainLayout = collectCurrentLayout();
     const { stylesMap } = collectCurrentStylesAndHints();
+    const headerFooter = loadHeaderFooterSettings();
     const out = {
       domainLayout: domainLayout,
-      hr_styles: stylesMap
+      hr_styles: stylesMap,
+      header_footer: headerFooter
     };
 
     const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
@@ -631,9 +973,15 @@ function importCombinedFile(file, options = { overwriteStyles: true }) {
         stylesFromFile = parsed.hr_styles || {};
       }
 
+      // 2b) header/footer settings
+      if (parsed.hasOwnProperty('header_footer')) {
+        const cfg = saveHeaderFooterSettings(parsed.header_footer || {});
+        applyHeaderFooterToAllPages(cfg);
+      }
+
       // 3) Reassign style IDs so editor mapping works.
       const hints = parsed.hr_styles_hints || {};
-      const normalizedStyles = normalizeStylesForCurrentDom(stylesFromFile, hints);
+      let normalizedStyles = normalizeStylesForCurrentDom(stylesFromFile, hints);
 
       if (parsed.hasOwnProperty('hr_styles')) {
         if (options.overwriteStyles) {
@@ -717,10 +1065,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const exportLayoutBtn = document.getElementById('exportLayoutBtn');
   const importLayoutBtn = document.getElementById('importLayoutBtn');
   const importLayoutFile = document.getElementById('importLayoutFile');
+  const headerFooterBtn = document.getElementById('headerFooterBtn');
+
+  initHistoryManager(10);
+
+  window.addEventListener('hrLayoutChanged', () => {
+    if (window.hrHistory && typeof window.hrHistory.capture === 'function') {
+      window.hrHistory.capture();
+    }
+  });
+  window.addEventListener('hrStylesChanged', () => {
+    if (window.hrHistory && typeof window.hrHistory.capture === 'function') {
+      window.hrHistory.capture();
+    }
+  });
 
   if (saveLayoutBtn) {
     saveLayoutBtn.addEventListener('click', () => {
       saveLayoutToLocalStorage();
+      if (window.hrHistory && typeof window.hrHistory.capture === 'function') window.hrHistory.capture();
       closeAllMenus();
     });
   }
@@ -739,9 +1102,31 @@ document.addEventListener('DOMContentLoaded', () => {
       if (f) {
         const overwrite = confirm('Overwrite existing saved styles with the imported file? OK = overwrite, Cancel = merge.');
         importCombinedFile(f, { overwriteStyles: overwrite });
+        if (window.hrHistory && typeof window.hrHistory.capture === 'function') window.hrHistory.capture();
       }
       e.target.value = '';
       closeAllMenus();
     });
   }
+
+  if (headerFooterBtn) {
+    headerFooterBtn.addEventListener('click', () => {
+      openHeaderFooterSettingsPopup();
+      closeAllMenus();
+    });
+  }
+
+  window.addEventListener('message', (event) => {
+    const msg = event && event.data ? event.data : null;
+    if (!msg || typeof msg !== 'object') return;
+    if (msg.type === 'hr-header-footer-ready') {
+      pushHeaderFooterStateToPopup();
+      return;
+    }
+    if (msg.type === 'hr-header-footer-update') {
+      const cfg = saveHeaderFooterSettings(msg.payload || {});
+      applyHeaderFooterToAllPages(cfg);
+      if (window.hrHistory && typeof window.hrHistory.capture === 'function') window.hrHistory.capture();
+    }
+  });
 });

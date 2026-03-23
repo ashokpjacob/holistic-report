@@ -1,43 +1,43 @@
 {
   "domainLayout": {
     "Physical Development": {
-      "top": 20,
-      "left": 20,
+      "top": 106,
+      "left": 12,
       "height": 253
     },
     "Social-Emotional and Ethical Development": {
-      "top": 21,
-      "left": 395,
+      "top": 114,
+      "left": 390,
       "height": 150
     },
     "Cognitive Development": {
-      "top": 279,
-      "left": 21,
+      "top": 366,
+      "left": 13,
       "height": 434
     },
     "Language & Literacy Development": {
-      "top": 186,
-      "left": 395,
-      "height": 287
+      "top": 271,
+      "left": 392,
+      "height": 418
     },
     "ICT": {
-      "top": 641,
-      "left": 401,
+      "top": 697,
+      "left": 392,
       "height": 150
     },
     "Art": {
-      "top": 728,
-      "left": 24,
+      "top": 813,
+      "left": 12,
       "height": 150
     },
     "Dance": {
-      "top": 20,
-      "left": 20,
+      "top": 115,
+      "left": 24,
       "height": 150
     },
     "Music": {
-      "top": 24,
-      "left": 402,
+      "top": 117,
+      "left": 401,
       "height": 150
     }
   },
@@ -52,7 +52,7 @@
       "backgroundImage": "url(\"https://png.pngtree.com/thumb_back/fh260/background/20250205/pngtree-soft-pastel-floral-design-light-blue-background-image_16896113.jpg\")",
       "backgroundSize": "cover",
       "backgroundRepeat": "no-repeat",
-      "backgroundPosition": "center center",
+      "backgroundPosition": "100% 50%",
       "fontWeight": "400",
       "fontStyle": "normal"
     },
@@ -69,6 +69,14 @@
       "backgroundPosition": "center center",
       "fontWeight": "400",
       "fontStyle": "normal"
+    },
+    "sid__page__item__header": {
+      "backgroundImageUrl": "https://png.pngtree.com/png-vector/20211011/ourmid/pngtree-school-logo-png-image_3977360.png",
+      "backgroundImageOpacity": 1,
+      "backgroundImage": "url(\"https://png.pngtree.com/png-vector/20211011/ourmid/pngtree-school-logo-png-image_3977360.png\")",
+      "backgroundSize": "14% 92%",
+      "backgroundRepeat": "no-repeat",
+      "backgroundPosition": "4% 50%"
     },
     "sid__page__1": {
       "fontFamily": "",
@@ -113,6 +121,47 @@
       "backgroundColor": "transparent",
       "fontWeight": "400",
       "fontStyle": "normal"
+    },
+    "sid__page__1__header": {
+      "backgroundImageUrl": "https://png.pngtree.com/png-vector/20211011/ourmid/pngtree-school-logo-png-image_3977360.png",
+      "backgroundImageOpacity": 1,
+      "backgroundImage": "url(\"https://png.pngtree.com/png-vector/20211011/ourmid/pngtree-school-logo-png-image_3977360.png\")",
+      "backgroundSize": "14% 92%",
+      "backgroundRepeat": "no-repeat",
+      "backgroundPosition": "4% 50%"
+    }
+  },
+  "header_footer": {
+    "showPageNumber": true,
+    "header": {
+      "enabled": true,
+      "height": 100,
+      "transparent": true,
+      "bgColor": "#ffffff",
+      "bgOpacity": 1,
+      "imageUrl": "https://png.pngtree.com/png-vector/20211011/ourmid/pngtree-school-logo-png-image_3977360.png",
+      "imageOpacity": 1,
+      "imageSizeMode": "custom",
+      "imageSizeX": 14,
+      "imageSizeY": 92,
+      "imagePosX": 4,
+      "imagePosY": 50,
+      "imageRepeat": "no-repeat"
+    },
+    "footer": {
+      "enabled": true,
+      "height": 48,
+      "transparent": true,
+      "bgColor": "#ffffff",
+      "bgOpacity": 1,
+      "imageUrl": "",
+      "imageOpacity": 1,
+      "imageSizeMode": "cover",
+      "imageSizeX": 100,
+      "imageSizeY": 100,
+      "imagePosX": 50,
+      "imagePosY": 50,
+      "imageRepeat": "no-repeat"
     }
   }
 }

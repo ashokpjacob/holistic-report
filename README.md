@@ -1,173 +1,226 @@
 # Holistic Report Card Generator
 
-A web-based report card designer aligned with **CBSE NEP 2020**. It dynamically loads competencies from a CSV file, organizes them by domain and subject across A4 pages, and gives teachers a full drag-resize-style editor to build and export print-ready report cards — no server or build step required.
+A browser-based holistic report card editor aligned with CBSE NEP 2020.
+It loads competency data from CSV, builds multi-page A4 report cards, and provides drag/resize/styling controls with export/import and print support.
+
+No backend and no build step are required.
 
 ---
 
-## 🌐 Live Demo
+## Live Demo
 
-👉 [holistic-report on GitHub Pages](https://ashokpjacob.github.io/holistic-report)
+[holistic-report on GitHub Pages](https://ashokpjacob.github.io/holistic-report)
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ```bash
 git clone https://github.com/ashokpjacob/holistic-report.git
 cd holistic-report
-# Open index.html directly in any modern browser — no build step needed
 ```
 
-The app reads `holistic.csv` from the same folder automatically on load.
+Open `index.html` in a modern browser.
+The app automatically reads `holistic.csv` from the project root.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
-```
+```text
 holistic-report/
-├── index.html          # Main application shell + style sidebar
-├── script.js           # Page builder, drag/resize, layout save/export/import
-├── styles.css          # A4 page, domain block, print styles
-├── holistic.csv        # Competency data (edit this to customise content)
-├── layout-styles.json  # Saved layout snapshot (export/import file)
+├── index.html                      # Main app shell (menus, sidebar, pages container)
+├── script.js                       # Page builder, drag/resize, layout save/export/import, undo/redo, header/footer
+├── styles.css                      # Report page styles, guides, print rules, header/footer styles
+├── holistic.csv                    # Input data source
+├── layout-styles.json              # Example exported layout snapshot
 ├── assets/
-│   ├── index.html      # (assets sub-page)
+│   ├── header-footer-settings.html # Popup editor for header/footer configuration
+│   ├── image-adjuster.html         # Popup editor for background image sizing/position
 │   ├── css/
-│   │   └── editor.css  # Sidebar and app-shell styles
+│   │   └── editor.css              # App-shell + sidebar UI styles
 │   └── js/
-│       └── editor.js   # Style sidebar logic, apply/reset, import/export
+│       └── editor.js               # Style editor behavior, image adjuster messaging, style persistence
 └── README.md
 ```
 
 ---
 
-## 📄 CSV Data Format
+## CSV Data Format
 
-Edit `holistic.csv` to add your own domains, subjects, and competencies.
+Edit `holistic.csv` to add/update report content.
 
 | Column | Description |
 |---|---|
-| `Domain` | Top-level grouping (e.g. *Cognitive Development*) |
-| `Subject` | Subject within the domain (e.g. *Maths*) — can be blank |
-| `Competency` | Skill name (e.g. *Number Sense*) |
-| `Description` | Full competency description shown in the report card |
+| `Domain` | Top-level grouping |
+| `Subject` | Subject under a domain (can be blank) |
+| `Competency` | Competency label |
+| `Description` | Competency details |
 
-Each unique Domain becomes a draggable block. Subjects and competencies are rendered as rows inside that block's table.
+Each Domain becomes a draggable block with subject tables.
 
 ---
 
-## ✨ Features
+## Features
 
-### Content
-- **CSV-driven** — all domains, subjects and competencies come from `holistic.csv`; no code changes needed to update content
-- **Multi-page A4 layout** — content is automatically distributed across pages; each page is exactly 210 × 297 mm
+### Core Editor
 
-### Layout Editor
-- **Drag & drop** — grab the dark handle bar at the top of any domain block to reposition it freely on the page
-- **Resize** — drag the top or bottom resize handle to adjust block height
-- **Snap guides** — red alignment guides appear when a block is near the horizontal or vertical centre of the page
-- **Edit Mode toggle** — the "Toggle Edit Mode" button in the toolbar enables/disables drag and resize so you can scroll freely when not editing
+- CSV-driven report generation from `holistic.csv`
+- Multi-page A4 layout generation
+- Drag and vertical resize for each domain block
+- Snap guides for alignment
+- Stable deterministic style IDs for reliable re-import
 
-### Style Editor (left sidebar)
+### Modern UI
 
-Click any element on the page to select it, then use the sidebar controls:
+- App header with File and Edit menus
+- Edit mode status chip
+- Sidebar style panels (Typography, Background, Table Fill)
+- Selection chip showing current target element
 
-| Control | What it does |
-|---|---|
-| **Font** | Choose from System UI, Arial, Georgia, Times New Roman, Courier New |
-| **Size (px)** | Set font size |
-| **Color** | Text/foreground colour picker |
-| **Background color** | Solid background colour with **Transparent** checkbox and **Opacity** slider (0–1) |
-| **Background image URL** | Paste any image URL; the **Image opacity** slider (0–1) dims the image behind content |
-| **Table fill color** | Fill colour for table cells, with **Transparent** checkbox and **Opacity** slider; applied automatically on change |
-| **Bold / Italic** | Toggle text weight and style |
-| **Apply** | Commit the current sidebar values to the selected element |
-| **Reset** | Remove all custom styles from the selected element |
+### Style Controls
 
-Styles are attached to elements by stable, deterministic IDs (e.g. `sid__page__0__domain__maths__subject__0__number-sense__row__0__competency`) so they survive page reload.
+- Font family, size, color, bold, italic
+- Background color with transparency and opacity
+- Background image URL with image opacity
+- Table fill color with transparency and opacity (auto-apply)
+
+### Background Image Adjuster Popup
+
+From the sidebar, use **Adjust Image Size/Position** to open `assets/image-adjuster.html`.
+
+Supported controls:
+
+- Size mode: `cover`, `contain`, `custom %`
+- Custom width and height percentages
+- Position X and Y percentages
+- Repeat mode: `no-repeat`, `repeat`, `repeat-x`, `repeat-y`
+
+Changes apply live to the selected element and are saved into layout export.
+
+### Header/Footer Popup
+
+From **Edit -> Header / Footer...**, open `assets/header-footer-settings.html`.
+
+Supported controls:
+
+- Enable/disable header
+- Enable/disable footer
+- Header and footer height
+- Transparent option for each
+- Background color and opacity for each
+- Optional background image URL for each
+- Image opacity for each
+- Image size/position/repeat controls for each
+- Footer page number toggle
+
+Header/footer settings are applied live across all report pages and stored with layout export/import.
+
+### Undo/Redo (10-step)
+
+- Header buttons: **Undo** and **Redo**
+- Keyboard: `Ctrl+Z`, `Ctrl+Y`, `Ctrl+Shift+Z`
+- Tracks up to 10 recent edits
+- Covers layout moves/resizes, style changes, and header/footer changes
 
 ### File Menu
 
 | Item | Description |
 |---|---|
-| **Save layout** | Persists current positions and styles to `localStorage` (survives reload without downloading anything) |
-| **Export layout (download)** | Downloads `layout-styles.json` — a snapshot of all positions and styles |
-| **Import layout (load file)** | Load a previously exported `.json` file; choose to **overwrite** or **merge** with current styles |
-| **Print Report** | Opens the browser print dialog; sidebar and toolbar are hidden automatically |
+| Save layout | Saves current layout + styles + header/footer to localStorage |
+| Export layout (download) | Downloads `layout-styles.json` with all current settings |
+| Import layout (load file) | Imports previously exported JSON (overwrite or merge styles) |
+| Print Report | Opens browser print dialog for clean A4 output |
 
 ### Edit Menu
 
 | Item | Description |
 |---|---|
-| **Reset Layout** | Clears all saved positions **and** styles from `localStorage` and reloads the page to a blank slate |
+| Header / Footer... | Opens header/footer popup editor |
+| Reset Layout | Clears saved layout, styles, and header/footer state, then reloads |
 
 ---
 
-## 💾 Layout File (`layout-styles.json`)
+## Exported Layout JSON
 
-The exported JSON contains two sections:
+`layout-styles.json` now includes three top-level sections:
 
 ```json
 {
   "domainLayout": {
-    "Domain Name": { "left": "10mm", "top": "20mm", "height": "80px" }
+    "Domain Name": { "top": 120, "left": 20, "height": 150 }
   },
   "hr_styles": {
-    "sid__page__0__domain__maths": {
-      "backgroundColor": "#e8f0fe",
-      "backgroundImage": "none",
-      "backgroundImageUrl": "",
-      "backgroundImageOpacity": 1,
+    "sid__page__0__domain__language-literacy-development": {
       "fontSize": "13px",
-      "fontFamily": "Arial, Helvetica, sans-serif",
-      "color": "#222",
-      "fontWeight": "bold"
+      "color": "#222222",
+      "backgroundImageUrl": "https://example.com/bg.png",
+      "backgroundImageOpacity": 0.8,
+      "backgroundSize": "120% 100%",
+      "backgroundPosition": "50% 50%",
+      "backgroundRepeat": "no-repeat"
+    }
+  },
+  "header_footer": {
+    "showPageNumber": true,
+    "header": {
+      "enabled": true,
+      "height": 48,
+      "transparent": false,
+      "bgColor": "#ffffff",
+      "bgOpacity": 1,
+      "imageUrl": "",
+      "imageOpacity": 1,
+      "imageSizeMode": "cover",
+      "imageSizeX": 100,
+      "imageSizeY": 100,
+      "imagePosX": 50,
+      "imagePosY": 50,
+      "imageRepeat": "no-repeat"
+    },
+    "footer": {
+      "enabled": true,
+      "height": 48,
+      "transparent": true,
+      "bgColor": "#ffffff",
+      "bgOpacity": 1,
+      "imageUrl": "",
+      "imageOpacity": 1,
+      "imageSizeMode": "cover",
+      "imageSizeX": 100,
+      "imageSizeY": 100,
+      "imagePosX": 50,
+      "imagePosY": 50,
+      "imageRepeat": "no-repeat"
     }
   }
 }
 ```
 
-- **`domainLayout`** — pixel/mm positions of every domain block per page
-- **`hr_styles`** — all visual styles keyed by stable element ID
+---
 
-Import this file on any machine to reproduce the exact layout and styling.
+## Printing
+
+Use **File -> Print Report**.
+
+- A4 print sizing is enforced
+- Editor UI is hidden for print
+- Report pages print with clean page breaks
+- Works with "Save as PDF" in browser print dialogs
 
 ---
 
-## 🖨 Printing
+## Browser Support
 
-Use **File → Print Report**. The browser print dialog opens with:
-- A4 paper size pre-set via `@page { size: A4; margin: 0; }`
-- Sidebar, toolbar, and menu bar hidden via `@media print`
-- Each page has a `page-break-after: always` so pages don't bleed into each other
-- "Save as PDF" in the print dialog produces a clean PDF
+Tested with modern desktop browsers:
 
----
-
-## 🔧 Customisation
-
-### Change the competency data
-Edit `holistic.csv`. Each row is one competency. Add new domains/subjects freely — the layout auto-adjusts.
-
-### Add a background image to a page or domain block
-1. Enable Edit Mode
-2. Click the page or domain block
-3. Paste an image URL into **Background image URL** in the sidebar
-4. Adjust **Image opacity** as needed
-5. Click **Apply**, then **File → Save layout** or **Export layout**
-
-### Use a different colour scheme
-Select any element, set colours via the sidebar, and export the layout file. Share that file with colleagues to distribute the design.
+- Chrome
+- Edge
+- Firefox
+- Safari
 
 ---
 
-## 🌐 Browser Support
-
-Works in all modern browsers (Chrome, Edge, Firefox, Safari). No internet connection required after the page loads (images loaded from external URLs obviously need connectivity).
-
----
-
-## 📝 License
+## License
 
 See [LICENSE](LICENSE).

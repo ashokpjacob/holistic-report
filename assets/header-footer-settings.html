@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Header/Footer Settings</title>
+  <style>
+    :root {
+      --ink: #1c3557;
+      --muted: #5b6f8a;
+      --accent: #1f6feb;
+      --panel: #ffffff;
+      --edge: #d7e1ef;
+      --bg: linear-gradient(140deg, #f7fbff 0%, #edf4ff 60%, #fff6e7 100%);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 14px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--edge);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 10px 24px rgba(23, 47, 79, 0.12);
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    h1 { margin: 0 0 6px; font-size: 18px; }
+    p { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+    .section {
+      border: 1px solid #dce6f4;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #fff;
+    }
+    .section h2 { margin: 0 0 8px; font-size: 15px; }
+    .row { margin-bottom: 8px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    label { display: block; font-size: 13px; margin-bottom: 4px; }
+    input[type="url"], input[type="color"], input[type="range"], input[type="number"], select { width: 100%; }
+    .inline { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .inline label { margin: 0; }
+    .value { font-weight: 700; color: #173e7a; }
+    .actions { display: flex; gap: 8px; margin-top: 10px; }
+    button {
+      border: 1px solid #b8c8df;
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #fff;
+      color: #2f4563;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+    }
+    button.primary { border-color: var(--accent); background: var(--accent); color: #fff; }
+    .muted { color: var(--muted); font-size: 12px; }
+    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Header and Footer</h1>
+    <p>Enable/disable sections, set height, transparency, background color/image, and page number.</p>
+
+    <div class="section">
+      <h2>Global</h2>
+      <div class="inline">
+        <input id="showPageNumber" type="checkbox" />
+        <label for="showPageNumber">Show page number in footer</label>
+      </div>
+    </div>
+
+    <div class="section" id="headerSection">
+      <h2>Header</h2>
+      <div class="inline">
+        <input id="headerEnabled" type="checkbox" />
+        <label for="headerEnabled">Enable header</label>
+      </div>
+      <div class="grid">
+        <div class="row">
+          <label for="headerHeight">Height (px)</label>
+          <input id="headerHeight" type="number" min="20" max="220" step="1" value="48" />
+        </div>
+        <div class="row">
+          <label for="headerBgColor">Background color</label>
+          <input id="headerBgColor" type="color" value="#ffffff" />
+        </div>
+      </div>
+      <div class="inline">
+        <input id="headerTransparent" type="checkbox" />
+        <label for="headerTransparent">Transparent</label>
+      </div>
+      <div class="row">
+        <label for="headerBgOpacity">Background opacity <span id="headerBgOpacityValue" class="value">1.00</span></label>
+        <input id="headerBgOpacity" type="range" min="0" max="1" step="0.01" value="1" />
+      </div>
+      <div class="row">
+        <label for="headerImageUrl">Image URL</label>
+        <input id="headerImageUrl" type="url" placeholder="https://example.com/header.png" />
+      </div>
+      <div class="row">
+        <label for="headerImageOpacity">Image opacity <span id="headerImageOpacityValue" class="value">1.00</span></label>
+        <input id="headerImageOpacity" type="range" min="0" max="1" step="0.01" value="1" />
+      </div>
+      <div class="grid">
+        <div class="row">
+          <label for="headerSizeMode">Image size</label>
+          <select id="headerSizeMode">
+            <option value="cover">Cover</option>
+            <option value="contain">Contain</option>
+            <option value="custom">Custom (%)</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="headerRepeat">Image repeat</label>
+          <select id="headerRepeat">
+            <option value="no-repeat">No repeat</option>
+            <option value="repeat">Repeat</option>
+            <option value="repeat-x">Repeat X</option>
+            <option value="repeat-y">Repeat Y</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid" id="headerCustomSizeBlock" style="display:none;">
+        <div class="row">
+          <label for="headerSizeX">Width <span id="headerSizeXValue" class="value">100%</span></label>
+          <input id="headerSizeX" type="range" min="10" max="300" step="1" value="100" />
+        </div>
+        <div class="row">
+          <label for="headerSizeY">Height <span id="headerSizeYValue" class="value">100%</span></label>
+          <input id="headerSizeY" type="range" min="10" max="300" step="1" value="100" />
+        </div>
+      </div>
+      <div class="grid">
+        <div class="row">
+          <label for="headerPosX">Position X <span id="headerPosXValue" class="value">50%</span></label>
+          <input id="headerPosX" type="range" min="0" max="100" step="1" value="50" />
+        </div>
+        <div class="row">
+          <label for="headerPosY">Position Y <span id="headerPosYValue" class="value">50%</span></label>
+          <input id="headerPosY" type="range" min="0" max="100" step="1" value="50" />
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="footerSection">
+      <h2>Footer</h2>
+      <div class="inline">
+        <input id="footerEnabled" type="checkbox" />
+        <label for="footerEnabled">Enable footer</label>
+      </div>
+      <div class="grid">
+        <div class="row">
+          <label for="footerHeight">Height (px)</label>
+          <input id="footerHeight" type="number" min="20" max="220" step="1" value="48" />
+        </div>
+        <div class="row">
+          <label for="footerBgColor">Background color</label>
+          <input id="footerBgColor" type="color" value="#ffffff" />
+        </div>
+      </div>
+      <div class="inline">
+        <input id="footerTransparent" type="checkbox" />
+        <label for="footerTransparent">Transparent</label>
+      </div>
+      <div class="row">
+        <label for="footerBgOpacity">Background opacity <span id="footerBgOpacityValue" class="value">1.00</span></label>
+        <input id="footerBgOpacity" type="range" min="0" max="1" step="0.01" value="1" />
+      </div>
+      <div class="row">
+        <label for="footerImageUrl">Image URL</label>
+        <input id="footerImageUrl" type="url" placeholder="https://example.com/footer.png" />
+      </div>
+      <div class="row">
+        <label for="footerImageOpacity">Image opacity <span id="footerImageOpacityValue" class="value">1.00</span></label>
+        <input id="footerImageOpacity" type="range" min="0" max="1" step="0.01" value="1" />
+      </div>
+      <div class="grid">
+        <div class="row">
+          <label for="footerSizeMode">Image size</label>
+          <select id="footerSizeMode">
+            <option value="cover">Cover</option>
+            <option value="contain">Contain</option>
+            <option value="custom">Custom (%)</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="footerRepeat">Image repeat</label>
+          <select id="footerRepeat">
+            <option value="no-repeat">No repeat</option>
+            <option value="repeat">Repeat</option>
+            <option value="repeat-x">Repeat X</option>
+            <option value="repeat-y">Repeat Y</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid" id="footerCustomSizeBlock" style="display:none;">
+        <div class="row">
+          <label for="footerSizeX">Width <span id="footerSizeXValue" class="value">100%</span></label>
+          <input id="footerSizeX" type="range" min="10" max="300" step="1" value="100" />
+        </div>
+        <div class="row">
+          <label for="footerSizeY">Height <span id="footerSizeYValue" class="value">100%</span></label>
+          <input id="footerSizeY" type="range" min="10" max="300" step="1" value="100" />
+        </div>
+      </div>
+      <div class="grid">
+        <div class="row">
+          <label for="footerPosX">Position X <span id="footerPosXValue" class="value">50%</span></label>
+          <input id="footerPosX" type="range" min="0" max="100" step="1" value="50" />
+        </div>
+        <div class="row">
+          <label for="footerPosY">Position Y <span id="footerPosYValue" class="value">50%</span></label>
+          <input id="footerPosY" type="range" min="0" max="100" step="1" value="50" />
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="resetBtn">Reset Defaults</button>
+      <button id="closeBtn" class="primary">Done</button>
+    </div>
+    <div class="muted">Changes are applied live and saved with layout export/import.</div>
+  </div>
+
+  <script>
+    const controls = {
+      showPageNumber: document.getElementById('showPageNumber'),
+      headerEnabled: document.getElementById('headerEnabled'),
+      headerHeight: document.getElementById('headerHeight'),
+      headerBgColor: document.getElementById('headerBgColor'),
+      headerTransparent: document.getElementById('headerTransparent'),
+      headerBgOpacity: document.getElementById('headerBgOpacity'),
+      headerBgOpacityValue: document.getElementById('headerBgOpacityValue'),
+      headerImageUrl: document.getElementById('headerImageUrl'),
+      headerImageOpacity: document.getElementById('headerImageOpacity'),
+      headerImageOpacityValue: document.getElementById('headerImageOpacityValue'),
+      headerSizeMode: document.getElementById('headerSizeMode'),
+      headerRepeat: document.getElementById('headerRepeat'),
+      headerSizeX: document.getElementById('headerSizeX'),
+      headerSizeY: document.getElementById('headerSizeY'),
+      headerPosX: document.getElementById('headerPosX'),
+      headerPosY: document.getElementById('headerPosY'),
+      headerSizeXValue: document.getElementById('headerSizeXValue'),
+      headerSizeYValue: document.getElementById('headerSizeYValue'),
+      headerPosXValue: document.getElementById('headerPosXValue'),
+      headerPosYValue: document.getElementById('headerPosYValue'),
+      headerCustomSizeBlock: document.getElementById('headerCustomSizeBlock'),
+
+      footerEnabled: document.getElementById('footerEnabled'),
+      footerHeight: document.getElementById('footerHeight'),
+      footerBgColor: document.getElementById('footerBgColor'),
+      footerTransparent: document.getElementById('footerTransparent'),
+      footerBgOpacity: document.getElementById('footerBgOpacity'),
+      footerBgOpacityValue: document.getElementById('footerBgOpacityValue'),
+      footerImageUrl: document.getElementById('footerImageUrl'),
+      footerImageOpacity: document.getElementById('footerImageOpacity'),
+      footerImageOpacityValue: document.getElementById('footerImageOpacityValue'),
+      footerSizeMode: document.getElementById('footerSizeMode'),
+      footerRepeat: document.getElementById('footerRepeat'),
+      footerSizeX: document.getElementById('footerSizeX'),
+      footerSizeY: document.getElementById('footerSizeY'),
+      footerPosX: document.getElementById('footerPosX'),
+      footerPosY: document.getElementById('footerPosY'),
+      footerSizeXValue: document.getElementById('footerSizeXValue'),
+      footerSizeYValue: document.getElementById('footerSizeYValue'),
+      footerPosXValue: document.getElementById('footerPosXValue'),
+      footerPosYValue: document.getElementById('footerPosYValue'),
+      footerCustomSizeBlock: document.getElementById('footerCustomSizeBlock'),
+
+      resetBtn: document.getElementById('resetBtn'),
+      closeBtn: document.getElementById('closeBtn')
+    };
+
+    function clamp(v, min, max) {
+      const n = Number(v);
+      return Math.max(min, Math.min(max, Number.isFinite(n) ? n : min));
+    }
+
+    function defaults() {
+      return {
+        showPageNumber: true,
+        header: {
+          enabled: false,
+          height: 48,
+          transparent: true,
+          bgColor: '#ffffff',
+          bgOpacity: 1,
+          imageUrl: '',
+          imageOpacity: 1,
+          imageSizeMode: 'cover',
+          imageSizeX: 100,
+          imageSizeY: 100,
+          imagePosX: 50,
+          imagePosY: 50,
+          imageRepeat: 'no-repeat'
+        },
+        footer: {
+          enabled: false,
+          height: 48,
+          transparent: true,
+          bgColor: '#ffffff',
+          bgOpacity: 1,
+          imageUrl: '',
+          imageOpacity: 1,
+          imageSizeMode: 'cover',
+          imageSizeX: 100,
+          imageSizeY: 100,
+          imagePosX: 50,
+          imagePosY: 50,
+          imageRepeat: 'no-repeat'
+        }
+      };
+    }
+
+    function updateLabels() {
+      controls.headerBgOpacityValue.textContent = clamp(controls.headerBgOpacity.value, 0, 1).toFixed(2);
+      controls.headerImageOpacityValue.textContent = clamp(controls.headerImageOpacity.value, 0, 1).toFixed(2);
+      controls.headerSizeXValue.textContent = clamp(controls.headerSizeX.value, 10, 300) + '%';
+      controls.headerSizeYValue.textContent = clamp(controls.headerSizeY.value, 10, 300) + '%';
+      controls.headerPosXValue.textContent = clamp(controls.headerPosX.value, 0, 100) + '%';
+      controls.headerPosYValue.textContent = clamp(controls.headerPosY.value, 0, 100) + '%';
+      controls.headerCustomSizeBlock.style.display = controls.headerSizeMode.value === 'custom' ? 'grid' : 'none';
+
+      controls.footerBgOpacityValue.textContent = clamp(controls.footerBgOpacity.value, 0, 1).toFixed(2);
+      controls.footerImageOpacityValue.textContent = clamp(controls.footerImageOpacity.value, 0, 1).toFixed(2);
+      controls.footerSizeXValue.textContent = clamp(controls.footerSizeX.value, 10, 300) + '%';
+      controls.footerSizeYValue.textContent = clamp(controls.footerSizeY.value, 10, 300) + '%';
+      controls.footerPosXValue.textContent = clamp(controls.footerPosX.value, 0, 100) + '%';
+      controls.footerPosYValue.textContent = clamp(controls.footerPosY.value, 0, 100) + '%';
+      controls.footerCustomSizeBlock.style.display = controls.footerSizeMode.value === 'custom' ? 'grid' : 'none';
+    }
+
+    function readState() {
+      updateLabels();
+      return {
+        showPageNumber: !!controls.showPageNumber.checked,
+        header: {
+          enabled: !!controls.headerEnabled.checked,
+          height: clamp(controls.headerHeight.value, 20, 220),
+          transparent: !!controls.headerTransparent.checked,
+          bgColor: controls.headerBgColor.value || '#ffffff',
+          bgOpacity: clamp(controls.headerBgOpacity.value, 0, 1),
+          imageUrl: (controls.headerImageUrl.value || '').trim(),
+          imageOpacity: clamp(controls.headerImageOpacity.value, 0, 1),
+          imageSizeMode: ['cover', 'contain', 'custom'].includes(controls.headerSizeMode.value) ? controls.headerSizeMode.value : 'cover',
+          imageSizeX: clamp(controls.headerSizeX.value, 10, 300),
+          imageSizeY: clamp(controls.headerSizeY.value, 10, 300),
+          imagePosX: clamp(controls.headerPosX.value, 0, 100),
+          imagePosY: clamp(controls.headerPosY.value, 0, 100),
+          imageRepeat: ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'].includes(controls.headerRepeat.value) ? controls.headerRepeat.value : 'no-repeat'
+        },
+        footer: {
+          enabled: !!controls.footerEnabled.checked,
+          height: clamp(controls.footerHeight.value, 20, 220),
+          transparent: !!controls.footerTransparent.checked,
+          bgColor: controls.footerBgColor.value || '#ffffff',
+          bgOpacity: clamp(controls.footerBgOpacity.value, 0, 1),
+          imageUrl: (controls.footerImageUrl.value || '').trim(),
+          imageOpacity: clamp(controls.footerImageOpacity.value, 0, 1),
+          imageSizeMode: ['cover', 'contain', 'custom'].includes(controls.footerSizeMode.value) ? controls.footerSizeMode.value : 'cover',
+          imageSizeX: clamp(controls.footerSizeX.value, 10, 300),
+          imageSizeY: clamp(controls.footerSizeY.value, 10, 300),
+          imagePosX: clamp(controls.footerPosX.value, 0, 100),
+          imagePosY: clamp(controls.footerPosY.value, 0, 100),
+          imageRepeat: ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'].includes(controls.footerRepeat.value) ? controls.footerRepeat.value : 'no-repeat'
+        }
+      };
+    }
+
+    function applyState(state) {
+      const s = state && typeof state === 'object' ? state : defaults();
+      const h = s.header || {};
+      const f = s.footer || {};
+
+      controls.showPageNumber.checked = s.showPageNumber !== false;
+
+      controls.headerEnabled.checked = !!h.enabled;
+      controls.headerHeight.value = clamp(h.height !== undefined ? h.height : 48, 20, 220);
+      controls.headerTransparent.checked = !!h.transparent;
+      controls.headerBgColor.value = h.bgColor || '#ffffff';
+      controls.headerBgOpacity.value = clamp(h.bgOpacity !== undefined ? h.bgOpacity : 1, 0, 1);
+      controls.headerImageUrl.value = h.imageUrl || '';
+      controls.headerImageOpacity.value = clamp(h.imageOpacity !== undefined ? h.imageOpacity : 1, 0, 1);
+      controls.headerSizeMode.value = ['cover', 'contain', 'custom'].includes(h.imageSizeMode) ? h.imageSizeMode : 'cover';
+      controls.headerSizeX.value = clamp(h.imageSizeX !== undefined ? h.imageSizeX : 100, 10, 300);
+      controls.headerSizeY.value = clamp(h.imageSizeY !== undefined ? h.imageSizeY : 100, 10, 300);
+      controls.headerPosX.value = clamp(h.imagePosX !== undefined ? h.imagePosX : 50, 0, 100);
+      controls.headerPosY.value = clamp(h.imagePosY !== undefined ? h.imagePosY : 50, 0, 100);
+      controls.headerRepeat.value = ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'].includes(h.imageRepeat) ? h.imageRepeat : 'no-repeat';
+
+      controls.footerEnabled.checked = !!f.enabled;
+      controls.footerHeight.value = clamp(f.height !== undefined ? f.height : 48, 20, 220);
+      controls.footerTransparent.checked = !!f.transparent;
+      controls.footerBgColor.value = f.bgColor || '#ffffff';
+      controls.footerBgOpacity.value = clamp(f.bgOpacity !== undefined ? f.bgOpacity : 1, 0, 1);
+      controls.footerImageUrl.value = f.imageUrl || '';
+      controls.footerImageOpacity.value = clamp(f.imageOpacity !== undefined ? f.imageOpacity : 1, 0, 1);
+      controls.footerSizeMode.value = ['cover', 'contain', 'custom'].includes(f.imageSizeMode) ? f.imageSizeMode : 'cover';
+      controls.footerSizeX.value = clamp(f.imageSizeX !== undefined ? f.imageSizeX : 100, 10, 300);
+      controls.footerSizeY.value = clamp(f.imageSizeY !== undefined ? f.imageSizeY : 100, 10, 300);
+      controls.footerPosX.value = clamp(f.imagePosX !== undefined ? f.imagePosX : 50, 0, 100);
+      controls.footerPosY.value = clamp(f.imagePosY !== undefined ? f.imagePosY : 50, 0, 100);
+      controls.footerRepeat.value = ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'].includes(f.imageRepeat) ? f.imageRepeat : 'no-repeat';
+
+      updateLabels();
+    }
+
+    function pushUpdate() {
+      if (!window.opener) return;
+      window.opener.postMessage({ type: 'hr-header-footer-update', payload: readState() }, '*');
+    }
+
+    ['input', 'change'].forEach(evt => {
+      Object.keys(controls).forEach(k => {
+        const node = controls[k];
+        if (!node || !node.addEventListener || k === 'closeBtn' || k === 'resetBtn') return;
+        node.addEventListener(evt, pushUpdate);
+      });
+    });
+
+    controls.resetBtn.addEventListener('click', () => {
+      applyState(defaults());
+      pushUpdate();
+    });
+
+    controls.closeBtn.addEventListener('click', () => window.close());
+
+    window.addEventListener('message', (event) => {
+      const msg = event && event.data ? event.data : null;
+      if (!msg || typeof msg !== 'object') return;
+      if (msg.type === 'hr-header-footer-state') {
+        applyState(msg.payload || defaults());
+      }
+    });
+
+    applyState(defaults());
+    if (window.opener) {
+      window.opener.postMessage({ type: 'hr-header-footer-ready' }, '*');
+    }
+  </script>
+</body>
+</html>
