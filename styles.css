@@ -23,16 +23,25 @@ h1 { text-align:center; padding:10px; }
   background: #2a4d69;
   color: #fff;
   padding: 4px;
-  cursor: move;
+  cursor: grab;
+  user-select: none;
   font-size: 12px;
+}
+.drag-handle:active {
+  cursor: grabbing;
 }
 .resize-handle {
   position: absolute;
-  left: 0; right: 0; height: 6px;
-  cursor: ns-resize; background: transparent;
+  left: 0;
+  right: 0;
+  height: 10px;
+  cursor: ns-resize;
+  background: transparent;
+  z-index: 5;
+  user-select: none;
 }
-.resize-top { top: 0; }
-.resize-bottom { bottom: 0; }
+.resize-top { top: -5px; }
+.resize-bottom { bottom: -5px; }
 h3 { margin: 5px; color: #4b86b4; }
 table { border-collapse: collapse; width: 95%; margin: 5px auto; }
 th, td { border: 1px solid #ccc; padding: 4px; font-size: 12px; }

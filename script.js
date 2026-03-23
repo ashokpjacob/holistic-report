@@ -10,6 +10,17 @@ function parseCSV(text) {
   });
 }
 
+function slugifyStylePart(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'item';
+}
+
+function makeStyleId(...parts) {
+  return ['sid'].concat(parts.map(slugifyStylePart)).join('__');
+}
+
 // Load CSV file
 fetch("holistic.csv")
   .then(response => response.text())
@@ -33,22 +44,28 @@ function buildPages(grouped) {
   const perPage = 6;
 
   for (let i=0; i<domains.length; i+=perPage) {
+    const pageIndex = Math.floor(i / perPage);
     const page = document.createElement("div");
     page.className = "a4-page";
+    page.dataset.styleId = makeStyleId('page', pageIndex);
     pagesContainer.appendChild(page);
 
     const hGuide = document.createElement("div");
     hGuide.className = "guide-line horizontal";
+    hGuide.dataset.styleId = makeStyleId('page', pageIndex, 'guide-horizontal');
     page.appendChild(hGuide);
     const vGuide = document.createElement("div");
     vGuide.className = "guide-line vertical";
+    vGuide.dataset.styleId = makeStyleId('page', pageIndex, 'guide-vertical');
     page.appendChild(vGuide);
 
     const slice = domains.slice(i,i+perPage);
     slice.forEach((domain, idx) => {
+      const domainKey = makeStyleId('page', pageIndex, 'domain', domain);
       const domainDiv = document.createElement("div");
       domainDiv.className = "domain";
       domainDiv.dataset.domain = domain;
+      domainDiv.dataset.styleId = domainKey;
 
       const col = idx % 2;
       const row = Math.floor(idx/2);
@@ -68,35 +85,45 @@ function buildPages(grouped) {
       const dragHandle = document.createElement("div");
       dragHandle.className = "drag-handle";
       dragHandle.textContent = domain;
+      dragHandle.dataset.styleId = makeStyleId(domainKey, 'drag-handle');
       domainDiv.appendChild(dragHandle);
 
       const topHandle = document.createElement("div");
       topHandle.className = "resize-handle resize-top";
+      topHandle.dataset.styleId = makeStyleId(domainKey, 'resize-top');
       domainDiv.appendChild(topHandle);
       const bottomHandle = document.createElement("div");
       bottomHandle.className = "resize-handle resize-bottom";
+      bottomHandle.dataset.styleId = makeStyleId(domainKey, 'resize-bottom');
       domainDiv.appendChild(bottomHandle);
 
+      let subjectIndex = 0;
       for (const subject in grouped[domain]) {
+        const subjectKey = makeStyleId(domainKey, 'subject', subjectIndex, subject);
         const h3 = document.createElement("h3");
         h3.textContent = subject;
+        h3.dataset.styleId = makeStyleId(subjectKey, 'heading');
         domainDiv.appendChild(h3);
 
         const table = document.createElement("table");
+        table.dataset.styleId = makeStyleId(subjectKey, 'table');
         const header = document.createElement("tr");
+        header.dataset.styleId = makeStyleId(subjectKey, 'header-row');
         ["Competency","Grading"].forEach(col=>{
-          const th=document.createElement("th"); th.textContent=col; header.appendChild(th);
+          const th=document.createElement("th"); th.textContent=col; th.dataset.styleId = makeStyleId(subjectKey, 'header-cell', col); header.appendChild(th);
         });
         table.appendChild(header);
 
-        grouped[domain][subject].forEach(row=>{
+        grouped[domain][subject].forEach((row, rowIndex)=>{
           const tr=document.createElement("tr");
-          const td1=document.createElement("td"); td1.textContent=row.Competency+" – "+row.Description;
-          const td2=document.createElement("td"); td2.textContent=row.Grading;
+          tr.dataset.styleId = makeStyleId(subjectKey, 'row', rowIndex);
+          const td1=document.createElement("td"); td1.textContent=row.Competency+" – "+row.Description; td1.dataset.styleId = makeStyleId(subjectKey, 'row', rowIndex, 'competency');
+          const td2=document.createElement("td"); td2.textContent=row.Grading; td2.dataset.styleId = makeStyleId(subjectKey, 'row', rowIndex, 'grading');
           tr.appendChild(td1); tr.appendChild(td2);
           table.appendChild(tr);
         });
         domainDiv.appendChild(table);
+        subjectIndex++;
       }
 
       page.appendChild(domainDiv);
@@ -106,9 +133,12 @@ function buildPages(grouped) {
 }
 
 function attachDragResize(domainDiv, dragHandle, topHandle, bottomHandle, savedLayout, page, hGuide, vGuide) {
+  const body = document.body;
+
   // Drag logic with snap guides
   dragHandle.addEventListener("mousedown", e=>{
     e.preventDefault();
+    body.style.cursor = "move";
     const startX=e.clientX, startY=e.clientY;
     const startTop=domainDiv.offsetTop, startLeft=domainDiv.offsetLeft;
     function onMove(ev){
@@ -142,6 +172,7 @@ function attachDragResize(domainDiv, dragHandle, topHandle, bottomHandle, savedL
       document.removeEventListener("mouseup",onUp);
       hGuide.style.display = "none";
       vGuide.style.display = "none";
+      body.style.cursor = "";
       saveLayout(domainDiv, savedLayout);
     }
     document.addEventListener("mousemove",onMove);
@@ -152,6 +183,7 @@ function attachDragResize(domainDiv, dragHandle, topHandle, bottomHandle, savedL
   [topHandle,bottomHandle].forEach(handle=>{
     handle.addEventListener("mousedown", e=>{
       e.preventDefault();
+      body.style.cursor = "ns-resize";
       const startY=e.clientY;
       const startHeight=domainDiv.offsetHeight;
       const startTop=domainDiv.offsetTop;
@@ -181,6 +213,7 @@ function attachDragResize(domainDiv, dragHandle, topHandle, bottomHandle, savedL
         document.removeEventListener("mouseup",onUp);
         hGuide.style.display = "none";
         vGuide.style.display = "none";
+        body.style.cursor = "";
         saveLayout(domainDiv, savedLayout);
       }
       document.addEventListener("mousemove",onMove);
@@ -202,6 +235,7 @@ function saveLayout(el, savedLayout){
 // Reset button
 document.getElementById("resetBtn").addEventListener("click", ()=>{
   localStorage.removeItem("domainLayout");
+  localStorage.removeItem("hr_styles");
   location.reload();
 });
 
@@ -233,6 +267,23 @@ function nearestAncestorDomain(el) {
   return null;
 }
 
+function imageUrlFromCss(bgImage) {
+  if (!bgImage || bgImage === 'none') return '';
+  const matches = bgImage.match(/url\(["']?(.*?)["']?\)/ig);
+  if (!matches || !matches.length) return '';
+  const last = matches[matches.length - 1];
+  const m = last.match(/url\(["']?(.*?)["']?\)/i);
+  return m ? m[1] : '';
+}
+
+function parseImageOpacityFromCss(bgImage) {
+  if (!bgImage || bgImage === 'none') return 1;
+  const m = bgImage.match(/linear-gradient\(rgba\(255,\s*255,\s*255,\s*([\d.]+)\)/i);
+  if (!m) return 1;
+  const overlay = Math.max(0, Math.min(1, Number(m[1])));
+  return Math.max(0, Math.min(1, 1 - overlay));
+}
+
 /**
  * Collect current layout by scanning .domain elements and returning an object
  * domain -> { top, left, height }.
@@ -253,38 +304,93 @@ function collectCurrentLayout() {
 }
 
 /**
- * Collect current styles: prefer editor API if available, otherwise read localStorage.hr_styles.
- * Also build small element hints for each styleId so we can remap on import.
+ * Collect final styles currently applied to elements present in the DOM.
  * Returns { stylesMap, hintsMap }.
  */
 function collectCurrentStylesAndHints() {
-  let styles = {};
+  let sourceStyles = {};
   try {
     if (window.hrEditor && typeof window.hrEditor.getStyles === 'function') {
       const s = window.hrEditor.getStyles();
-      if (s && typeof s === 'object') styles = s;
+      if (s && typeof s === 'object') sourceStyles = s;
     }
   } catch (e) {
     console.warn('hrEditor.getStyles failed', e);
   }
-  if (!Object.keys(styles).length) {
-    try { styles = JSON.parse(localStorage.getItem('hr_styles') || '{}'); } catch (e) { styles = {}; }
+  if (!Object.keys(sourceStyles).length) {
+    try { sourceStyles = JSON.parse(localStorage.getItem('hr_styles') || '{}'); } catch (e) { sourceStyles = {}; }
   }
 
+  const styles = {};
   const hints = {};
-  Object.keys(styles).forEach(styleId => {
-    // try to find the element that had this styleId
-    const el = document.querySelector(`[data-style-id="${CSS && CSS.escape ? CSS.escape(styleId) : styleId}"]`);
-    if (el) {
-      hints[styleId] = {
-        tag: el.tagName.toLowerCase(),
-        text: firstTextSnippet(el, 60),
-        domain: nearestAncestorDomain(el)
-      };
-    } else {
-      // fallback: no element currently has that id; we can't create good hint without traces, skip
-      hints[styleId] = { tag: '', text: '', domain: '' };
+
+  function deriveStyleFromElement(el) {
+    const style = {};
+    if (!el) return style;
+
+    const ff = el.style.fontFamily;
+    if (ff) style.fontFamily = ff;
+
+    const fs = el.style.fontSize;
+    if (fs) style.fontSize = fs;
+
+    const col = el.style.color;
+    if (col) style.color = col;
+
+    const fw = el.style.fontWeight;
+    if (fw) style.fontWeight = fw;
+
+    const fi = el.style.fontStyle;
+    if (fi) style.fontStyle = fi;
+
+    const bg = el.style.backgroundColor;
+    if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'rgba(0,0,0,0)') {
+      style.backgroundColor = bg;
     }
+
+    const bgImg = el.style.backgroundImage;
+    if (bgImg && bgImg !== 'none') {
+      const bgUrl = imageUrlFromCss(bgImg);
+      style.backgroundImageUrl = bgUrl;
+      style.backgroundImageOpacity = parseImageOpacityFromCss(bgImg);
+      style.backgroundImage = bgUrl ? `url("${bgUrl}")` : bgImg;
+      style.backgroundSize = el.style.backgroundSize || 'cover';
+      style.backgroundRepeat = el.style.backgroundRepeat || 'no-repeat';
+      style.backgroundPosition = el.style.backgroundPosition || 'center center';
+    }
+
+    return style;
+  }
+
+  const pagesContainer = document.getElementById('pages') || document;
+  const nodes = Array.from(pagesContainer.querySelectorAll('[data-style-id]'));
+
+  nodes.forEach(el => {
+    const styleId = el.dataset && el.dataset.styleId ? el.dataset.styleId : null;
+    if (!styleId) return;
+
+    const fromSource = sourceStyles[styleId] && typeof sourceStyles[styleId] === 'object' ? sourceStyles[styleId] : {};
+    const fromDom = deriveStyleFromElement(el);
+    const finalStyle = Object.assign({}, fromSource, fromDom);
+
+    // Keep background-image fields aligned to this element's real state.
+    const bgImg = (el.style.backgroundImage || '').trim();
+    if (!bgImg || bgImg === 'none') {
+      delete finalStyle.backgroundImage;
+      delete finalStyle.backgroundSize;
+      delete finalStyle.backgroundRepeat;
+      delete finalStyle.backgroundPosition;
+    }
+
+    if (Object.keys(finalStyle).length) {
+      styles[styleId] = finalStyle;
+    }
+
+    hints[styleId] = {
+      tag: el.tagName.toLowerCase(),
+      text: firstTextSnippet(el, 60),
+      domain: nearestAncestorDomain(el)
+    };
   });
 
   return { stylesMap: styles, hintsMap: hints };
@@ -331,6 +437,94 @@ function findElementForHint(hint) {
 }
 
 /**
+ * Fallback remap when no hints exist:
+ * assign imported style IDs to current DOM elements in document order.
+ */
+function remapStyleIdsByOrder(stylesFromFile) {
+  if (!stylesFromFile || typeof stylesFromFile !== 'object') return {};
+  const pagesContainer = document.getElementById('pages') || document;
+  const nodes = Array.from(pagesContainer.querySelectorAll('[data-style-id]'));
+  const importedIds = Object.keys(stylesFromFile);
+  if (!nodes.length || !importedIds.length) return {};
+
+  const remapped = {};
+  const n = Math.min(nodes.length, importedIds.length);
+  for (let i = 0; i < n; i++) {
+    const targetId = nodes[i].dataset && nodes[i].dataset.styleId ? nodes[i].dataset.styleId : importedIds[i];
+    remapped[targetId] = stylesFromFile[importedIds[i]];
+  }
+  return remapped;
+}
+
+function remapStylesByHints(stylesFromFile, hints) {
+  const remapped = {};
+  Object.keys(hints).forEach(styleId => {
+    const hint = hints[styleId] || {};
+    if (!hint.tag && !hint.text && !hint.domain) return;
+    const matched = findElementForHint(hint);
+    if (!matched) return;
+    const targetId = matched.dataset && matched.dataset.styleId ? matched.dataset.styleId : styleId;
+    if (stylesFromFile[styleId]) remapped[targetId] = stylesFromFile[styleId];
+  });
+  return remapped;
+}
+
+function normalizeStylesForCurrentDom(stylesFromFile, hints = {}) {
+  if (!stylesFromFile || typeof stylesFromFile !== 'object') return {};
+
+  const pagesContainer = document.getElementById('pages') || document;
+  const domNodes = Array.from(pagesContainer.querySelectorAll('[data-style-id]'));
+  const domIds = new Set(domNodes.map(n => n.dataset && n.dataset.styleId).filter(Boolean));
+
+  const normalized = {};
+  const unmatched = {};
+
+  Object.keys(stylesFromFile).forEach(styleId => {
+    if (domIds.has(styleId)) normalized[styleId] = stylesFromFile[styleId];
+    else unmatched[styleId] = stylesFromFile[styleId];
+  });
+
+  if (!Object.keys(unmatched).length) return normalized;
+
+  // Try hint-based mapping for unmatched keys first.
+  const matchedSourceIds = new Set();
+  if (hints && Object.keys(hints).length) {
+    Object.keys(hints).forEach(sourceId => {
+      if (!Object.prototype.hasOwnProperty.call(unmatched, sourceId)) return;
+      const hint = hints[sourceId] || {};
+      if (!hint.tag && !hint.text && !hint.domain) return;
+      const matched = findElementForHint(hint);
+      if (!matched || !matched.dataset || !matched.dataset.styleId) return;
+      const targetId = matched.dataset.styleId;
+      if (Object.prototype.hasOwnProperty.call(normalized, targetId)) return;
+      normalized[targetId] = unmatched[sourceId];
+      matchedSourceIds.add(sourceId);
+    });
+  }
+
+  // Any still-unmatched keys get deterministic order fallback on remaining DOM targets.
+  const stillUnmatched = {};
+  Object.keys(unmatched).forEach(styleId => {
+    if (!matchedSourceIds.has(styleId)) stillUnmatched[styleId] = unmatched[styleId];
+  });
+
+  if (Object.keys(stillUnmatched).length) {
+    const remainingNodes = domNodes.filter(n => {
+      const id = n.dataset && n.dataset.styleId;
+      return id && !Object.prototype.hasOwnProperty.call(normalized, id);
+    });
+    const remainingIds = remainingNodes.map(n => n.dataset.styleId);
+    const sourceIds = Object.keys(stillUnmatched);
+    const n = Math.min(remainingIds.length, sourceIds.length);
+    for (let i = 0; i < n; i++) {
+      normalized[remainingIds[i]] = stillUnmatched[sourceIds[i]];
+    }
+  }
+
+  return normalized;
+}
+
+/**
  * Apply a layout object to the DOM so import is visible immediately.
  * layout: { domainName: {top,left,height}, ... }
  */
@@ -366,16 +560,15 @@ function saveLayoutToLocalStorage() {
 
 /**
  * File -> Export layout
- * Download combined JSON file containing domainLayout, hr_styles, and hr_styles_hints.
+ * Download final JSON snapshot containing current domainLayout and hr_styles only.
  */
 function exportCombined(filename = 'layout-styles.json') {
   try {
     const domainLayout = collectCurrentLayout();
-    const { stylesMap, hintsMap } = collectCurrentStylesAndHints();
+    const { stylesMap } = collectCurrentStylesAndHints();
     const out = {
       domainLayout: domainLayout,
-      hr_styles: stylesMap,
-      hr_styles_hints: hintsMap
+      hr_styles: stylesMap
     };
 
     const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
@@ -436,37 +629,27 @@ function importCombinedFile(file, options = { overwriteStyles: true }) {
       let stylesFromFile = {};
       if (parsed.hasOwnProperty('hr_styles')) {
         stylesFromFile = parsed.hr_styles || {};
+      }
+
+      // 3) Reassign style IDs so editor mapping works.
+      const hints = parsed.hr_styles_hints || {};
+      const normalizedStyles = normalizeStylesForCurrentDom(stylesFromFile, hints);
+
+      if (parsed.hasOwnProperty('hr_styles')) {
         if (options.overwriteStyles) {
-          localStorage.setItem('hr_styles', JSON.stringify(stylesFromFile));
+          localStorage.setItem('hr_styles', JSON.stringify(normalizedStyles));
         } else {
           let existing = {};
           try { existing = JSON.parse(localStorage.getItem('hr_styles') || '{}'); } catch (e) { existing = {}; }
-          const merged = Object.assign({}, existing, stylesFromFile);
+          const merged = Object.assign({}, existing, normalizedStyles);
           localStorage.setItem('hr_styles', JSON.stringify(merged));
+          normalizedStyles = merged;
         }
-      }
-
-      // 3) Use hints (if any) to reassign style IDs to DOM elements so editor mapping works
-      const hints = parsed.hr_styles_hints || {};
-      if (Object.keys(hints).length) {
-        Object.keys(hints).forEach(styleId => {
-          const hint = hints[styleId] || {};
-          // Skip empty hints
-          if (!hint.tag && !hint.text && !hint.domain) return;
-          const matched = findElementForHint(hint);
-          if (matched) {
-            try {
-              matched.dataset.styleId = styleId;
-            } catch (e) {
-              // ignore
-            }
-          }
-        });
       }
 
       // 4) Now tell the editor to import styles (if available) so it can set its stylesMap and apply them
       try {
-        const stylesObj = stylesFromFile && Object.keys(stylesFromFile).length ? stylesFromFile : JSON.parse(localStorage.getItem('hr_styles') || '{}');
+        const stylesObj = normalizedStyles && Object.keys(normalizedStyles).length ? normalizedStyles : JSON.parse(localStorage.getItem('hr_styles') || '{}');
         if (window.hrEditor && typeof window.hrEditor.importFromObject === 'function') {
           window.hrEditor.importFromObject(stylesObj, { overwrite: !!options.overwriteStyles });
         } else {
@@ -478,7 +661,7 @@ function importCombinedFile(file, options = { overwriteStyles: true }) {
         window.dispatchEvent(new Event('localStorageImported'));
       }
 
-      alert('Imported layout+styles and attempted to map styles to elements (best-effort). If some styles are missing, try re-running Save layout then Export to regenerate stable hints.');
+      alert('Imported layout+styles and mapped style IDs to current elements (hint-based when available, otherwise document-order fallback).');
 
     } catch (err) {
       console.error('Import failed', err);
@@ -500,21 +683,35 @@ window.hrIO.importCombinedFile = importCombinedFile;
 document.addEventListener('DOMContentLoaded', () => {
   const fileButton = document.getElementById('file-button');
   const fileDropdown = document.getElementById('file-dropdown');
+  const editButton = document.getElementById('edit-button');
+  const editDropdown = document.getElementById('edit-dropdown');
+
+  function closeAllMenus() {
+    if (fileDropdown) { fileDropdown.style.display = 'none'; fileButton.setAttribute('aria-expanded', 'false'); }
+    if (editDropdown) { editDropdown.style.display = 'none'; editButton.setAttribute('aria-expanded', 'false'); }
+  }
 
   if (fileButton) {
-    fileButton.addEventListener('click', (e) => {
+    fileButton.addEventListener('click', () => {
       const expanded = fileButton.getAttribute('aria-expanded') === 'true';
-      fileButton.setAttribute('aria-expanded', String(!expanded));
-      fileDropdown.style.display = expanded ? 'none' : 'block';
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!document.getElementById('file-menu').contains(e.target)) {
-        fileDropdown.style.display = 'none';
-        fileButton.setAttribute('aria-expanded', 'false');
-      }
+      closeAllMenus();
+      if (!expanded) { fileDropdown.style.display = 'block'; fileButton.setAttribute('aria-expanded', 'true'); }
     });
   }
+
+  if (editButton) {
+    editButton.addEventListener('click', () => {
+      const expanded = editButton.getAttribute('aria-expanded') === 'true';
+      closeAllMenus();
+      if (!expanded) { editDropdown.style.display = 'block'; editButton.setAttribute('aria-expanded', 'true'); }
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    const inFileMenu = document.getElementById('file-menu') && document.getElementById('file-menu').contains(e.target);
+    const inEditMenu = document.getElementById('edit-menu') && document.getElementById('edit-menu').contains(e.target);
+    if (!inFileMenu && !inEditMenu) closeAllMenus();
+  });
 
   const saveLayoutBtn = document.getElementById('saveLayoutBtn');
   const exportLayoutBtn = document.getElementById('exportLayoutBtn');
@@ -524,14 +721,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (saveLayoutBtn) {
     saveLayoutBtn.addEventListener('click', () => {
       saveLayoutToLocalStorage();
-      if (fileDropdown) { fileDropdown.style.display = 'none'; fileButton.setAttribute('aria-expanded','false'); }
+      closeAllMenus();
     });
   }
 
   if (exportLayoutBtn) {
     exportLayoutBtn.addEventListener('click', () => {
       exportCombined('layout-styles.json');
-      if (fileDropdown) { fileDropdown.style.display = 'none'; fileButton.setAttribute('aria-expanded','false'); }
+      closeAllMenus();
     });
   }
 
@@ -544,7 +741,7 @@ document.addEventListener('DOMContentLoaded', () => {
         importCombinedFile(f, { overwriteStyles: overwrite });
       }
       e.target.value = '';
-      if (fileDropdown) { fileDropdown.style.display = 'none'; fileButton.setAttribute('aria-expanded','false'); }
+      closeAllMenus();
     });
   }
 });

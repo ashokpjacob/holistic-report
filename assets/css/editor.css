@@ -21,7 +21,7 @@ body,html{height:100%;margin:0;font-family:system-ui, -apple-system, "Segoe UI",
 #sidebar h3{margin:0 0 12px 0;}
 .control{margin-bottom:12px;}
 .control label{display:block;font-size:13px;margin-bottom:6px;color:#333;}
-.control input[type="number"], .control select, .control input[type="color"]{width:100%;padding:6px;border:1px solid #d7dbe0;border-radius:4px;}
+.control input[type="number"], .control select, .control input[type="color"], .control input[type="url"], .control input[type="range"]{width:100%;padding:6px;border:1px solid #d7dbe0;border-radius:4px;}
 .control button{margin-right:8px;padding:6px 10px;border:0;background:var(--accent);color:#fff;border-radius:6px;cursor:pointer;}
 .control button[type="reset"]{background:#666;}
 #selectedInfo{font-size:12px;color:#666;margin-top:8px;}

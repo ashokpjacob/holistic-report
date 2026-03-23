@@ -6,20 +6,30 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="assets/css/editor.css">
   <style>
-    /* File menu styles */
-    #file-menu {
-      position: relative;
-      display: inline-block;
+    /* Menu bar styles */
+    .menu-bar {
+      display: flex;
+      gap: 4px;
+      align-items: center;
       margin: 8px 0;
     }
-    #file-button {
+    .menu-item {
+      position: relative;
+      display: inline-block;
+    }
+    .menu-item-button {
       padding: 6px 12px;
       cursor: pointer;
       background: #f3f3f3;
       border: 1px solid #ccc;
       border-radius: 4px;
+      font-size: 14px;
+      user-select: none;
     }
-    #file-dropdown {
+    .menu-item-button:hover {
+      background: #e8e8e8;
+    }
+    .menu-dropdown {
       display: none;
       position: absolute;
       left: 0;
@@ -32,7 +42,7 @@
       border-radius: 4px;
       padding: 6px 0;
     }
-    #file-dropdown button {
+    .menu-dropdown button {
       display: block;
       width: 100%;
       text-align: left;
@@ -42,8 +52,13 @@
       cursor: pointer;
       font-size: 14px;
     }
-    #file-dropdown button:hover {
+    .menu-dropdown button:hover {
       background: #f5f7fb;
+    }
+    .menu-dropdown hr {
+      border: none;
+      border-top: 1px solid #e0e0e0;
+      margin: 4px 0;
     }
   </style>
 </head>
@@ -53,15 +68,25 @@
   <h1>Holistic Report Card</h1>
 </header>
 
-<div id="file-menu" aria-label="File menu">
-  <div id="file-button" role="button" aria-haspopup="true" aria-expanded="false">File ▾</div>
-  <div id="file-dropdown" role="menu" aria-label="File menu dropdown">
-    <button id="saveLayoutBtn" role="menuitem">Save layout</button>
-    <button id="exportLayoutBtn" role="menuitem">Export layout (download)</button>
-    <button id="importLayoutBtn" role="menuitem">Import layout (load file)</button>
+<div class="menu-bar">
+  <div class="menu-item" id="file-menu" aria-label="File menu">
+    <div class="menu-item-button" id="file-button" role="button" aria-haspopup="true" aria-expanded="false">File ▾</div>
+    <div class="menu-dropdown" id="file-dropdown" role="menu" aria-label="File menu dropdown">
+      <button id="saveLayoutBtn" role="menuitem">Save layout</button>
+      <button id="exportLayoutBtn" role="menuitem">Export layout (download)</button>
+      <button id="importLayoutBtn" role="menuitem">Import layout (load file)</button>
+      <hr />
+      <button id="printBtn" role="menuitem">Print Report</button>
+    </div>
+    <!-- hidden file input used for import -->
+    <input id="importLayoutFile" type="file" accept="application/json" style="display:none" />
   </div>
-  <!-- hidden file input used for import -->
-  <input id="importLayoutFile" type="file" accept="application/json" style="display:none" />
+  <div class="menu-item" id="edit-menu" aria-label="Edit menu">
+    <div class="menu-item-button" id="edit-button" role="button" aria-haspopup="true" aria-expanded="false">Edit ▾</div>
+    <div class="menu-dropdown" id="edit-dropdown" role="menu" aria-label="Edit menu dropdown">
+      <button id="resetBtn" role="menuitem">Reset Layout</button>
+    </div>
+  </div>
 </div>
 
 <div id="app" class="app-shell">
@@ -90,6 +115,30 @@
     </div>
 
     <div class="control">
+      <label for="bgColor">Background color</label>
+      <input id="bgColor" type="color" value="#ffffff" />
+      <label><input id="bgTransparent" type="checkbox" /> Transparent</label>
+      <label for="bgOpacity">Opacity: <span id="bgOpacityValue">1.00</span></label>
+      <input id="bgOpacity" type="range" min="0" max="1" step="0.01" value="1" />
+    </div>
+
+    <div class="control">
+      <label for="bgImageUrl">Background image URL</label>
+      <input id="bgImageUrl" type="url" placeholder="https://example.com/image.png" />
+      <label for="bgImageOpacity">Image opacity: <span id="bgImageOpacityValue">1.00</span></label>
+      <input id="bgImageOpacity" type="range" min="0" max="1" step="0.01" value="1" />
+    </div>
+
+    <div class="control">
+      <label for="tableFillColor">Table fill color</label>
+      <input id="tableFillColor" type="color" value="#ffffff" />
+      <label><input id="tableFillTransparent" type="checkbox" /> Transparent</label>
+      <label for="tableFillOpacity">Opacity: <span id="tableFillOpacityValue">1.00</span></label>
+      <input id="tableFillOpacity" type="range" min="0" max="1" step="0.01" value="1" />
+      <button id="applyTableFillBtn" type="button">Apply Table Fill</button>
+    </div>
+
+    <div class="control">
       <label><input id="boldToggle" type="checkbox" /> Bold</label>
       <label><input id="italicToggle" type="checkbox" /> Italic</label>
     </div>
@@ -107,8 +156,6 @@
   <main id="main">
     <div id="toolbar">
       <button id="toggleEdit">Toggle Edit Mode</button>
-      <button id="printBtn">Print Report</button>
-      <button id="resetBtn">Reset Layout</button>
     </div>
 
     <section id="pages-wrapper">
