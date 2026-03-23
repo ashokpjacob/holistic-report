@@ -5,6 +5,47 @@
   <title>Holistic Report Card — Editor</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="assets/css/editor.css">
+  <style>
+    /* File menu styles */
+    #file-menu {
+      position: relative;
+      display: inline-block;
+      margin: 8px 0;
+    }
+    #file-button {
+      padding: 6px 12px;
+      cursor: pointer;
+      background: #f3f3f3;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #file-dropdown {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: calc(100% + 6px);
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      min-width: 180px;
+      z-index: 1000;
+      border-radius: 4px;
+      padding: 6px 0;
+    }
+    #file-dropdown button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    #file-dropdown button:hover {
+      background: #f5f7fb;
+    }
+  </style>
 </head>
 <body>
 
@@ -12,10 +53,15 @@
   <h1>Holistic Report Card</h1>
 </header>
 
-<div id="localstorage-tools" style="margin:8px 0;">
-  <button id="exportBtn">Save localStorage (position.json)</button>
-  <button id="importBtn">Load localStorage from file</button>
-  <input id="importFile" type="file" accept=".json,application/json" style="display:none" />
+<div id="file-menu" aria-label="File menu">
+  <div id="file-button" role="button" aria-haspopup="true" aria-expanded="false">File ▾</div>
+  <div id="file-dropdown" role="menu" aria-label="File menu dropdown">
+    <button id="saveLayoutBtn" role="menuitem">Save layout</button>
+    <button id="exportLayoutBtn" role="menuitem">Export layout (download)</button>
+    <button id="importLayoutBtn" role="menuitem">Import layout (load file)</button>
+  </div>
+  <!-- hidden file input used for import -->
+  <input id="importLayoutFile" type="file" accept="application/json" style="display:none" />
 </div>
 
 <div id="app" class="app-shell">
@@ -54,11 +100,6 @@
     </div>
 
     <hr />
-
-    <div class="control">
-      <button id="exportStylesBtn">Export styles.json</button>
-      <input id="importStylesFile" type="file" accept="application/json" />
-    </div>
 
     <div id="selectedInfo" aria-live="polite"></div>
   </aside>

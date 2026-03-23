@@ -27,7 +27,8 @@ fetch("holistic.csv")
 function buildPages(grouped) {
   const pagesContainer = document.getElementById("pages");
   pagesContainer.innerHTML = "";
-  let savedLayout = JSON.parse(localStorage.getItem("domainLayout")) || {};
+  let savedLayout = {};
+  try { savedLayout = JSON.parse(localStorage.getItem("domainLayout")) || {}; } catch (_) { savedLayout = {}; }
   const domains = Object.keys(grouped);
   const perPage = 6;
 
@@ -209,166 +210,341 @@ document.getElementById("printBtn").addEventListener("click", ()=>{
   window.print();
 });
 
-//position.json
-/**
- * Export entire localStorage as a JSON file.
- * filename defaults to "position.json".
- */
+// Combined export/import utilities with hint matching
 
-const REMOTE_POSITION_URL = 'https://raw.githubusercontent.com/ashokpjacob/holistic-report/refs/heads/main/position.json';
+window.hrIO = window.hrIO || {};
 
-function exportLocalStorage(filename = 'position.json') {
-  const exportObj = {};
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    exportObj[key] = localStorage.getItem(key);
+/* Helpers for hint system */
+
+function firstTextSnippet(el, maxLen = 60) {
+  if (!el) return '';
+  // prefer text nodes of the element itself or the first non-empty descendant text
+  const text = (el.textContent || '').trim().replace(/\s+/g, ' ');
+  if (!text) return '';
+  return text.length > maxLen ? text.slice(0, maxLen).trim() : text;
+}
+
+function nearestAncestorDomain(el) {
+  let cur = el;
+  while (cur) {
+    if (cur.dataset && cur.dataset.domain) return cur.dataset.domain;
+    cur = cur.parentElement;
   }
-
-  const content = JSON.stringify(exportObj, null, 2);
-  const blob = new Blob([content], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-
-  setTimeout(() => {
-    URL.revokeObjectURL(url);
-    a.remove();
-  }, 100);
+  return null;
 }
 
 /**
- * Import helper that accepts a plain object (key -> value) and writes to localStorage.
- * If options.overwrite is false, will prompt on conflicts.
+ * Collect current layout by scanning .domain elements and returning an object
+ * domain -> { top, left, height }.
  */
-function importObjectIntoLocalStorage(obj, options = { overwrite: true }) {
-  if (typeof obj !== 'object' || obj === null) {
-    throw new Error('JSON root must be an object of key→value pairs');
+function collectCurrentLayout() {
+  const layout = {};
+  const domains = document.querySelectorAll('.domain');
+  domains.forEach(d => {
+    const name = d.dataset && d.dataset.domain ? d.dataset.domain : null;
+    if (!name) return;
+    layout[name] = {
+      top: d.offsetTop,
+      left: d.offsetLeft,
+      height: d.offsetHeight
+    };
+  });
+  return layout;
+}
+
+/**
+ * Collect current styles: prefer editor API if available, otherwise read localStorage.hr_styles.
+ * Also build small element hints for each styleId so we can remap on import.
+ * Returns { stylesMap, hintsMap }.
+ */
+function collectCurrentStylesAndHints() {
+  let styles = {};
+  try {
+    if (window.hrEditor && typeof window.hrEditor.getStyles === 'function') {
+      const s = window.hrEditor.getStyles();
+      if (s && typeof s === 'object') styles = s;
+    }
+  } catch (e) {
+    console.warn('hrEditor.getStyles failed', e);
   }
-  const keys = Object.keys(obj);
-  if (!options.overwrite) {
-    const conflicts = keys.filter(k => localStorage.getItem(k) !== null);
-    if (conflicts.length > 0) {
-      const ok = confirm(`The file contains ${conflicts.length} keys that already exist in localStorage. Overwrite them?`);
-      if (!ok) return 0;
+  if (!Object.keys(styles).length) {
+    try { styles = JSON.parse(localStorage.getItem('hr_styles') || '{}'); } catch (e) { styles = {}; }
+  }
+
+  const hints = {};
+  Object.keys(styles).forEach(styleId => {
+    // try to find the element that had this styleId
+    const el = document.querySelector(`[data-style-id="${CSS && CSS.escape ? CSS.escape(styleId) : styleId}"]`);
+    if (el) {
+      hints[styleId] = {
+        tag: el.tagName.toLowerCase(),
+        text: firstTextSnippet(el, 60),
+        domain: nearestAncestorDomain(el)
+      };
+    } else {
+      // fallback: no element currently has that id; we can't create good hint without traces, skip
+      hints[styleId] = { tag: '', text: '', domain: '' };
+    }
+  });
+
+  return { stylesMap: styles, hintsMap: hints };
+}
+
+/**
+ * Try to match a hint to an element in the current DOM.
+ * Returns matched element or null.
+ * Matching order: domain+tag+text contains -> domain+tag -> tag+text -> first tag
+ */
+function findElementForHint(hint) {
+  const pagesContainer = document.getElementById('pages');
+  const candidates = pagesContainer ? Array.from(pagesContainer.querySelectorAll(hint.tag || '*')) : Array.from(document.querySelectorAll(hint.tag || '*'));
+
+  // domain+tag+text
+  if (hint.domain && hint.text) {
+    for (const c of candidates) {
+      const cDomain = nearestAncestorDomain(c);
+      if (cDomain !== hint.domain) continue;
+      const txt = (c.textContent || '').trim().replace(/\s+/g, ' ');
+      if (txt && txt.toLowerCase().includes(hint.text.toLowerCase())) return c;
     }
   }
-  keys.forEach(k => {
-    const v = obj[k];
-    localStorage.setItem(k, v === null ? '' : String(v));
-  });
-  // Notify app:
-  window.dispatchEvent(new Event('localStorageImported'));
-  return keys.length;
+  // domain+tag
+  if (hint.domain && hint.tag) {
+    for (const c of candidates) {
+      const cDomain = nearestAncestorDomain(c);
+      if (cDomain === hint.domain) return c;
+    }
+  }
+  // tag+text
+  if (hint.text && hint.tag) {
+    for (const c of candidates) {
+      const txt = (c.textContent || '').trim().replace(/\s+/g, ' ');
+      if (txt && txt.toLowerCase().includes(hint.text.toLowerCase())) return c;
+    }
+  }
+  // first tag match
+  if (hint.tag) {
+    if (candidates.length) return candidates[0];
+  }
+  // fallback: nothing
+  return null;
 }
 
 /**
- * Import a JSON file from an <input type="file"> File object.
- * After successful import it reloads the page (small timeout to allow listeners to run).
+ * Apply a layout object to the DOM so import is visible immediately.
+ * layout: { domainName: {top,left,height}, ... }
  */
-function importLocalStorageFile(file, options = { overwrite: true }) {
+function applyLayoutToDOM(layout) {
+  if (!layout || typeof layout !== 'object') return;
+  Object.keys(layout).forEach(domain => {
+    // try to find element with data-domain equal to domain
+    const el = document.querySelector(`.domain[data-domain="${CSS && CSS.escape ? CSS.escape(domain) : domain}"]`) || Array.from(document.querySelectorAll('.domain')).find(d => d.dataset.domain === domain);
+    if (el) {
+      const cfg = layout[domain];
+      if (cfg.top !== undefined) el.style.top = Number(cfg.top) + 'px';
+      if (cfg.left !== undefined) el.style.left = Number(cfg.left) + 'px';
+      if (cfg.height !== undefined) el.style.height = Number(cfg.height) + 'px';
+    }
+  });
+}
+
+/**
+ * File -> Save layout
+ * Persist the current layout and styles to localStorage (no download).
+ * Saves domainLayout and hr_styles (and keeps hr_styles in storage).
+ */
+function saveLayoutToLocalStorage() {
+  const layout = collectCurrentLayout();
+  localStorage.setItem('domainLayout', JSON.stringify(layout));
+
+  const { stylesMap } = collectCurrentStylesAndHints();
+  localStorage.setItem('hr_styles', JSON.stringify(stylesMap, null, 2));
+
+  window.dispatchEvent(new Event('localStorageImported'));
+  alert('Saved current layout and styles to localStorage.');
+}
+
+/**
+ * File -> Export layout
+ * Download combined JSON file containing domainLayout, hr_styles, and hr_styles_hints.
+ */
+function exportCombined(filename = 'layout-styles.json') {
+  try {
+    const domainLayout = collectCurrentLayout();
+    const { stylesMap, hintsMap } = collectCurrentStylesAndHints();
+    const out = {
+      domainLayout: domainLayout,
+      hr_styles: stylesMap,
+      hr_styles_hints: hintsMap
+    };
+
+    const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=> URL.revokeObjectURL(url), 200);
+  } catch (err) {
+    console.error('exportCombined failed', err);
+    alert('Export failed: ' + (err && err.message ? err.message : String(err)));
+  }
+}
+
+/**
+ * Import a combined layout-styles file (File object).
+ * - options.overwriteStyles: boolean, true = replace hr_styles, false = merge
+ * The importer will:
+ *  - persist domainLayout to localStorage and apply it to DOM (positions)
+ *  - persist hr_styles to localStorage (merged or overwritten)
+ *  - use hr_styles_hints to try to reassign style IDs to DOM elements
+ *  - then ask editor to import styles or dispatch localStorageImported
+ */
+function importCombinedFile(file, options = { overwriteStyles: true }) {
   if (!file) return;
   const reader = new FileReader();
   reader.onload = (e) => {
     try {
       const parsed = JSON.parse(e.target.result);
-      const count = importObjectIntoLocalStorage(parsed, options);
-      if (count && count > 0) {
-        alert(`Imported ${count} keys into localStorage.`);
-      } else if (count === 0) {
-        // user cancelled overwrite
-        return;
+      if (typeof parsed !== 'object' || parsed === null) {
+        return alert('Invalid JSON: expected an object with "domainLayout" and/or "hr_styles".');
       }
-      // Give a moment for any listeners then reload
-      setTimeout(() => { location.reload(); }, 50);
+
+      // 1) domainLayout
+      if (parsed.hasOwnProperty('domainLayout')) {
+        const dl = parsed.domainLayout;
+        if (typeof dl === 'string') {
+          try {
+            const maybeObj = JSON.parse(dl);
+            localStorage.setItem('domainLayout', JSON.stringify(maybeObj));
+            applyLayoutToDOM(maybeObj);
+          } catch (_) {
+            localStorage.setItem('domainLayout', dl);
+            try { applyLayoutToDOM(JSON.parse(dl)); } catch (_) {}
+          }
+        } else if (typeof dl === 'object' && dl !== null) {
+          localStorage.setItem('domainLayout', JSON.stringify(dl));
+          applyLayoutToDOM(dl);
+        } else {
+          localStorage.setItem('domainLayout', JSON.stringify(dl));
+        }
+      }
+
+      // 2) hr_styles (merge or overwrite)
+      let stylesFromFile = {};
+      if (parsed.hasOwnProperty('hr_styles')) {
+        stylesFromFile = parsed.hr_styles || {};
+        if (options.overwriteStyles) {
+          localStorage.setItem('hr_styles', JSON.stringify(stylesFromFile));
+        } else {
+          let existing = {};
+          try { existing = JSON.parse(localStorage.getItem('hr_styles') || '{}'); } catch (e) { existing = {}; }
+          const merged = Object.assign({}, existing, stylesFromFile);
+          localStorage.setItem('hr_styles', JSON.stringify(merged));
+        }
+      }
+
+      // 3) Use hints (if any) to reassign style IDs to DOM elements so editor mapping works
+      const hints = parsed.hr_styles_hints || {};
+      if (Object.keys(hints).length) {
+        Object.keys(hints).forEach(styleId => {
+          const hint = hints[styleId] || {};
+          // Skip empty hints
+          if (!hint.tag && !hint.text && !hint.domain) return;
+          const matched = findElementForHint(hint);
+          if (matched) {
+            try {
+              matched.dataset.styleId = styleId;
+            } catch (e) {
+              // ignore
+            }
+          }
+        });
+      }
+
+      // 4) Now tell the editor to import styles (if available) so it can set its stylesMap and apply them
+      try {
+        const stylesObj = stylesFromFile && Object.keys(stylesFromFile).length ? stylesFromFile : JSON.parse(localStorage.getItem('hr_styles') || '{}');
+        if (window.hrEditor && typeof window.hrEditor.importFromObject === 'function') {
+          window.hrEditor.importFromObject(stylesObj, { overwrite: !!options.overwriteStyles });
+        } else {
+          // fallback: dispatch event so editor picks it up
+          window.dispatchEvent(new Event('localStorageImported'));
+        }
+      } catch (err) {
+        console.warn('hrEditor.importFromObject failed:', err);
+        window.dispatchEvent(new Event('localStorageImported'));
+      }
+
+      alert('Imported layout+styles and attempted to map styles to elements (best-effort). If some styles are missing, try re-running Save layout then Export to regenerate stable hints.');
+
     } catch (err) {
-      alert('Failed to import file: ' + err.message);
-      console.error(err);
+      console.error('Import failed', err);
+      alert('Failed to import combined file: ' + err.message);
     }
   };
   reader.onerror = () => alert('Failed to read file');
   reader.readAsText(file);
 }
 
-/**
- * Fetch a remote JSON file and import its contents into localStorage.
- * Returns a Promise that resolves to number of keys imported.
- */
-async function fetchAndImportRemote(url, options = { overwrite: true }) {
-  const resp = await fetch(url, { cache: 'no-store' });
-  if (!resp.ok) {
-    throw new Error(`Failed to fetch ${url}: ${resp.status} ${resp.statusText}`);
-  }
-  const text = await resp.text();
-  let parsed;
-  try {
-    parsed = JSON.parse(text);
-  } catch (err) {
-    throw new Error('Remote file is not valid JSON: ' + err.message);
-  }
-  const count = importObjectIntoLocalStorage(parsed, options);
-  return count;
-}
+// Expose for UI
+window.hrIO.collectCurrentLayout = collectCurrentLayout;
+window.hrIO.collectCurrentStylesAndHints = collectCurrentStylesAndHints;
+window.hrIO.saveLayoutToLocalStorage = saveLayoutToLocalStorage;
+window.hrIO.exportCombined = exportCombined;
+window.hrIO.importCombinedFile = importCombinedFile;
 
-/* Wire up UI, but guard missing elements so script is resilient */
+/* Wire up file menu and actions (same menu markup assumed) */
 document.addEventListener('DOMContentLoaded', () => {
-  // Auto-load remote if localStorage is empty
-  try {
-    if (localStorage.length === 0) {
-      // Attempt to fetch remote default positions
-      fetchAndImportRemote(REMOTE_POSITION_URL, { overwrite: true })
-        .then(count => {
-          if (count && count > 0) {
-            // Inform user and reload so app picks up the new data
-            // Small timeout so any listeners can run before reload
-            setTimeout(() => {
-              alert(`Loaded ${count} default positions from remote and will reload now.`);
-              location.reload();
-            }, 50);
-          }
-        })
-        .catch(err => {
-          // Fail silently in background but log for debugging
-          console.warn('Could not load remote positions:', err);
-        });
-    }
-  } catch (err) {
-    console.error('Error during auto-load check:', err);
-  }
+  const fileButton = document.getElementById('file-button');
+  const fileDropdown = document.getElementById('file-dropdown');
 
-  const exportBtn = document.getElementById('exportBtn');
-  if (exportBtn) {
-    exportBtn.addEventListener('click', () => exportLocalStorage('position.json'));
-  }
-
-  const importBtn = document.getElementById('importBtn');
-  const importFileInput = document.getElementById('importFile');
-
-  if (importBtn && importFileInput) {
-    importBtn.addEventListener('click', () => importFileInput.click());
-
-    importFileInput.addEventListener('change', (e) => {
-      const f = e.target.files && e.target.files[0];
-      if (f) importLocalStorageFile(f, { overwrite: true });
-      e.target.value = '';
+  if (fileButton) {
+    fileButton.addEventListener('click', (e) => {
+      const expanded = fileButton.getAttribute('aria-expanded') === 'true';
+      fileButton.setAttribute('aria-expanded', String(!expanded));
+      fileDropdown.style.display = expanded ? 'none' : 'block';
     });
-  } else {
-    // If UI elements are missing, you can create them programmatically or ensure they exist in your HTML.
-    // Example (uncomment to auto-create UI in the page):
-    /*
-    const container = document.createElement('div');
-    container.style.margin = '8px 0';
-    container.innerHTML = `
-      <button id="exportBtn">Save localStorage (position.json)</button>
-      <button id="importBtn">Load localStorage from file</button>
-      <input id="importFile" type="file" accept=".json,application/json" style="display:none" />
-    `;
-    document.body.prepend(container);
-    // then re-run wiring or refresh the page
-    location.reload();
-    */
+
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('file-menu').contains(e.target)) {
+        fileDropdown.style.display = 'none';
+        fileButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  const saveLayoutBtn = document.getElementById('saveLayoutBtn');
+  const exportLayoutBtn = document.getElementById('exportLayoutBtn');
+  const importLayoutBtn = document.getElementById('importLayoutBtn');
+  const importLayoutFile = document.getElementById('importLayoutFile');
+
+  if (saveLayoutBtn) {
+    saveLayoutBtn.addEventListener('click', () => {
+      saveLayoutToLocalStorage();
+      if (fileDropdown) { fileDropdown.style.display = 'none'; fileButton.setAttribute('aria-expanded','false'); }
+    });
+  }
+
+  if (exportLayoutBtn) {
+    exportLayoutBtn.addEventListener('click', () => {
+      exportCombined('layout-styles.json');
+      if (fileDropdown) { fileDropdown.style.display = 'none'; fileButton.setAttribute('aria-expanded','false'); }
+    });
+  }
+
+  if (importLayoutBtn && importLayoutFile) {
+    importLayoutBtn.addEventListener('click', () => importLayoutFile.click());
+    importLayoutFile.addEventListener('change', (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (f) {
+        const overwrite = confirm('Overwrite existing saved styles with the imported file? OK = overwrite, Cancel = merge.');
+        importCombinedFile(f, { overwriteStyles: overwrite });
+      }
+      e.target.value = '';
+      if (fileDropdown) { fileDropdown.style.display = 'none'; fileButton.setAttribute('aria-expanded','false'); }
+    });
   }
 });

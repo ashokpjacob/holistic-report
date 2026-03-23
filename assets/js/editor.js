@@ -33,8 +33,7 @@
   function saveStyles(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(stylesMap, null, 2)); }
 
   // export to file
- // Replace existing exportStylesToFile(...) with this
-function exportStylesToFile(filename = 'styles.json') {
+ function exportStylesToFile(filename = 'styles.json') {
   if (!pagesContainer) {
     alert('Nothing to export: #pages container not found.');
     return;
@@ -96,7 +95,6 @@ function exportStylesToFile(filename = 'styles.json') {
 }
 
   // import from file object
- // Replaces importStylesFile(file, options) in assets/js/editor.js
 function importStylesFile(file, options = { overwrite: false }) {
   if (!file) return;
   const reader = new FileReader();
@@ -137,22 +135,18 @@ function importStylesFile(file, options = { overwrite: false }) {
         // Only consider elements that are visible nodes (nodeType===1). Exclude elements that already
         // have a data-style-id that exists in stylesMap (we already applied those).
         const candidates = Array.from(pagesContainer.querySelectorAll('*')).filter(el => {
-          // skip elements that already have a style id that is present in stylesMap matched above
           return !(el.dataset && el.dataset.styleId && Object.prototype.hasOwnProperty.call(newStyles, el.dataset.styleId));
         });
 
         // Pair unmatchedKeys to candidates in order.
         let i = 0;
         unmatchedKeys.forEach(key => {
-          // find next available candidate
           while (i < candidates.length && (!candidates[i] || candidates[i].dataset && Object.prototype.hasOwnProperty.call(newStyles, candidates[i].dataset.styleId))) {
             i++;
           }
-          if (i >= candidates.length) return; // no more candidates
+          if (i >= candidates.length) return;
           const el = candidates[i++];
-          // Assign the imported key to the element so future loads match.
           el.dataset.styleId = key;
-          // Apply the style
           applyStyleToElement(el, newStyles[key]);
         });
       }
@@ -405,7 +399,6 @@ function importStylesFile(file, options = { overwrite: false }) {
     // export/import wiring
     exportBtn && exportBtn.addEventListener('click', () => exportStylesToFile('styles.json'));
     if(importFileInput){
-      // ensure input shows file dialog only when user clicks it (or you can add a button to trigger it)
       importFileInput.addEventListener('change', (e) => {
         const f = e.target.files && e.target.files[0];
         if(f){
@@ -448,6 +441,13 @@ function importStylesFile(file, options = { overwrite: false }) {
     if(it) it.addEventListener('change', liveApply);
 
     updateSelectedInfo();
+
+    // When imports write to localStorage, they dispatch localStorageImported. Reload styles from storage then apply.
+    window.addEventListener('localStorageImported', () => {
+      console.log('localStorageImported: reloading styles and applying them');
+      loadStyles();
+      applyAllStyles();
+    });
   }
 
   // expose API for debugging

@@ -1,0 +1,2832 @@
+{
+  "domainLayout": {
+    "Physical Development": {
+      "top": 20,
+      "left": 20,
+      "height": 150
+    },
+    "Social-Emotional and Ethical Development": {
+      "top": 22,
+      "left": 397,
+      "height": 150
+    },
+    "Cognitive Development": {
+      "top": 277,
+      "left": 22,
+      "height": 150
+    },
+    "Language & Literacy Development": {
+      "top": 183,
+      "left": 398,
+      "height": 150
+    },
+    "ICT": {
+      "top": 726,
+      "left": 19,
+      "height": 150
+    },
+    "Art": {
+      "top": 631,
+      "left": 404,
+      "height": 150
+    },
+    "Dance": {
+      "top": 20,
+      "left": 20,
+      "height": 150
+    },
+    "Music": {
+      "top": 22,
+      "left": 406,
+      "height": 150
+    }
+  },
+  "hr_styles": {
+    "s1774210106231": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106232": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106233": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106234": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106235": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106236": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106237": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106238": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106239": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106240": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106241": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106242": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106243": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106244": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106245": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106246": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106247": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106248": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106249": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106250": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106251": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106252": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106253": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106254": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106255": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106256": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106257": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106258": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106259": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106260": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106261": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106262": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106263": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106264": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106265": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106266": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106267": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106268": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106269": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106270": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106271": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106272": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106273": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106274": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106275": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106276": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106277": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106278": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106279": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106280": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106281": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106282": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106283": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106284": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106285": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106286": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106287": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106288": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106289": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106290": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106291": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106292": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106293": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106294": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106295": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106296": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106297": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106298": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106299": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106300": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106301": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106302": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106303": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106304": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106305": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106306": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106307": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106308": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106309": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106310": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106311": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106312": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106313": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106314": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106315": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106316": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106317": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106318": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106319": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106320": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106321": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106322": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106323": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106324": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106325": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106326": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106327": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106328": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106329": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106330": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106331": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106332": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106333": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106334": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106335": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106336": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106337": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106338": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106339": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106340": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106341": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106342": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106343": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106344": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106345": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106346": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106347": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106348": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106349": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106350": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106351": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106352": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106353": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106354": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106355": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106356": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106357": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106358": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106359": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106360": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106361": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106362": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106363": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106364": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106365": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106366": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106367": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106368": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106369": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106370": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106371": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106372": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106373": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#004040",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106374": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106375": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106376": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106377": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "16px",
+      "color": "#008080",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106378": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106379": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210106380": {
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "13px",
+      "color": "#400000",
+      "fontWeight": "400",
+      "fontStyle": "italic"
+    },
+    "s1774210629652": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629648": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629649": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629650": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629651": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629653": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629654": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629655": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629656": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629657": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629658": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629659": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629660": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629661": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629662": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629663": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629664": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629665": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629666": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629667": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629668": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629669": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629670": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629671": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629672": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629673": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629674": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629675": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629676": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629677": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629678": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629679": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629680": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629681": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629682": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629683": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629684": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629685": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629686": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629687": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629688": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629689": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629690": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629691": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629692": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629693": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629694": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629695": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629696": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629697": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629698": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629699": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629700": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629701": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629702": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629703": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629704": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629705": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629706": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629707": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629708": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629709": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629710": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629711": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629712": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629713": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629714": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629715": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629716": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629717": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629718": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629719": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629720": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629721": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629722": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629723": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629724": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629725": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629726": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629727": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629728": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629729": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629730": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629731": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629732": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629733": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629734": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629735": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629736": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629737": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629738": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629739": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629740": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629741": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629742": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629743": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629744": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629745": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629746": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629747": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629748": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629749": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629750": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629751": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629752": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629753": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629754": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629755": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629756": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629757": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629758": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629759": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629760": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629761": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629762": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629763": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629764": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629765": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629766": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629767": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629768": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629769": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629770": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629771": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629772": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629773": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629774": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629775": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629776": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629777": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629778": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629779": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629780": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629781": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629782": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629783": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629784": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629785": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629786": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629787": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629788": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629789": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629790": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629791": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629792": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629793": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629794": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629795": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629796": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774210629797": {
+      "fontFamily": "Georgia, serif",
+      "fontSize": "16px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931334": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931335": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931342": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931343": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931354": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931355": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931366": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931367": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931369": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931370": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931377": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931378": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931380": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931381": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931383": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931384": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931386": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931387": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931398": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931399": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931401": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931402": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931404": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931405": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931407": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931408": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931415": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931416": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931418": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931419": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931430": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931431": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931442": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931443": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931457": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931458": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931469": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931470": {
+      "fontFamily": "'Times New Roman', Times, serif",
+      "fontSize": "12px",
+      "color": "#000000",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931321": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931322": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931323": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931324": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931325": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931326": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931327": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931344": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931345": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931346": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931347": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931356": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931357": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931358": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931359": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931388": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931389": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931390": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931391": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931420": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931421": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931422": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931423": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931432": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931433": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931434": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931435": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931444": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931445": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931446": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931447": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931448": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931449": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931450": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931459": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931460": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931461": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931462": {
+      "fontFamily": "'Courier New', monospace",
+      "fontSize": "16px",
+      "color": "#ffffff",
+      "fontWeight": "400",
+      "fontStyle": "normal"
+    },
+    "s1774252931331": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931332": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931339": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931340": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931351": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931352": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931363": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931364": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931374": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931375": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931395": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931396": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931412": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931413": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931427": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931428": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931439": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931440": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931454": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931455": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931466": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    },
+    "s1774252931467": {
+      "fontFamily": "",
+      "fontSize": "12px",
+      "color": "#004040",
+      "fontWeight": "700",
+      "fontStyle": "normal"
+    }
+  }
+}
