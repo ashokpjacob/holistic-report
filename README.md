@@ -1,6 +1,7 @@
-# Holistic Report Card Generator
+# Holistic Report Card Enterprise
 
-A browser-based holistic report card editor aligned with CBSE NEP 2020.
+A browser-based holistic report card platform aligned with CBSE NEP 2020.
+The project now includes an enterprise landing portal with community support and a dedicated report editor demo.
 It loads competency data from CSV, builds multi-page A4 report cards, and provides drag/resize/styling controls with export/import and print support.
 
 No backend and no build step are required.
@@ -10,6 +11,8 @@ No backend and no build step are required.
 ## Live Demo
 
 [holistic-report on GitHub Pages](https://ashokpjacob.github.io/holistic-report)
+
+Direct editor demo: [app.html](https://ashokpjacob.github.io/holistic-report/app.html)
 
 ---
 
@@ -21,7 +24,11 @@ cd holistic-report
 ```
 
 Open `index.html` in a modern browser.
-The app automatically reads `holistic.csv` from the project root.
+
+- `index.html`: enterprise landing page with support actions
+- `app.html`: full report editor demo
+
+The editor automatically reads `holistic.csv` from the project root.
 
 ---
 
@@ -29,7 +36,8 @@ The app automatically reads `holistic.csv` from the project root.
 
 ```text
 holistic-report/
-├── index.html                      # Main app shell (menus, sidebar, pages container)
+├── index.html                      # Enterprise landing page (community support, contact sales, demo launch)
+├── app.html                        # Main app shell (menus, sidebar, pages container)
 ├── script.js                       # Page builder, drag/resize, layout save/export/import, undo/redo, header/footer
 ├── styles.css                      # Report page styles, guides, print rules, header/footer styles
 ├── holistic.csv                    # Input data source
@@ -73,6 +81,7 @@ Each Domain becomes a draggable block with subject tables.
 
 ### Modern UI
 
+- Enterprise landing page for application access and support channels
 - App header with File and Edit menus
 - Edit mode status chip
 - Sidebar style panels (Typography, Background, Table Fill)
@@ -130,6 +139,7 @@ Header/footer settings are applied live across all report pages and stored with 
 | Save layout | Saves current layout + styles + header/footer to localStorage |
 | Export layout (download) | Downloads `layout-styles.json` with all current settings |
 | Import layout (load file) | Imports previously exported JSON (overwrite or merge styles) |
+| Load Default Design (GitHub) | Loads and applies default `layout-styles.json` design from GitHub (with fallback to local file) |
 | Print Report | Opens browser print dialog for clean A4 output |
 
 ### Edit Menu
@@ -218,6 +228,13 @@ Tested with modern desktop browsers:
 - Edge
 - Firefox
 - Safari
+
+---
+
+## Support and Sales
+
+- Community support email: `66997515+ashokpjacob@users.noreply.github.com`
+- Contact sales for customization, white-labeling, and deployment support via the same email from the landing page actions
 
 ---
 

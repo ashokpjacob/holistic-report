@@ -23,6 +23,12 @@ function makeStyleId(...parts) {
 
 const HEADER_FOOTER_KEY = 'hr_header_footer';
 const HEADER_FOOTER_POPUP_URL = 'assets/header-footer-settings.html';
+const DEFAULT_LAYOUT_SOURCE_URLS = [
+  'https://raw.githubusercontent.com/ashokpjacob/holistic-report/main/layout-styles.json',
+  'layout-styles.json'
+];
+const DEFAULT_LAYOUT_LOADED_KEY = 'hr_default_layout_loaded';
+const DEFAULT_LAYOUT_DECLINED_KEY = 'hr_default_layout_declined';
 let headerFooterWindow = null;
 
 function defaultHeaderFooterSettings() {
@@ -242,6 +248,7 @@ fetch("holistic.csv")
       grouped[row.Domain][row.Subject].push(row);
     });
     buildPages(grouped);
+    maybePromptAndLoadDefaultDesign();
   });
 
 function buildPages(grouped) {
@@ -943,73 +950,7 @@ function importCombinedFile(file, options = { overwriteStyles: true }) {
   reader.onload = (e) => {
     try {
       const parsed = JSON.parse(e.target.result);
-      if (typeof parsed !== 'object' || parsed === null) {
-        return alert('Invalid JSON: expected an object with "domainLayout" and/or "hr_styles".');
-      }
-
-      // 1) domainLayout
-      if (parsed.hasOwnProperty('domainLayout')) {
-        const dl = parsed.domainLayout;
-        if (typeof dl === 'string') {
-          try {
-            const maybeObj = JSON.parse(dl);
-            localStorage.setItem('domainLayout', JSON.stringify(maybeObj));
-            applyLayoutToDOM(maybeObj);
-          } catch (_) {
-            localStorage.setItem('domainLayout', dl);
-            try { applyLayoutToDOM(JSON.parse(dl)); } catch (_) {}
-          }
-        } else if (typeof dl === 'object' && dl !== null) {
-          localStorage.setItem('domainLayout', JSON.stringify(dl));
-          applyLayoutToDOM(dl);
-        } else {
-          localStorage.setItem('domainLayout', JSON.stringify(dl));
-        }
-      }
-
-      // 2) hr_styles (merge or overwrite)
-      let stylesFromFile = {};
-      if (parsed.hasOwnProperty('hr_styles')) {
-        stylesFromFile = parsed.hr_styles || {};
-      }
-
-      // 2b) header/footer settings
-      if (parsed.hasOwnProperty('header_footer')) {
-        const cfg = saveHeaderFooterSettings(parsed.header_footer || {});
-        applyHeaderFooterToAllPages(cfg);
-      }
-
-      // 3) Reassign style IDs so editor mapping works.
-      const hints = parsed.hr_styles_hints || {};
-      let normalizedStyles = normalizeStylesForCurrentDom(stylesFromFile, hints);
-
-      if (parsed.hasOwnProperty('hr_styles')) {
-        if (options.overwriteStyles) {
-          localStorage.setItem('hr_styles', JSON.stringify(normalizedStyles));
-        } else {
-          let existing = {};
-          try { existing = JSON.parse(localStorage.getItem('hr_styles') || '{}'); } catch (e) { existing = {}; }
-          const merged = Object.assign({}, existing, normalizedStyles);
-          localStorage.setItem('hr_styles', JSON.stringify(merged));
-          normalizedStyles = merged;
-        }
-      }
-
-      // 4) Now tell the editor to import styles (if available) so it can set its stylesMap and apply them
-      try {
-        const stylesObj = normalizedStyles && Object.keys(normalizedStyles).length ? normalizedStyles : JSON.parse(localStorage.getItem('hr_styles') || '{}');
-        if (window.hrEditor && typeof window.hrEditor.importFromObject === 'function') {
-          window.hrEditor.importFromObject(stylesObj, { overwrite: !!options.overwriteStyles });
-        } else {
-          // fallback: dispatch event so editor picks it up
-          window.dispatchEvent(new Event('localStorageImported'));
-        }
-      } catch (err) {
-        console.warn('hrEditor.importFromObject failed:', err);
-        window.dispatchEvent(new Event('localStorageImported'));
-      }
-
-      alert('Imported layout+styles and mapped style IDs to current elements (hint-based when available, otherwise document-order fallback).');
+      importCombinedObject(parsed, options);
 
     } catch (err) {
       console.error('Import failed', err);
@@ -1020,12 +961,146 @@ function importCombinedFile(file, options = { overwriteStyles: true }) {
   reader.readAsText(file);
 }
 
+function importCombinedObject(parsed, options = { overwriteStyles: true, silent: false }) {
+  if (typeof parsed !== 'object' || parsed === null) {
+    if (!options.silent) alert('Invalid JSON: expected an object with "domainLayout" and/or "hr_styles".');
+    return false;
+  }
+
+  // 1) domainLayout
+  if (parsed.hasOwnProperty('domainLayout')) {
+    const dl = parsed.domainLayout;
+    if (typeof dl === 'string') {
+      try {
+        const maybeObj = JSON.parse(dl);
+        localStorage.setItem('domainLayout', JSON.stringify(maybeObj));
+        applyLayoutToDOM(maybeObj);
+      } catch (_) {
+        localStorage.setItem('domainLayout', dl);
+        try { applyLayoutToDOM(JSON.parse(dl)); } catch (_) {}
+      }
+    } else if (typeof dl === 'object' && dl !== null) {
+      localStorage.setItem('domainLayout', JSON.stringify(dl));
+      applyLayoutToDOM(dl);
+    } else {
+      localStorage.setItem('domainLayout', JSON.stringify(dl));
+    }
+  }
+
+  // 2) hr_styles (merge or overwrite)
+  let stylesFromFile = {};
+  if (parsed.hasOwnProperty('hr_styles')) {
+    stylesFromFile = parsed.hr_styles || {};
+  }
+
+  // 2b) header/footer settings
+  if (parsed.hasOwnProperty('header_footer')) {
+    const cfg = saveHeaderFooterSettings(parsed.header_footer || {});
+    applyHeaderFooterToAllPages(cfg);
+  }
+
+  // 3) Reassign style IDs so editor mapping works.
+  const hints = parsed.hr_styles_hints || {};
+  let normalizedStyles = normalizeStylesForCurrentDom(stylesFromFile, hints);
+
+  if (parsed.hasOwnProperty('hr_styles')) {
+    if (options.overwriteStyles) {
+      localStorage.setItem('hr_styles', JSON.stringify(normalizedStyles));
+    } else {
+      let existing = {};
+      try { existing = JSON.parse(localStorage.getItem('hr_styles') || '{}'); } catch (e) { existing = {}; }
+      const merged = Object.assign({}, existing, normalizedStyles);
+      localStorage.setItem('hr_styles', JSON.stringify(merged));
+      normalizedStyles = merged;
+    }
+  }
+
+  // 4) Now tell the editor to import styles (if available) so it can set its stylesMap and apply them
+  try {
+    const stylesObj = normalizedStyles && Object.keys(normalizedStyles).length ? normalizedStyles : JSON.parse(localStorage.getItem('hr_styles') || '{}');
+    if (window.hrEditor && typeof window.hrEditor.importFromObject === 'function') {
+      window.hrEditor.importFromObject(stylesObj, { overwrite: !!options.overwriteStyles });
+    } else {
+      // fallback: dispatch event so editor picks it up
+      window.dispatchEvent(new Event('localStorageImported'));
+    }
+  } catch (err) {
+    console.warn('hrEditor.importFromObject failed:', err);
+    window.dispatchEvent(new Event('localStorageImported'));
+  }
+
+  if (!options.silent) {
+    alert('Imported layout+styles and mapped style IDs to current elements (hint-based when available, otherwise document-order fallback).');
+  }
+  return true;
+}
+
+function hasSavedUserDesign() {
+  const layoutRaw = localStorage.getItem('domainLayout') || '';
+  const stylesRaw = localStorage.getItem('hr_styles') || '';
+  const hfRaw = localStorage.getItem(HEADER_FOOTER_KEY) || '';
+  const hasLayout = layoutRaw.trim() && layoutRaw.trim() !== '{}' && layoutRaw.trim() !== 'null';
+  const hasStyles = stylesRaw.trim() && stylesRaw.trim() !== '{}' && stylesRaw.trim() !== 'null';
+  const hasHeaderFooter = hfRaw.trim() && hfRaw.trim() !== '{}' && hfRaw.trim() !== 'null';
+  return !!(hasLayout || hasStyles || hasHeaderFooter);
+}
+
+async function loadDefaultDesignFromGithub(options = { askUser: true, force: false }) {
+  const askUser = options.askUser !== false;
+  const force = !!options.force;
+
+  if (!force) {
+    if (localStorage.getItem(DEFAULT_LAYOUT_LOADED_KEY) === '1') return false;
+    if (localStorage.getItem(DEFAULT_LAYOUT_DECLINED_KEY) === '1') return false;
+    if (hasSavedUserDesign()) return false;
+  }
+
+  if (askUser) {
+    const yes = window.confirm('Load default design from GitHub (layout-styles.json)? This will apply the starter layout and styles.');
+    if (!yes) {
+      if (!force) localStorage.setItem(DEFAULT_LAYOUT_DECLINED_KEY, '1');
+      return false;
+    }
+  }
+
+  for (const url of DEFAULT_LAYOUT_SOURCE_URLS) {
+    try {
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) continue;
+      const parsed = await response.json();
+      const imported = importCombinedObject(parsed, { overwriteStyles: true, silent: true });
+      if (!imported) continue;
+
+      localStorage.setItem(DEFAULT_LAYOUT_LOADED_KEY, '1');
+      localStorage.removeItem(DEFAULT_LAYOUT_DECLINED_KEY);
+      alert('Default design loaded successfully.');
+      if (window.hrHistory && typeof window.hrHistory.capture === 'function') window.hrHistory.capture();
+      return true;
+    } catch (err) {
+      console.warn('Failed loading default design from', url, err);
+    }
+  }
+
+  if (askUser) {
+    alert('Could not load default design from GitHub right now. Please try again later.');
+  }
+  return false;
+}
+
+function maybePromptAndLoadDefaultDesign() {
+  setTimeout(() => {
+    loadDefaultDesignFromGithub({ askUser: true, force: false });
+  }, 120);
+}
+
 // Expose for UI
 window.hrIO.collectCurrentLayout = collectCurrentLayout;
 window.hrIO.collectCurrentStylesAndHints = collectCurrentStylesAndHints;
 window.hrIO.saveLayoutToLocalStorage = saveLayoutToLocalStorage;
 window.hrIO.exportCombined = exportCombined;
 window.hrIO.importCombinedFile = importCombinedFile;
+window.hrIO.importCombinedObject = importCombinedObject;
+window.hrIO.loadDefaultDesignFromGithub = loadDefaultDesignFromGithub;
 
 /* Wire up file menu and actions (same menu markup assumed) */
 document.addEventListener('DOMContentLoaded', () => {
@@ -1064,6 +1139,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveLayoutBtn = document.getElementById('saveLayoutBtn');
   const exportLayoutBtn = document.getElementById('exportLayoutBtn');
   const importLayoutBtn = document.getElementById('importLayoutBtn');
+  const loadDefaultDesignBtn = document.getElementById('loadDefaultDesignBtn');
   const importLayoutFile = document.getElementById('importLayoutFile');
   const headerFooterBtn = document.getElementById('headerFooterBtn');
 
@@ -1105,6 +1181,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.hrHistory && typeof window.hrHistory.capture === 'function') window.hrHistory.capture();
       }
       e.target.value = '';
+      closeAllMenus();
+    });
+  }
+
+  if (loadDefaultDesignBtn) {
+    loadDefaultDesignBtn.addEventListener('click', async () => {
+      const ok = confirm('Load default design from GitHub now? This will overwrite current saved layout and styles.');
+      if (ok) {
+        await loadDefaultDesignFromGithub({ askUser: false, force: true });
+        if (window.hrHistory && typeof window.hrHistory.capture === 'function') window.hrHistory.capture();
+      }
       closeAllMenus();
     });
   }

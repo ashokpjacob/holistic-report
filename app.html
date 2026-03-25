@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Holistic Report Card — Editor</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="assets/css/editor.css">
+  <style>
+    /* App header and menu styles */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 16px;
+      border-bottom: 1px solid #d6dee8;
+      background: linear-gradient(120deg, #f8fbff 0%, #eef4ff 100%);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .brand {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.2px;
+      color: #1d3557;
+    }
+    .app-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .app-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .menu-bar {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .menu-item {
+      position: relative;
+      display: inline-block;
+    }
+    .menu-item-button {
+      padding: 6px 12px;
+      cursor: pointer;
+      background: #f3f3f3;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      user-select: none;
+    }
+    .menu-item-button:hover {
+      background: #e8e8e8;
+    }
+    #toggleEdit {
+      border: 1px solid #1f6feb;
+      background: #1f6feb;
+      color: #fff;
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #toggleEdit:hover {
+      background: #1758b8;
+    }
+    .history-btn {
+      border: 1px solid #b8c8df;
+      background: #fff;
+      color: #2f4563;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-weight: 700;
+      cursor: pointer;
+      min-width: 64px;
+    }
+    .history-btn:hover:not(:disabled) {
+      background: #f4f8ff;
+    }
+    .history-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    #editModeStatus {
+      display: inline-flex;
+      align-items: center;
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      background: #e8edf3;
+      color: #3a4b61;
+    }
+    body.edit-mode #editModeStatus {
+      background: #e6f4ea;
+      color: #1f6a3d;
+    }
+    .menu-dropdown {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: calc(100% + 6px);
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      min-width: 180px;
+      z-index: 1000;
+      border-radius: 4px;
+      padding: 6px 0;
+    }
+    .menu-dropdown button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .menu-dropdown button:hover {
+      background: #f5f7fb;
+    }
+    .menu-dropdown hr {
+      border: none;
+      border-top: 1px solid #e0e0e0;
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header-left">
+    <h1 class="brand">Holistic Report Card</h1>
+    <div class="menu-bar">
+      <div class="menu-item" id="file-menu" aria-label="File menu">
+        <div class="menu-item-button" id="file-button" role="button" aria-haspopup="true" aria-expanded="false">File ▾</div>
+        <div class="menu-dropdown" id="file-dropdown" role="menu" aria-label="File menu dropdown">
+          <button id="saveLayoutBtn" role="menuitem">Save layout</button>
+          <button id="exportLayoutBtn" role="menuitem">Export layout (download)</button>
+          <button id="importLayoutBtn" role="menuitem">Import layout (load file)</button>
+          <button id="loadDefaultDesignBtn" role="menuitem">Load Default Design (GitHub)</button>
+          <hr />
+          <button id="printBtn" role="menuitem">Print Report</button>
+        </div>
+        <!-- hidden file input used for import -->
+        <input id="importLayoutFile" type="file" accept="application/json" style="display:none" />
+      </div>
+      <div class="menu-item" id="edit-menu" aria-label="Edit menu">
+        <div class="menu-item-button" id="edit-button" role="button" aria-haspopup="true" aria-expanded="false">Edit ▾</div>
+        <div class="menu-dropdown" id="edit-dropdown" role="menu" aria-label="Edit menu dropdown">
+          <button id="headerFooterBtn" role="menuitem">Header / Footer...</button>
+          <hr />
+          <button id="resetBtn" role="menuitem">Reset Layout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="app-header-right">
+    <button id="undoBtn" class="history-btn" title="Undo (Ctrl+Z)">Undo</button>
+    <button id="redoBtn" class="history-btn" title="Redo (Ctrl+Y)">Redo</button>
+    <span id="editModeStatus">Edit Mode Off</span>
+    <button id="toggleEdit">Toggle Edit Mode</button>
+  </div>
+</header>
+
+<div id="app" class="app-shell">
+  <aside id="sidebar" aria-label="Style sidebar">
+    <div class="sidebar-head">
+      <h3>Style Studio</h3>
+      <div id="selectedInfo" aria-live="polite" class="selected-chip"></div>
+    </div>
+
+    <details class="panel" open>
+      <summary>Typography</summary>
+      <div class="control">
+        <label for="fontFamily">Font</label>
+        <select id="fontFamily">
+          <option value="'Trebuchet MS', 'Segoe UI', sans-serif">Trebuchet</option>
+          <option value="Arial, Helvetica, sans-serif">Arial</option>
+          <option value="Georgia, serif">Georgia</option>
+          <option value="'Times New Roman', Times, serif">Times New Roman</option>
+          <option value="'Courier New', monospace">Courier New</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label for="fontSize">Size (px)</label>
+        <input id="fontSize" type="number" min="6" max="200" />
+      </div>
+
+      <div class="control">
+        <label for="fontColor">Color</label>
+        <input id="fontColor" type="color" />
+      </div>
+
+      <div class="control inline-checks">
+        <label><input id="boldToggle" type="checkbox" /> Bold</label>
+        <label><input id="italicToggle" type="checkbox" /> Italic</label>
+      </div>
+    </details>
+
+    <details class="panel" open>
+      <summary>Background</summary>
+      <div class="control">
+        <label for="bgColor">Background color</label>
+        <input id="bgColor" type="color" value="#ffffff" />
+        <label><input id="bgTransparent" type="checkbox" /> Transparent</label>
+        <label for="bgOpacity">Opacity: <span id="bgOpacityValue">1.00</span></label>
+        <input id="bgOpacity" type="range" min="0" max="1" step="0.01" value="1" />
+      </div>
+
+      <div class="control">
+        <label for="bgImageUrl">Background image URL</label>
+        <input id="bgImageUrl" type="url" placeholder="https://example.com/image.png" />
+        <label for="bgImageOpacity">Image opacity: <span id="bgImageOpacityValue">1.00</span></label>
+        <input id="bgImageOpacity" type="range" min="0" max="1" step="0.01" value="1" />
+        <button id="openBgAdjusterBtn" type="button">Adjust Image Size/Position</button>
+      </div>
+    </details>
+
+    <details class="panel" open>
+      <summary>Table Fill</summary>
+      <div class="control">
+        <label for="tableFillColor">Table fill color</label>
+        <input id="tableFillColor" type="color" value="#ffffff" />
+        <label><input id="tableFillTransparent" type="checkbox" /> Transparent</label>
+        <label for="tableFillOpacity">Opacity: <span id="tableFillOpacityValue">1.00</span></label>
+        <input id="tableFillOpacity" type="range" min="0" max="1" step="0.01" value="1" />
+      </div>
+    </details>
+
+    <div class="control action-row">
+      <button id="applyBtn">Apply</button>
+      <button id="resetStyleBtn">Reset</button>
+    </div>
+  </aside>
+
+  <main id="main">
+    <section id="pages-wrapper">
+      <!-- script.js will populate #pages with .a4-page elements -->
+      <div id="pages"></div>
+    </section>
+  </main>
+</div>
+
+<script src="script.js" defer></script>
+<script src="assets/js/editor.js" defer></script>
+</body>
+</html>
