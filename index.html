@@ -3,21 +3,31 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Holistic Report Card is an enterprise-ready, browser-based report platform with community support and customization options.">
-	<title>Holistic Report Card | Enterprise Platform</title>
+	<title>Holistic Report Card Generator for School | CBSE NEP 2020 Report Solution</title>
+	<meta name="description" content="Holistic Report Card Generator for School helps institutions create CBSE NEP 2020-aligned report cards with competency-focused evaluation, printable layouts, and community support.">
+	<meta name="keywords" content="CBSE NEP 2020, holistic report card, school report card software, competency based assessment, student progress report">
+	<meta name="robots" content="index, follow, max-image-preview:large">
+	<link rel="canonical" href="https://ashokpjacob.github.io/holistic-report/">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Holistic Report Card Generator for School">
+	<meta property="og:description" content="Create CBSE NEP 2020-aligned, competency-based school report cards with a browser-first workflow.">
+	<meta property="og:url" content="https://ashokpjacob.github.io/holistic-report/">
+	<meta property="og:site_name" content="Holistic Report Card Generator for School">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Holistic Report Card Generator for School">
+	<meta name="twitter:description" content="CBSE NEP 2020 focused report card platform for schools with community support and customization options.">
 	<style>
 		:root {
-			--bg: #f3f7f4;
+			--bg: #eff4f0;
 			--surface: #ffffff;
-			--surface-alt: #eef4f0;
-			--text: #172221;
-			--muted: #51615f;
-			--primary: #0f766e;
-			--primary-dark: #0b5953;
-			--accent: #ca8a04;
-			--border: #d2dfd8;
-			--ok: #0f766e;
-			--shadow-soft: 0 10px 30px rgba(16, 24, 22, 0.08);
+			--surface-2: #f5faf7;
+			--text: #192726;
+			--muted: #4f6462;
+			--primary: #166f63;
+			--primary-2: #0f4f47;
+			--accent: #b7791f;
+			--line: #cfe0d8;
+			--shadow: 0 12px 26px rgba(20, 35, 31, 0.08);
 		}
 
 		* {
@@ -27,234 +37,370 @@
 		body {
 			margin: 0;
 			font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+			line-height: 1.55;
 			color: var(--text);
 			background:
-				radial-gradient(circle at 95% 10%, rgba(202, 138, 4, 0.14), transparent 35%),
-				radial-gradient(circle at 8% 20%, rgba(15, 118, 110, 0.18), transparent 30%),
-				linear-gradient(180deg, #f8fbf9 0%, var(--bg) 100%);
-			line-height: 1.5;
+				radial-gradient(circle at 3% 12%, rgba(22, 111, 99, 0.18), transparent 26%),
+				radial-gradient(circle at 97% 15%, rgba(183, 121, 31, 0.15), transparent 30%),
+				linear-gradient(180deg, #f7fbf8 0%, var(--bg) 100%);
+		}
+
+		a {
+			color: inherit;
 		}
 
 		.container {
-			width: min(1160px, 92vw);
+			width: min(1140px, 92vw);
 			margin: 0 auto;
 		}
 
-		.site-header {
+		.header {
 			position: sticky;
 			top: 0;
-			z-index: 10;
+			z-index: 20;
+			border-bottom: 1px solid var(--line);
 			backdrop-filter: blur(8px);
-			background: rgba(248, 251, 249, 0.9);
-			border-bottom: 1px solid var(--border);
+			background: rgba(247, 251, 248, 0.92);
 		}
 
 		.topbar {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 14px 0;
-			gap: 16px;
+			gap: 14px;
 			flex-wrap: wrap;
+			padding: 14px 0;
 		}
 
 		.brand {
-			display: flex;
+			display: inline-flex;
 			align-items: center;
 			gap: 10px;
-			font-weight: 700;
-			font-size: 1.02rem;
+			font-weight: 800;
 			letter-spacing: 0.2px;
 		}
 
-		.brand-badge {
-			width: 30px;
-			height: 30px;
+		.badge {
 			display: grid;
 			place-items: center;
+			width: 30px;
+			height: 30px;
 			border-radius: 8px;
 			color: #fff;
-			background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-			font-size: 0.9rem;
-			font-weight: 800;
+			font-size: 0.88rem;
+			background: linear-gradient(135deg, var(--primary), var(--primary-2));
 		}
 
-		.top-actions {
+		.actions {
 			display: flex;
-			align-items: center;
 			gap: 10px;
+			align-items: center;
 			flex-wrap: wrap;
 		}
 
 		.btn {
 			display: inline-block;
 			text-decoration: none;
-			border-radius: 10px;
 			padding: 10px 14px;
-			border: 1px solid transparent;
+			border-radius: 10px;
 			font-weight: 700;
-			transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+			border: 1px solid transparent;
+			transition: transform 180ms ease, box-shadow 220ms ease, background-color 220ms ease;
 		}
 
 		.btn:hover {
-			transform: translateY(-1px);
-			box-shadow: 0 8px 20px rgba(15, 118, 110, 0.2);
+			transform: translateY(-2px);
+			box-shadow: 0 10px 20px rgba(15, 79, 71, 0.2);
+		}
+
+		.btn:active {
+			transform: translateY(0);
 		}
 
 		.btn-primary {
 			color: #fff;
-			background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+			background: linear-gradient(135deg, var(--primary), var(--primary-2));
 		}
 
 		.btn-secondary {
 			color: var(--text);
-			background: var(--surface);
-			border-color: var(--border);
+			background: #fff;
+			border-color: var(--line);
 		}
 
 		.hero {
-			padding: 56px 0 30px;
+			padding: 50px 0 28px;
 			display: grid;
 			grid-template-columns: 1.2fr 0.8fr;
-			gap: 24px;
-			align-items: stretch;
+			gap: 18px;
+			animation: fadeSlideIn 700ms ease both;
 		}
 
-		.hero-panel,
-		.status-panel,
-		.section-card {
+		.panel,
+		.card,
+		.faq-item {
 			background: var(--surface);
-			border: 1px solid var(--border);
+			border: 1px solid var(--line);
 			border-radius: 16px;
-			box-shadow: var(--shadow-soft);
+			box-shadow: var(--shadow);
 		}
 
-		.hero-panel {
-			padding: 28px;
+		.panel {
+			padding: 24px;
 		}
 
 		.eyebrow {
 			margin: 0;
-			color: var(--primary-dark);
+			text-transform: uppercase;
+			font-size: 0.84rem;
+			color: var(--primary-2);
 			font-weight: 800;
 			letter-spacing: 0.4px;
-			font-size: 0.88rem;
-			text-transform: uppercase;
 		}
 
 		h1 {
 			margin: 8px 0 10px;
-			font-size: clamp(1.65rem, 4vw, 2.45rem);
+			font-size: clamp(1.8rem, 4vw, 2.5rem);
 			line-height: 1.15;
 		}
 
-		.hero-copy {
-			color: var(--muted);
+		.lead {
+			margin: 0;
 			max-width: 58ch;
-			margin: 0 0 18px;
+			color: var(--muted);
 		}
 
-		.hero-cta {
+		.cta-row {
+			margin-top: 16px;
 			display: flex;
 			gap: 10px;
 			flex-wrap: wrap;
 		}
 
-		.status-panel {
-			padding: 22px;
+		.status {
+			padding: 18px;
 			display: grid;
-			align-content: start;
-			gap: 12px;
-			background: linear-gradient(180deg, #f9fdfb 0%, var(--surface-alt) 100%);
+			gap: 10px;
+			background: linear-gradient(180deg, #fbfdfc 0%, var(--surface-2) 100%);
 		}
 
 		.status-item {
 			display: flex;
 			justify-content: space-between;
-			gap: 12px;
+			gap: 8px;
 			align-items: center;
-			border: 1px solid var(--border);
-			border-radius: 12px;
+			padding: 9px 10px;
+			border: 1px solid var(--line);
+			border-radius: 10px;
 			background: #fff;
-			padding: 10px 12px;
 		}
 
-		.status-label {
+		.status-item span:first-child {
 			color: var(--muted);
-			font-size: 0.93rem;
-		}
-
-		.status-value {
-			font-weight: 800;
-			color: var(--ok);
-		}
-
-		.sections {
-			padding: 12px 0 54px;
-			display: grid;
-			gap: 16px;
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
-
-		.section-card {
-			padding: 18px;
-		}
-
-		h2 {
-			margin: 0 0 10px;
-			font-size: 1.18rem;
-		}
-
-		.section-card p {
-			margin: 0;
-			color: var(--muted);
-		}
-
-		.links {
-			margin-top: 14px;
-			display: flex;
-			gap: 10px;
-			flex-wrap: wrap;
-		}
-
-		.link-chip {
-			display: inline-flex;
-			align-items: center;
-			gap: 6px;
-			border-radius: 999px;
-			padding: 8px 12px;
-			background: #fff;
-			border: 1px solid var(--border);
-			text-decoration: none;
-			font-weight: 700;
-			color: var(--primary-dark);
 			font-size: 0.92rem;
 		}
 
-		.enterprise-strip {
-			margin: 8px 0 34px;
-			border: 1px solid #e4d4a6;
-			background: linear-gradient(90deg, #f8f4e6 0%, #fffdf5 100%);
-			border-radius: 14px;
-			padding: 14px 16px;
-			color: #664d03;
+		.status-item span:last-child {
+			font-weight: 800;
+			color: var(--primary);
+		}
+
+		.notice {
+			margin: 4px 0 24px;
+			padding: 12px 14px;
+			border-radius: 12px;
+			border: 1px solid #e6d0a7;
+			background: linear-gradient(90deg, #fcf8ec, #fffdf6);
+			color: #6b4e12;
 			font-weight: 600;
 		}
 
-		.site-footer {
-			border-top: 1px solid var(--border);
+		.section-title {
+			font-size: 1.35rem;
+			margin: 0 0 10px;
+		}
+
+		.grid {
+			display: grid;
+			gap: 14px;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.card {
+			padding: 18px;
+			animation: fadeSlideUp 640ms ease both;
+		}
+
+		h2 {
+			margin: 0 0 8px;
+			font-size: 1.1rem;
+		}
+
+		p {
+			margin: 0;
+		}
+
+		.muted {
+			color: var(--muted);
+		}
+
+		.card .links {
+			margin-top: 12px;
+			display: flex;
+			gap: 8px;
+			flex-wrap: wrap;
+		}
+
+		.chip {
+			display: inline-flex;
+			align-items: center;
+			padding: 8px 11px;
+			border-radius: 999px;
+			text-decoration: none;
+			font-weight: 700;
+			font-size: 0.91rem;
+			border: 1px solid var(--line);
+			background: #fff;
+			color: var(--primary-2);
+			transition: transform 170ms ease, box-shadow 220ms ease;
+		}
+
+		.chip:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 7px 16px rgba(15, 79, 71, 0.14);
+		}
+
+		.blog {
+			margin-top: 30px;
+		}
+
+		.blog-grid {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 14px;
+		}
+
+		.blog-card {
+			padding: 18px;
+			background: #fff;
+			border: 1px solid var(--line);
+			border-radius: 16px;
+			box-shadow: var(--shadow);
+			animation: fadeSlideUp 700ms ease both;
+		}
+
+		.blog-meta {
+			font-size: 0.84rem;
+			color: var(--muted);
+			font-weight: 700;
+			letter-spacing: 0.2px;
+		}
+
+		h3 {
+			margin: 8px 0;
+			font-size: 1.05rem;
+		}
+
+		.faq {
+			margin: 30px 0 44px;
+		}
+
+		.faq-list {
+			display: grid;
+			gap: 10px;
+		}
+
+		.faq-item {
+			overflow: hidden;
+			animation: fadeSlideUp 760ms ease both;
+		}
+
+		.faq-item summary {
+			cursor: pointer;
+			list-style: none;
+			padding: 14px 16px;
+			font-weight: 700;
+		}
+
+		.faq-item summary::-webkit-details-marker {
+			display: none;
+		}
+
+		.faq-item p {
+			padding: 0 16px 14px;
+			color: var(--muted);
+		}
+
+		.faq-item[open] summary {
+			background: linear-gradient(90deg, rgba(22, 111, 99, 0.08), rgba(183, 121, 31, 0.08));
+		}
+
+		/* Staggered reveal for sections */
+		.grid .card:nth-child(1),
+		.blog-grid .blog-card:nth-child(1),
+		.faq-list .faq-item:nth-child(1) {
+			animation-delay: 80ms;
+		}
+
+		.grid .card:nth-child(2),
+		.blog-grid .blog-card:nth-child(2),
+		.faq-list .faq-item:nth-child(2) {
+			animation-delay: 160ms;
+		}
+
+		.grid .card:nth-child(3),
+		.faq-list .faq-item:nth-child(3) {
+			animation-delay: 240ms;
+		}
+
+		.faq-list .faq-item:nth-child(4) {
+			animation-delay: 320ms;
+		}
+
+		@keyframes fadeSlideIn {
+			from {
+				opacity: 0;
+				transform: translateY(12px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@keyframes fadeSlideUp {
+			from {
+				opacity: 0;
+				transform: translateY(14px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			*,
+			*::before,
+			*::after {
+				animation: none !important;
+				transition: none !important;
+			}
+		}
+
+		.footer {
+			border-top: 1px solid var(--line);
 			background: rgba(255, 255, 255, 0.8);
 		}
 
 		.footer-inner {
+			padding: 18px 0;
 			display: flex;
 			justify-content: space-between;
-			gap: 12px;
-			align-items: center;
+			gap: 10px;
 			flex-wrap: wrap;
-			padding: 18px 0;
 			color: var(--muted);
-			font-size: 0.94rem;
+			font-size: 0.93rem;
 		}
 
 		@media (max-width: 980px) {
@@ -262,117 +408,206 @@
 				grid-template-columns: 1fr;
 			}
 
-			.sections {
+			.grid,
+			.blog-grid {
 				grid-template-columns: 1fr 1fr;
 			}
 		}
 
-		@media (max-width: 680px) {
-			.sections {
+		@media (max-width: 700px) {
+			.grid,
+			.blog-grid {
 				grid-template-columns: 1fr;
-			}
-
-			.hero-panel,
-			.status-panel,
-			.section-card {
-				border-radius: 12px;
 			}
 
 			.hero {
 				padding-top: 30px;
 			}
+
+			.panel,
+			.card,
+			.blog-card,
+			.faq-item {
+				border-radius: 12px;
+			}
 		}
 	</style>
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		"name": "Holistic Report Card Generator for School",
+		"url": "https://ashokpjacob.github.io/holistic-report/",
+		"description": "School report card platform focused on CBSE NEP 2020 competency-based reporting.",
+		"publisher": {
+			"@type": "Organization",
+			"name": "Holistic Report Card Generator for School",
+			"email": "66997515+ashokpjacob@users.noreply.github.com"
+		}
+	}
+	</script>
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		"mainEntity": [
+			{
+				"@type": "Question",
+				"name": "What is CBSE NEP 2020 in simple terms?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "CBSE implementation of NEP 2020 focuses on competency-based learning, holistic progress tracking, and less rote memorization with richer student feedback."
+				}
+			},
+			{
+				"@type": "Question",
+				"name": "How does this platform support schools?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "Schools can build domain and subject wise report cards, adjust layout and styles, and print clean A4 reports using the app demo."
+				}
+			},
+			{
+				"@type": "Question",
+				"name": "Can we request customizations for our school brand?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "Yes. Contact sales through the provided support email for customization, white-labeling, and deployment guidance."
+				}
+			}
+		]
+	}
+	</script>
 </head>
 <body>
-	<header class="site-header">
+	<header class="header">
 		<div class="container topbar">
-			<div class="brand" aria-label="Holistic Report Card brand">
-				<span class="brand-badge" aria-hidden="true">HR</span>
-				<span>Holistic Report Card Enterprise</span>
+			<div class="brand" aria-label="Holistic Report Card Generator for School brand">
+				<span class="badge" aria-hidden="true">HR</span>
+				<span>Holistic Report Card Generator for School</span>
 			</div>
-			<nav class="top-actions" aria-label="Primary actions">
-				<a class="btn btn-secondary" href="mailto:66997515+ashokpjacob@users.noreply.github.com">Community Support</a>
+			<nav class="actions" aria-label="Top actions">
+				<a class="btn btn-secondary" href="mailto:66997515+ashokpjacob@users.noreply.github.com?subject=Community%20Support">Community Support</a>
 				<a class="btn btn-primary" href="app.html">Launch Demo (app.html)</a>
 			</nav>
 		</div>
 	</header>
 
 	<main class="container" id="main-content">
-		<section class="hero" aria-labelledby="hero-heading">
-			<article class="hero-panel">
-				<p class="eyebrow">Enterprise Application</p>
-				<h1 id="hero-heading">Holistic reporting platform ready for institutions and learning communities</h1>
-				<p class="hero-copy">
-					Deploy a production-ready report authoring workflow with consistency, accessibility, and operational simplicity.
-					This portal provides a clear path for community help, demo access, and enterprise customization requests.
+		<section class="hero" aria-labelledby="hero-title">
+			<article class="panel">
+				<p class="eyebrow">CBSE NEP 2020 Aligned</p>
+				<h1 id="hero-title">Holistic Report Card Generator for School with competency-focused student progress tracking</h1>
+				<p class="lead">
+					CBSE NEP 2020 encourages schools to move beyond marks-only evaluation and capture conceptual understanding, skills,
+					values, and overall student growth. This platform helps schools build that holistic view in a practical, printable format.
 				</p>
-				<div class="hero-cta">
+				<div class="cta-row">
 					<a class="btn btn-primary" href="app.html">Open Interactive Demo</a>
-					<a class="btn btn-secondary" href="mailto:66997515+ashokpjacob@users.noreply.github.com?subject=Holistic%20Community%20Support">Email Community Support</a>
+					<a class="btn btn-secondary" href="mailto:66997515+ashokpjacob@users.noreply.github.com?subject=Contact%20Sales%20for%20Customization">Contact Sales</a>
 				</div>
 			</article>
-
-			<aside class="status-panel" aria-label="Platform readiness">
-				<div class="status-item">
-					<span class="status-label">Application Tier</span>
-					<span class="status-value">Enterprise</span>
-				</div>
-				<div class="status-item">
-					<span class="status-label">Community Channel</span>
-					<span class="status-value">Active</span>
-				</div>
-				<div class="status-item">
-					<span class="status-label">Demo Endpoint</span>
-					<span class="status-value">app.html</span>
-				</div>
-				<div class="status-item">
-					<span class="status-label">Customization Desk</span>
-					<span class="status-value">Sales Ready</span>
-				</div>
+			<aside class="panel status" aria-label="Platform summary">
+				<div class="status-item"><span>Product Name</span><span>Holistic Report Card Generator for School</span></div>
+				<div class="status-item"><span>Framework Focus</span><span>CBSE NEP 2020</span></div>
+				<div class="status-item"><span>Community Support</span><span>Enabled</span></div>
+				<div class="status-item"><span>Demo Endpoint</span><span>app.html</span></div>
 			</aside>
 		</section>
 
-		<section class="enterprise-strip" aria-label="Enterprise notice">
-			Contact sales for white-labeling, workflow customization, and deployment support tailored to your institution.
+		<section class="notice" aria-label="Customization notice">
+			Need school-specific branding or workflow? Contact sales for customization support and deployment guidance.
 		</section>
 
-		<section class="sections" aria-label="Support and access sections">
-			<article class="section-card">
-				<h2>Community Support</h2>
-				<p>
-					Reach support via your GitHub mail for bug reports, setup questions, and usage guidance.
-				</p>
-				<div class="links">
-					<a class="link-chip" href="mailto:66997515+ashokpjacob@users.noreply.github.com?subject=Community%20Support">Email Support</a>
-				</div>
-			</article>
+		<section aria-labelledby="cbse-explainer">
+			<h2 class="section-title" id="cbse-explainer">What CBSE NEP 2020 means for report cards</h2>
+			<div class="grid">
+				<article class="card">
+					<h2>Competency Over Memorization</h2>
+					<p class="muted">Assessment shifts from recall-only testing to applied understanding, critical thinking, and real classroom performance.</p>
+				</article>
+				<article class="card">
+					<h2>Holistic Student Profile</h2>
+					<p class="muted">Schools document cognitive, social, emotional, and value-based growth, not only exam marks.</p>
+				</article>
+				<article class="card">
+					<h2>Actionable Feedback</h2>
+					<p class="muted">Teachers and parents receive clearer, competency-based comments that guide next learning steps for each child.</p>
+				</article>
+			</div>
+		</section>
 
-			<article class="section-card">
-				<h2>Demo Access</h2>
-				<p>
-					Start the working product demo directly through app.html and explore the full report editor flow.
-				</p>
-				<div class="links">
-					<a class="link-chip" href="app.html">Open app.html Demo</a>
-				</div>
-			</article>
+		<section class="blog" aria-labelledby="blog-title">
+			<h2 class="section-title" id="blog-title">Insights for school leaders and teachers</h2>
+			<div class="blog-grid">
+				<article class="blog-card">
+					<p class="blog-meta">BLOG 1 | SCHOOL IMPLEMENTATION</p>
+					<h3>How to transition from marks-only reports to holistic progress cards</h3>
+					<p class="muted">Start by mapping each subject into measurable competencies, then add descriptive observations for behavior, participation,
+					and communication. A structured report layout helps teams maintain consistency across classes.</p>
+				</article>
+				<article class="blog-card">
+					<p class="blog-meta">BLOG 2 | PARENT COMMUNICATION</p>
+					<h3>Making report cards easier for parents to understand</h3>
+					<p class="muted">Use plain language descriptors, highlight strengths and growth areas, and include practical next steps. This improves parent
+					engagement and makes school-home collaboration stronger.</p>
+				</article>
+			</div>
+		</section>
 
-			<article class="section-card">
-				<h2>Contact Sales</h2>
-				<p>
-					Need custom integrations, branding, or implementation support? Contact sales for customization.
-				</p>
-				<div class="links">
-					<a class="link-chip" href="mailto:66997515+ashokpjacob@users.noreply.github.com?subject=Contact%20Sales%20for%20Customization">Contact Sales</a>
-				</div>
-			</article>
+		<section class="blog" aria-labelledby="support-title">
+			<h2 class="section-title" id="support-title">Support and access</h2>
+			<div class="grid">
+				<article class="card">
+					<h2>Community Support</h2>
+					<p class="muted">Use your GitHub support mailbox for setup help, bug reports, and guidance.</p>
+					<div class="links">
+						<a class="chip" href="mailto:66997515+ashokpjacob@users.noreply.github.com?subject=Community%20Support">Email Support</a>
+					</div>
+				</article>
+				<article class="card">
+					<h2>Demo Access</h2>
+					<p class="muted">Explore the working editor and printing workflow from the demo app page.</p>
+					<div class="links">
+						<a class="chip" href="app.html">Open app.html Demo</a>
+					</div>
+				</article>
+				<article class="card">
+					<h2>Contact Sales</h2>
+					<p class="muted">For customization, white-labeling, and rollout planning, connect with sales.</p>
+					<div class="links">
+						<a class="chip" href="mailto:66997515+ashokpjacob@users.noreply.github.com?subject=Contact%20Sales%20for%20Customization">Contact Sales</a>
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<section class="faq" aria-labelledby="faq-title">
+			<h2 class="section-title" id="faq-title">FAQ</h2>
+			<div class="faq-list">
+				<details class="faq-item">
+					<summary>What is CBSE NEP 2020 in simple terms?</summary>
+					<p>It is a school education reform direction that emphasizes understanding, skills, and overall development over rote memorization.</p>
+				</details>
+				<details class="faq-item">
+					<summary>Why use a holistic report card generator for school?</summary>
+					<p>A holistic report card gives a fuller picture of each learner, including competencies, behavior, participation, and growth areas.</p>
+				</details>
+				<details class="faq-item">
+					<summary>Can schools use a default report design quickly?</summary>
+					<p>Yes. The editor supports loading a default design from layout-styles.json, including GitHub-based default loading.</p>
+				</details>
+				<details class="faq-item">
+					<summary>How can we request school-specific customization?</summary>
+					<p>Use the Contact Sales action to request custom branding, workflow updates, and deployment support for your school.</p>
+				</details>
+			</div>
 		</section>
 	</main>
 
-	<footer class="site-footer">
+	<footer class="footer">
 		<div class="container footer-inner">
-			<span>Holistic Report Card Enterprise Portal</span>
+			<span>Holistic Report Card Generator for School</span>
 			<span>Support: 66997515+ashokpjacob@users.noreply.github.com</span>
 		</div>
 	</footer>
