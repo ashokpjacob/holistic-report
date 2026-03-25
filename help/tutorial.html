@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holistic Report Card Generator for School - Tutorial</title>
+  <meta name="description" content="Step-by-step tutorial for Holistic Report Card Generator for School: setup, editing, default design loading, export/import, and printing.">
+  <style>
+    :root {
+      --bg: #f2f7f4;
+      --surface: #ffffff;
+      --line: #d6e2db;
+      --text: #1a2625;
+      --muted: #4f6361;
+      --primary: #166f63;
+      --primary-dark: #0f4f47;
+      --accent: #b7791f;
+      --shadow: 0 10px 24px rgba(16, 30, 27, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 96% 8%, rgba(183, 121, 31, 0.14), transparent 28%),
+        radial-gradient(circle at 2% 12%, rgba(22, 111, 99, 0.16), transparent 26%),
+        linear-gradient(180deg, #f8fbf9 0%, var(--bg) 100%);
+      line-height: 1.55;
+    }
+
+    .container {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+    }
+
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(6px);
+      background: rgba(248, 251, 249, 0.92);
+    }
+
+    .top-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 700;
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    }
+
+    .hero {
+      margin: 24px 0 12px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      line-height: 1.2;
+    }
+
+    .lead {
+      color: var(--muted);
+      margin: 0;
+      max-width: 70ch;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 14px;
+      margin: 14px 0 26px;
+      align-items: start;
+    }
+
+    .toc,
+    .content section,
+    .tip,
+    .faq {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .toc {
+      padding: 14px;
+      position: sticky;
+      top: 74px;
+    }
+
+    .toc h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .toc a {
+      color: var(--primary-dark);
+      text-decoration: none;
+      display: block;
+      padding: 6px 2px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .content {
+      display: grid;
+      gap: 12px;
+    }
+
+    .content section {
+      padding: 16px;
+    }
+
+    .content h2 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+    }
+
+    .content p,
+    .content li {
+      color: var(--muted);
+    }
+
+    .content ol,
+    .content ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    .callout {
+      margin-top: 10px;
+      border-left: 4px solid var(--accent);
+      background: #fff9ee;
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #6a4d16;
+      font-weight: 600;
+    }
+
+    code {
+      background: #edf4f0;
+      border: 1px solid #d7e4dc;
+      padding: 1px 5px;
+      border-radius: 6px;
+      font-family: Consolas, monospace;
+      font-size: 0.92em;
+      color: #1f4f49;
+    }
+
+    .tip,
+    .faq {
+      padding: 14px;
+    }
+
+    .tip h2,
+    .faq h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .faq details {
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+
+    .faq details:first-of-type {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .faq summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .faq p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    footer {
+      margin: 20px 0 30px;
+      color: var(--muted);
+      font-size: 0.93rem;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="container top-inner">
+      <div class="brand">Holistic Report Card Generator for School - Tutorial</div>
+      <nav class="actions" aria-label="Tutorial actions">
+        <a class="btn" href="../index.html">Open Landing</a>
+        <a class="btn primary" href="../app.html">Open Demo App</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Learn the system in 10-15 minutes</h1>
+      <p class="lead">
+        This tutorial helps teachers, coordinators, and school admins use Holistic Report Card Generator for School.
+        You will learn setup, editing, default design loading, import/export, printing, and troubleshooting.
+      </p>
+    </section>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Table of contents">
+        <h2>Quick Navigation</h2>
+        <a href="#overview">1. System Overview</a>
+        <a href="#start">2. Getting Started</a>
+        <a href="#data">3. CSV Data Preparation</a>
+        <a href="#editor">4. Editor Basics</a>
+        <a href="#default-design">5. Load Default Design</a>
+        <a href="#style">6. Style and Layout Editing</a>
+        <a href="#header-footer">7. Header and Footer</a>
+        <a href="#save-export-import">8. Save, Export, Import</a>
+        <a href="#print">9. Print and PDF</a>
+        <a href="#workflow">10. Recommended School Workflow</a>
+      </aside>
+
+      <div class="content">
+        <section id="overview">
+          <h2>1. System Overview</h2>
+          <p>
+            The system has two main pages:
+          </p>
+          <ul>
+            <li><code>index.html</code> - school-facing landing page with support information.</li>
+            <li><code>app.html</code> - working report card editor and print interface.</li>
+          </ul>
+          <p class="callout">CBSE NEP 2020 context: The app supports competency-based and holistic reporting, not only marks-focused reporting.</p>
+        </section>
+
+        <section id="start">
+          <h2>2. Getting Started</h2>
+          <ol>
+            <li>Open <code>index.html</code> and click <strong>Launch Demo (app.html)</strong>.</li>
+            <li>Or directly open <code>app.html</code> in a modern browser.</li>
+            <li>Ensure <code>holistic.csv</code> is present in project root.</li>
+          </ol>
+        </section>
+
+        <section id="data">
+          <h2>3. CSV Data Preparation</h2>
+          <p>Prepare your <code>holistic.csv</code> with columns used by the app.</p>
+          <ul>
+            <li><strong>Domain</strong>: broad area</li>
+            <li><strong>Subject</strong>: subject/category under domain</li>
+            <li><strong>Competency</strong>: skill or learning target</li>
+            <li><strong>Description</strong>: details of expectation</li>
+            <li><strong>Grading</strong>: grade/level per competency</li>
+          </ul>
+        </section>
+
+        <section id="editor">
+          <h2>4. Editor Basics</h2>
+          <ol>
+            <li>Use <strong>Toggle Edit Mode</strong> to enable editing tools.</li>
+            <li>Drag domain blocks using title handles.</li>
+            <li>Resize domains with top/bottom resize handles.</li>
+            <li>Use <strong>Undo</strong> and <strong>Redo</strong> for quick corrections.</li>
+          </ol>
+        </section>
+
+        <section id="default-design">
+          <h2>5. Load Default Design</h2>
+          <p>
+            You can apply a baseline school design from <code>layout-styles.json</code>.
+          </p>
+          <ol>
+            <li>Open <strong>File</strong> menu in the editor.</li>
+            <li>Click <strong>Load Default Design (GitHub)</strong>.</li>
+            <li>Confirm overwrite to apply the default layout and styles.</li>
+          </ol>
+          <p class="callout">This is useful when onboarding a new class or school branch and you want a consistent starting template.</p>
+        </section>
+
+        <section id="style">
+          <h2>6. Style and Layout Editing</h2>
+          <ul>
+            <li>Use sidebar to modify font family, size, color, bold, italic.</li>
+            <li>Set background color, transparency, opacity, and image URL.</li>
+            <li>Use image adjuster popup to control image size, position, and repeat.</li>
+            <li>Apply table fill color for consistent table readability.</li>
+          </ul>
+        </section>
+
+        <section id="header-footer">
+          <h2>7. Header and Footer</h2>
+          <ol>
+            <li>Open <strong>Edit -> Header / Footer...</strong>.</li>
+            <li>Enable header/footer and set heights.</li>
+            <li>Choose transparent or colored backgrounds.</li>
+            <li>Configure page numbers for printed reports.</li>
+          </ol>
+        </section>
+
+        <section id="save-export-import">
+          <h2>8. Save, Export, Import</h2>
+          <ul>
+            <li><strong>Save layout</strong>: stores current setup in browser localStorage.</li>
+            <li><strong>Export layout</strong>: downloads <code>layout-styles.json</code>.</li>
+            <li><strong>Import layout</strong>: reuses previous exports with overwrite or merge.</li>
+          </ul>
+          <p class="callout">Recommended: Export one final version per term to keep an external backup.</p>
+        </section>
+
+        <section id="print">
+          <h2>9. Print and PDF</h2>
+          <ol>
+            <li>Open <strong>File -> Print Report</strong>.</li>
+            <li>Select A4 and correct margins in browser print dialog.</li>
+            <li>Use <strong>Save as PDF</strong> if digital distribution is needed.</li>
+          </ol>
+        </section>
+
+        <section id="workflow">
+          <h2>10. Recommended School Workflow</h2>
+          <ol>
+            <li>Finalize one school-level default design.</li>
+            <li>Share that design JSON with class coordinators.</li>
+            <li>Each teacher updates only CSV and grading data.</li>
+            <li>Review print preview before final export or print.</li>
+          </ol>
+        </section>
+
+        <section class="tip" aria-label="Support">
+          <h2>Need help?</h2>
+          <p>
+            Community support email:
+            <a href="mailto:66997515+ashokpjacob@users.noreply.github.com?subject=Community%20Support%20Tutorial">66997515+ashokpjacob@users.noreply.github.com</a>
+          </p>
+          <p>
+            For school customization and deployment support, use the Contact Sales action on the landing page.
+          </p>
+        </section>
+
+        <section class="faq" aria-label="Tutorial FAQs">
+          <h2>Tutorial FAQ</h2>
+          <details>
+            <summary>Can I use this without internet?</summary>
+            <p>Yes. Core editor features run locally in browser. Internet is only needed for GitHub-based default design loading and online links.</p>
+          </details>
+          <details>
+            <summary>What if my imported layout does not match exactly?</summary>
+            <p>The system uses style IDs and hint mapping. Re-export from the current version for best compatibility across terms.</p>
+          </details>
+          <details>
+            <summary>Who should maintain the master design?</summary>
+            <p>Usually the school coordinator or academic admin should own the master layout and share export files with teachers.</p>
+          </details>
+        </section>
+      </div>
+    </div>
+
+    <footer>
+      Tutorial page for Holistic Report Card Generator for School
+    </footer>
+  </main>
+</body>
+</html>
